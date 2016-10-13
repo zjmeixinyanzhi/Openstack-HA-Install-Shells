@@ -995,6 +995,7 @@ echo $vip $local_nic
 yum install -y openstack-nova-api openstack-nova-conductor openstack-nova-console openstack-nova-novncproxy openstack-nova-scheduler
 ### [所有控制节点]配置配置nova组件，/etc/nova/nova.conf文件
 openstack-config --set /etc/nova/nova.conf DEFAULT enabled_apis osapi_compute,metadata
+openstack-config --set /etc/nova/nova.conf DEFAULT memcached_servers controller01:11211,controller02:11211,controller03:11211
 
 openstack-config --set /etc/nova/nova.conf api_database connection mysql+pymysql://nova:$password@$vip/nova_api
 openstack-config --set /etc/nova/nova.conf database connection mysql+pymysql://nova:$password@$vip/nova
