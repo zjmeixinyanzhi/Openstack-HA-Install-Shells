@@ -1,15 +1,16 @@
 Openstack HA平台部署shell 2.0脚本安装说明
-目录结构：
-install_shell_2.0
-   ├── 2.0_ceph-deploy-tools   ### 计算节点部署脚本
-   │   ├── sh
-   │   └── wheel_ceph
-   └── 2.0_tools               ### 控制节点部署脚本
-       ├── sh
-       └── t_sh
+=================================== 
+###目录结构：
+</br>install_shell_2.0
+</br>   ├── 2.0_ceph-deploy-tools   ### 计算节点部署脚本
+</br>   │   ├── sh                  ### 需要scp到各个计算节点执行的脚本
+</br>   │   └── wheel_ceph
+</br>   └── 2.0_tools               ### 控制节点部署脚本
+</br>       ├── sh                  ### 需要scp到各个控制节点执行的脚本
+</br>       └── t_sh                ### 各节点存放脚本的临时目录
 
 
-1~22、在controller01节点上进行基本配置和Openstack控制节点的部署，23~29在compute01上进行ceph集群的部署
+注意：1~22、在controller01节点上进行基本配置和Openstack控制节点的部署，23~29在compute01上进行ceph集群的部署
 
 1、根据实际部署环境，设置环境变量，并初始化
 vim 0-set-config.sh
