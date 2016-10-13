@@ -2338,7 +2338,8 @@ openstack-config --set /etc/nova/nova.conf vnc vncserver_proxyclient_address $(i
 openstack-config --set /etc/nova/nova.conf vnc novncproxy_base_url http://$vip:6080/vnc_auto.html
 
 openstack-config --set /etc/nova/nova.conf glance api_servers http://$vip:9292
-openstack-config --set /etc/nova/nova.conf libvirt virt_type kvm
+ openstack-config --set /etc/nova/nova.conf libvirt virt_type  $(count=$(egrep -c '(vmx|svm)' /proc/cpuinfo); if [ $count -eq 0 ];then   echo "qemu"; else   echo "kvm"; fi)
+
 
 
 ### 打开虚拟机迁移的监听端口
