@@ -2,15 +2,20 @@ Openstack HA平台部署shell 2.0脚本安装说明
 目录结构：
 install_shell_2.0
    ├── 2.0_ceph-deploy-tools   ### 计算节点部署脚本
-   │   ├── sh                  
+   │   ├── sh                  ### 需要scp到各个计算节点执行的脚本
    │   └── wheel_ceph
    └── 2.0_tools               ### 控制节点部署脚本
-       ├── sh
-       └── t_sh
+       ├── sh                  ### 需要scp到各个控制节点执行的脚本
+       └── t_sh                ### 各节点存放脚本的临时目录
 
 
 步骤1~22在controller01节点上进行基本配置和Openstack控制节点的部署，23~29在compute01上进行ceph集群的部署及openstack计算节点配置
 
+默认要求：
+a) 控制节点命名 controller+数字（01、02、03）计算节点命名compute+数字（01、02、03……）；
+b) 默认管理、虚拟、存储网络的三个网段尾数相同；
+c) 所有Openstack用户、各服务数据库实例密码统一成一个；
+d) Root执行所有操作。
 
 1、根据实际部署环境，设置环境变量，并初始化
 vim 0-set-config.sh
@@ -22,10 +27,10 @@ vim 0-set-config.sh
 3、设置各节点之间免密码登录 
 . set-ssh-nodes.sh
 
-4、网卡配置（如果已设置可省略）默认要求三个网段的尾数相同
+4、网卡配置（设置开机启动网卡，如果已设置可省略）
 . set-network-config.sh
 
-5、设置主机名，控制节点命名 controller+数字（01、02、03）计算节点命名compute+数字（01、02、03……）
+5、设置主机名
 . set-hostname.sh
 
 6、关闭防火墙禁用SELinux 需要重启节点，部署节点手动重启
@@ -115,6 +120,8 @@ vim 0-set-config.sh
 . install-compute-nodes-services.sh
 
 30、删除所有安装脚本
+. delete-tmp-shells.sh
+
 
 
 
