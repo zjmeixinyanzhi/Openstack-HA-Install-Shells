@@ -2,14 +2,15 @@ Openstack HA平台部署shell 2.0脚本安装说明
 目录结构：
 install_shell_2.0
    ├── 2.0_ceph-deploy-tools   ### 计算节点部署脚本
-   │   ├── sh
+   │   ├── sh                  
    │   └── wheel_ceph
    └── 2.0_tools               ### 控制节点部署脚本
        ├── sh
        └── t_sh
 
 
-1~22、在controller01节点上进行基本配置和Openstack控制节点的部署，23~29在compute01上进行ceph集群的部署及openstack计算节点配置
+步骤1~22在controller01节点上进行基本配置和Openstack控制节点的部署，23~29在compute01上进行ceph集群的部署及openstack计算节点配置
+
 
 1、根据实际部署环境，设置环境变量，并初始化
 vim 0-set-config.sh
@@ -21,7 +22,7 @@ vim 0-set-config.sh
 3、设置各节点之间免密码登录 
 . set-ssh-nodes.sh
 
-4、网卡配置（如果已设置可省略） 
+4、网卡配置（如果已设置可省略）默认要求三个网段的尾数相同
 . set-network-config.sh
 
 5、设置主机名，控制节点命名 controller+数字（01、02、03）计算节点命名compute+数字（01、02、03……）
@@ -51,7 +52,6 @@ vim 0-set-config.sh
 
 12、安装rabbit
  . install-configure-rabbitmq.sh
- 注意：默认设置openstack认证用户密码与配置文件中一致
  
  13、安装memcached
  . install-configure-memcached.sh
@@ -84,12 +84,16 @@ vim 0-set-config.sh
 
 20、安装openstack cinder
 . install-configure-cinder.sh
+ 执行restart-pcs-cluster.sh重启pcs集群后检查pcs resource，确保cinder服务启动
+. restart-pcs-cluster.sh
 
 21、安装openstack Ceilometer
 . install-configure-ceilometer.sh
 
 22、安装openstack Aodh
 . install-configure-aodh.sh
+ 执行restart-pcs-cluster.sh重启pcs集群后检查pcs resource，确保aodh服务启动
+. restart-pcs-cluster.sh
 
 23、安装计算&存储节点的ssh 
 . set-ssh-openstack-storage-nodes.sh
@@ -110,7 +114,8 @@ vim 0-set-config.sh
 29、配置计算节点
 . install-compute-nodes-services.sh
 
-30、删除安装脚本
+30、删除所有安装脚本
+
 
 
 

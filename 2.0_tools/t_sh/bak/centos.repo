@@ -1,0 +1,17 @@
+[centos-base]
+name=centos-base
+baseurl=ftp://192.168.100.81/pub/CentOS-7.2-X86_64/base
+gpgcheck=0
+enabled=1
+# centos-extras reporisoty
+[centos-extras]
+name=centos-extras
+baseurl=ftp://192.168.100.81/pub/CentOS-7.2-X86_64/extras
+gpgcheck=0
+enabled=1
+# centos-updates reporisoty
+[centos-updates]
+name=centos-updates
+baseurl=ftp://192.168.100.81/pub/CentOS-7.2-X86_64/updates
+gpgcheck=0
+enabled=1

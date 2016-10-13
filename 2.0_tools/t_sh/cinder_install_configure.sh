@@ -1,13 +1,11 @@
 #!/bin/sh
 vip='192.168.2.201'
 vip=$1
-local_bridge=$2
-password=$3
  
-echo $vip $local_bridge $password
+echo $vip $local_nic $data_nic
 yum install -y openstack-cinder
 ### [所有控制节点]配置配置cinder组件，/etc/nova/nova.conf文件
-openstack-config --set /etc/cinder/cinder.conf database connection mysql+pymysql://cinder:$password@$vip/cinder
+openstack-config --set /etc/cinder/cinder.conf database connection mysql+pymysql://cinder:123456@$vip/cinder
 openstack-config --set /etc/cinder/cinder.conf database max_retries -1
 	
 openstack-config --set /etc/cinder/cinder.conf DEFAULT auth_strategy keystone
@@ -19,7 +17,7 @@ openstack-config --set /etc/cinder/cinder.conf keystone_authtoken project_domain
 openstack-config --set /etc/cinder/cinder.conf keystone_authtoken user_domain_name default
 openstack-config --set /etc/cinder/cinder.conf keystone_authtoken project_name service
 openstack-config --set /etc/cinder/cinder.conf keystone_authtoken username cinder
-openstack-config --set /etc/cinder/cinder.conf keystone_authtoken password $password
+openstack-config --set /etc/cinder/cinder.conf keystone_authtoken password 123456
 
 openstack-config --set /etc/cinder/cinder.conf DEFAULT rpc_backend rabbit
 openstack-config --set /etc/cinder/cinder.conf oslo_messaging_rabbit rabbit_hosts controller01:5672,controller02:5672,controller03:5672
@@ -29,11 +27,11 @@ openstack-config --set /etc/cinder/cinder.conf oslo_messaging_rabbit rabbit_retr
 openstack-config --set /etc/cinder/cinder.conf oslo_messaging_rabbit rabbit_max_retries 0
 openstack-config --set /etc/cinder/cinder.conf oslo_messaging_rabbit rabbit_durable_queues true
 openstack-config --set /etc/cinder/cinder.conf oslo_messaging_rabbit rabbit_userid openstack
-openstack-config --set /etc/cinder/cinder.conf oslo_messaging_rabbit rabbit_password $password
+openstack-config --set /etc/cinder/cinder.conf oslo_messaging_rabbit rabbit_password 123456
 
 openstack-config --set /etc/cinder/cinder.conf DEFAULT control_exchange cinder
-openstack-config --set /etc/cinder/cinder.conf DEFAULT osapi_volume_listen  $(ip addr show dev $local_bridge scope global | grep "inet " | sed -e 's#.*inet ##g' -e 's#/.*##g'|head -n 1)
-openstack-config --set /etc/cinder/cinder.conf DEFAULT my_ip  $(ip addr show dev $local_bridge scope global | grep "inet " | sed -e 's#.*inet ##g' -e 's#/.*##g'|head -n 1)
+openstack-config --set /etc/cinder/cinder.conf DEFAULT osapi_volume_listen  $(ip addr show dev br-ex scope global | grep "inet " | sed -e 's#.*inet ##g' -e 's#/.*##g'|head -n 1)
+openstack-config --set /etc/cinder/cinder.conf DEFAULT my_ip  $(ip addr show dev br-ex scope global | grep "inet " | sed -e 's#.*inet ##g' -e 's#/.*##g'|head -n 1)
 openstack-config --set /etc/cinder/cinder.conf oslo_concurrency lock_path /var/lib/cinder/tmp
 openstack-config --set /etc/cinder/cinder.conf DEFAULT glance_api_servers http://$vip:9292
 
@@ -42,8 +40,6 @@ openstack-config --set /etc/cinder/cinder.conf DEFAULT glance_api_servers http:/
 ### [所有控制节点] 修改/etc/glance/glance-api.conf文件，增加
 openstack-config --set /etc/glance/glance-api.conf DEFAULT show_image_direct_url True
 openstack-config --set /etc/glance/glance-api.conf glance_store stores rbd
-openstack-config --set /etc/glance/glance-api.conf glance_store default_store rbd
-openstack-config --del /etc/glance/glance-api.conf glance_store filesystem_store_datadir
 openstack-config --set /etc/glance/glance-api.conf glance_store rbd_store_pool images
 openstack-config --set /etc/glance/glance-api.conf glance_store rbd_store_user glance
 openstack-config --set /etc/glance/glance-api.conf glance_store rbd_store_ceph_conf /etc/ceph/ceph.conf
@@ -73,7 +69,6 @@ openstack-config --set /etc/cinder/cinder.conf DEFAULT backup_ceph_stripe_unit 0
 openstack-config --set /etc/cinder/cinder.conf DEFAULT backup_ceph_stripe_count 0
 openstack-config --set /etc/cinder/cinder.conf DEFAULT restore_discard_excess_bytes true
 
-openstack-config --set /etc/cinder/cinder.conf DEFAULT host cinder-cluster-$(echo `hostname`|awk -F "controller" '{print $2}')
 ####[所有控制节点] 修改NOVA 设置/etc/nova/nova.conf
 #openstack-config --set /etc/nova/nova.conf libvirt images_type rbd
 #openstack-config --set /etc/nova/nova.conf libvirt images_rbd_pool vms
@@ -87,6 +82,3 @@ openstack-config --set /etc/cinder/cinder.conf DEFAULT host cinder-cluster-$(ech
 #openstack-config --set /etc/nova/nova.conf libvirt inject_partition  -2
 #openstack-config --set /etc/nova/nova.conf libvirt live_migration_flag "VIR_MIGRATE_UNDEFINE_SOURCE,VIR_MIGRATE_PEER2PEER,VIR_MIGRATE_LIVE,VIR_MIGRATE_PERSIST_DEST,VIR_MIGRATE_TUNNELLED"
 
-service openstack-glance-api restart
-service openstack-cinder-volume restart
-service openstack-cinder-backup restart

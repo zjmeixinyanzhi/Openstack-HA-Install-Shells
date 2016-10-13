@@ -67,28 +67,33 @@ for ((i=0; i<${#nodes_map[@]}; i+=1));
   done;
  
  #############################################
- ########     修改配置文件       #############
+ ########     修改网卡配置文件       #############
  #############################################
  
  ####3 修改所有节点上配置文件内容
  ####修改网卡配置文件，设置开启启动, 网卡需要统一命名
 
- ### cat set-network-config.sh
+### 修改操作 sh/network-config-exec.sh
+#!/bin/sh
+local_nic=$1
+data_nic=$2
+storage_nic=$3
 
- #!/bin/sh
-#cat /etc/sysconfig/network-scripts/ifcfg-eno*|grep ONBOOT 
-declare -A nodes_map=(["controller01"]="192.168.2.11" ["controller02"]="192.168.2.12" ["controller03"]="192.168.2.13" ["compute01"]="192.168.2.14" ["compute02"]="192.168.2.15" ["compute03"]="192.168.2.16" );
-nodes_name=(${!nodes_map[@]});
+sed -i -e 's#ONBOOT=no#ONBOOT=yes#g'  /etc/sysconfig/network-scripts/ifcfg-$local_nic
+sed -i -e 's#ONBOOT=no#ONBOOT=yes#g'  /etc/sysconfig/network-scripts/ifcfg-$data_nic
+sed -i -e 's#ONBOOT=no#ONBOOT=yes#g'  /etc/sysconfig/network-scripts/ifcfg-$storage_nic 
 
-for ((i=0; i<${#nodes_map[@]}; i+=1));
-  do
-      name=${nodes_name[$i]};
-      ip=${nodes_map[$name]};
-      echo "-------------$name------------"
-      ssh root@$ip  sed -i -e 's#ONBOOT=no#ONBOOT=yes#g'  /etc/sysconfig/network-scripts/ifcfg-eno16777736
-      ssh root@$ip  sed -i -e 's#ONBOOT=no#ONBOOT=yes#g'  /etc/sysconfig/network-scripts/ifcfg-eno33554960
-      ssh root@$ip  sed -i -e 's#ONBOOT=no#ONBOOT=yes#g'  /etc/sysconfig/network-scripts/ifcfg-eno50332184
-  done;
+### scp到其他节点 执行操作 set-network-config.sh
+
+#!/bin/sh
+local_nic=$1
+data_nic=$2
+storage_nic=$3
+
+sed -i -e 's#ONBOOT=no#ONBOOT=yes#g'  /etc/sysconfig/network-scripts/ifcfg-$local_nic
+sed -i -e 's#ONBOOT=no#ONBOOT=yes#g'  /etc/sysconfig/network-scripts/ifcfg-$data_nic
+sed -i -e 's#ONBOOT=no#ONBOOT=yes#g'  /etc/sysconfig/network-scripts/ifcfg-$storage_nic
+
   
  #############################################
  ########      设置主机名        #############
@@ -171,7 +176,7 @@ for ((i=0; i<${#nodes_map[@]}; i+=1));
       echo "-------------$name------------"
       ssh root@$ip mkdir -p $target_sh
       scp $source_sh root@$ip:$target_sh
-      ssh root@$ip chmod +x $target_sh
+      ssh root@$ip chmod -R +x $target_sh
       ssh root@$ip $target_sh/$sh_name
       ssh root@$ip systemctl status firewalld.service|grep  Active:
       ssh root@$ip sestatus -v
@@ -1593,6 +1598,8 @@ openstack-config --set /etc/cinder/cinder.conf DEFAULT backup_ceph_stripe_unit 0
 openstack-config --set /etc/cinder/cinder.conf DEFAULT backup_ceph_stripe_count 0
 openstack-config --set /etc/cinder/cinder.conf DEFAULT restore_discard_excess_bytes true
 
+openstack-config --set /etc/cinder/cinder.conf DEFAULT host cinder-cluster-$(echo `hostname`|awk -F "controller" '{print $2}')
+
 ####[所有控制节点] 修改NOVA 设置/etc/nova/nova.conf
 #openstack-config --set /etc/nova/nova.conf libvirt images_type rbd
 #openstack-config --set /etc/nova/nova.conf libvirt images_rbd_pool vms
@@ -2331,6 +2338,15 @@ openstack-config --set /etc/nova/nova.conf vnc novncproxy_base_url http://$vip:6
 
 openstack-config --set /etc/nova/nova.conf glance api_servers http://$vip:9292
 openstack-config --set /etc/nova/nova.conf libvirt virt_type kvm
+
+
+### 打开虚拟机迁移的监听端口
+sed -i -e "s#\#listen_tls *= *0#listen_tls = 0#g" /etc/libvirt/libvirtd.conf
+sed -i -e "s#\#listen_tcp *= *1#listen_tcp = 1#g" /etc/libvirt/libvirtd.conf
+sed -i -e "s#\#auth_tcp *= *\"sasl\"#auth_tcp = \"none\"#g" /etc/libvirt/libvirtd.conf
+sed -i -e "s#\#LIBVIRTD_ARGS *= *\"--listen\"#LIBVIRTD_ARGS=\"--listen\"#g" /etc/sysconfig/libvirtd
+
+
 ###启动服务
 systemctl enable libvirtd.service openstack-nova-compute.service
 systemctl start libvirtd.service openstack-nova-compute.service
@@ -2391,8 +2407,6 @@ ln -s /etc/neutron/plugins/ml2/ml2_conf.ini /etc/neutron/plugin.ini
 systemctl restart openstack-nova-compute.service
 systemctl start openvswitch.service
 systemctl restart neutron-openvswitch-agent.service
-
-
 
 
 

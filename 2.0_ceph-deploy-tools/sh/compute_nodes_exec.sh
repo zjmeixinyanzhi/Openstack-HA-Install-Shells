@@ -45,6 +45,15 @@ openstack-config --set /etc/nova/nova.conf vnc novncproxy_base_url http://$vip:6
 
 openstack-config --set /etc/nova/nova.conf glance api_servers http://$vip:9292
 openstack-config --set /etc/nova/nova.conf libvirt virt_type kvm
+
+
+### 打开虚拟机迁移的监听端口
+sed -i -e "s#\#listen_tls *= *0#listen_tls = 0#g" /etc/libvirt/libvirtd.conf
+sed -i -e "s#\#listen_tcp *= *1#listen_tcp = 1#g" /etc/libvirt/libvirtd.conf
+sed -i -e "s#\#auth_tcp *= *\"sasl\"#auth_tcp = \"none\"#g" /etc/libvirt/libvirtd.conf
+sed -i -e "s#\#LIBVIRTD_ARGS *= *\"--listen\"#LIBVIRTD_ARGS=\"--listen\"#g" /etc/sysconfig/libvirtd
+
+
 ###启动服务
 systemctl enable libvirtd.service openstack-nova-compute.service
 systemctl start libvirtd.service openstack-nova-compute.service
