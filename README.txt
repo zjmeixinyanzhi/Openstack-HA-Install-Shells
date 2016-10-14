@@ -127,5 +127,3 @@ vim 0-set-config.sh
 
 
 
-
-
