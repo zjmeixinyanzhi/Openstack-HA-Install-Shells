@@ -12,7 +12,7 @@ target_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone.glance
 
 ### [任一节点]创建数据库
 mysql -uroot -p$password_galera_root -h $virtual_ip -e "CREATE DATABASE glance;
-GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'localhost' IDENTIFIED BY '"$passowrd"';
+GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'localhost' IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'%' IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'controller01' IDENTIFIED BY '"$password"';
 FLUSH PRIVILEGES;"
@@ -75,6 +75,10 @@ pcs resource create openstack-glance-api systemd:openstack-glance-api --clone in
 pcs constraint order start openstack-keystone-clone then openstack-glance-registry-clone
 pcs constraint order start openstack-glance-registry-clone then openstack-glance-api-clone
 pcs constraint colocation add openstack-glance-api-clone with openstack-glance-registry-clone
+
+echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate and it'll continue!"
+. restart-pcs-cluster.sh
+
 ### [任一节点]添加测试镜像
 . /root/keystonerc_admin
 openstack image create "cirros" --file $test_img --disk-format qcow2 --container-format bare --public

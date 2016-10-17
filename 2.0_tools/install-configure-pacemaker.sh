@@ -24,6 +24,7 @@ pcs cluster auth $controller_list_space -u hacluster -p $password_ha_user --forc
 pcs cluster setup --force --name openstack-cluster $controller_list_space
 pcs cluster start --all
 
+sleep 5
 ### [controller01]设置集群属性
 pcs property set pe-warn-series-max=1000 pe-input-series-max=1000 pe-error-series-max=1000 cluster-recheck-interval=5min
 

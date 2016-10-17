@@ -8,7 +8,7 @@ local_bridge=$3
 password=$4
 
 ### [所有控制节点] 安装软件
-yum install -y openstack-ceilometer-api openstack-ceilometer-collector openstack-ceilometer-notification openstackceilometer-central python-ceilometerclient redis python-redis
+yum install -y openstack-ceilometer-api openstack-ceilometer-collector openstack-ceilometer-notification openstack-ceilometer-central python-ceilometerclient redis python-redis
 ### [所有控制节点] 配置redis
 sed -i "s/\s*bind \(.*\)$/#bind \1/" /etc/redis.conf
 ### [所有控制节点] 修改配置文件

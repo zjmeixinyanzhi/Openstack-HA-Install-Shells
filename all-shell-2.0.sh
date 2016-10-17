@@ -528,6 +528,10 @@ for ((i=0; i<${#controller_map[@]}; i+=1));
          #ssh root@$ip mysql_secure_installation
        fi
   done;
+  
+echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate and it'll continue!"
+. restart-pcs-cluster.sh
+  
 #### check
 mysql -uroot -p$password -e "use mysql;INSERT INTO user(Host, User) VALUES('"$virtual_ip"', 'haproxy_check');FLUSH PRIVILEGES;"
 mysql -uroot -p -h $virtual_ip -e "SHOW STATUS LIKE 'wsrep_cluster_size';"
@@ -710,8 +714,9 @@ target_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone
 source_cfg_1=$(echo `pwd`)/sh/conf/wsgi-keystone.conf
 
 ### [任一节点]创建数据库
-mysql -uroot -p$password_galera_root -h $virtual_ip -e "DROP DATABASE keystone;CREATE DATABASE keystone;
+mysql -uroot -p$password_galera_root -h $virtual_ip -e "CREATE DATABASE keystone;
 GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost' IDENTIFIED BY '"$password"';
+GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'controller01' IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY '"$password"';
 FLUSH PRIVILEGES;"
 
@@ -787,6 +792,10 @@ for ((i=0; i<${#controller_map[@]}; i+=1));
 su -s /bin/sh -c "keystone-manage db_sync" keystone
 ### [任一节点]添加pacemaker资源，openstack资源和haproxy资源无关，可以开启A/A模式
 pcs resource create  openstack-keystone systemd:httpd --clone interleave=true
+
+echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate and it'll continue!"
+. restart-pcs-cluster.sh
+
 ### [任一节点]设置临时环境变量
 export OS_TOKEN=3e9cffc84608cc62cca5
 export OS_URL=http://$virtual_ip:35357/v3
@@ -909,9 +918,9 @@ target_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone.glance
 
 ### [任一节点]创建数据库
 mysql -uroot -p$password_galera_root -h $virtual_ip -e "CREATE DATABASE glance;
-GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'localhost' IDENTIFIED BY '"$passowrd"';
-GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'%' IDENTIFIED BY '"$password"';
+GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'localhost' IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'controller01' IDENTIFIED BY '"$password"';
+GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'%' IDENTIFIED BY '"$password"';
 FLUSH PRIVILEGES;"
 
 ##### generate haproxy.cfg
@@ -972,6 +981,10 @@ pcs resource create openstack-glance-api systemd:openstack-glance-api --clone in
 pcs constraint order start openstack-keystone-clone then openstack-glance-registry-clone
 pcs constraint order start openstack-glance-registry-clone then openstack-glance-api-clone
 pcs constraint colocation add openstack-glance-api-clone with openstack-glance-registry-clone
+
+echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate and it'll continue!"
+. restart-pcs-cluster.sh
+
 ### [任一节点]添加测试镜像
 . /root/keystonerc_admin
 openstack image create "cirros" --file $test_img --disk-format qcow2 --container-format bare --public
@@ -1048,7 +1061,7 @@ target_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone.glance.nova
 
 ### [任一节点]创建数据库
 mysql -uroot -p$password_galera_root -h $virtual_ip -e "CREATE DATABASE nova;
-GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'localhost' IDENTIFIED BY '"$passowrd"';
+GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'localhost' IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'%' IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'controller01' IDENTIFIED BY '"$password"';
 CREATE DATABASE nova_api;
@@ -1146,8 +1159,10 @@ pcs constraint colocation add openstack-nova-scheduler-clone with openstack-nova
 pcs constraint order start openstack-nova-scheduler-clone then openstack-nova-conductor-clone
 pcs constraint colocation add openstack-nova-conductor-clone with openstack-nova-scheduler-clone
 
+echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate and it'll continue!"
+. restart-pcs-cluster.sh
+
 ### [任一节点]测试
-sleep 10
 . /root/keystonerc_admin
 openstack compute service list
 
@@ -1337,6 +1352,7 @@ target_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone.glance.nova.neutron
 ### [任一节点]创建数据库
 mysql -uroot -p$password_galera_root -h $virtual_ip -e "CREATE DATABASE neutron;
 GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'localhost' IDENTIFIED BY '"$password"';
+GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'controller01' IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'%' IDENTIFIED BY '"$password"';
 FLUSH PRIVILEGES;"
 
@@ -1407,6 +1423,9 @@ pcs constraint order start neutron-dhcp-agent-clone then neutron-l3-agent-clone
 pcs constraint colocation add neutron-l3-agent-clone with neutron-dhcp-agent-clone
 pcs constraint order start neutron-l3-agent-clone then neutron-metadata-agent-clone
 pcs constraint colocation add neutron-metadata-agent-clone with neutron-l3-agent-clone
+
+echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate and it'll continue!"
+. restart-pcs-cluster.sh
 
 ### [任一节点]
 . /root/keystonerc_admin
@@ -1697,7 +1716,8 @@ pcs constraint colocation add openstack-cinder-scheduler-clone with openstack-ci
 pcs constraint order start openstack-cinder-scheduler-clone then openstack-cinder-volume
 pcs constraint colocation add openstack-cinder-volume with openstack-cinder-scheduler-clone
 
-
+echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate and it'll continue!"
+. restart-pcs-cluster.sh
   
  #####################################################
  ########     安装openstack Ceilometer    ############
@@ -1719,7 +1739,7 @@ local_bridge=$3
 password=$4
 
 ### [所有控制节点] 安装软件
-yum install -y openstack-ceilometer-api openstack-ceilometer-collector openstack-ceilometer-notification openstackceilometer-central python-ceilometerclient redis python-redis
+yum install -y openstack-ceilometer-api openstack-ceilometer-collector openstack-ceilometer-notification openstack-ceilometer-central python-ceilometerclient redis python-redis
 ### [所有控制节点] 配置redis
 sed -i "s/\s*bind \(.*\)$/#bind \1/" /etc/redis.conf
 ### [所有控制节点] 修改配置文件

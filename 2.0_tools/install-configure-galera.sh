@@ -51,7 +51,7 @@ for ((i=0; i<${#controller_map[@]}; i+=1));
         ip=${controller_map[$name]};
         echo "-------------$name------------"
         if [ $i -eq 0 ]; then
-          echo "Please set the database password is "$passsword_galera_root
+          echo "Please set the database password is "$password_galera_root
           mysql_secure_installation
        else
          ssh root@$ip systemctl start mariadb
@@ -59,5 +59,6 @@ for ((i=0; i<${#controller_map[@]}; i+=1));
        fi
   done;
 #### check
-mysql -uroot -p$passsword_galera_root -e "use mysql;INSERT INTO user(Host, User) VALUES('"$virtual_ip"', 'haproxy_check');FLUSH PRIVILEGES;"
-mysql -uroot -p$passsword_galera_root -h $virtual_ip -e "SHOW STATUS LIKE 'wsrep_cluster_size';"
+. restart-pcs-cluster.sh
+mysql -uroot -p$password_galera_root -e "use mysql;INSERT INTO user(Host, User) VALUES('"$virtual_ip"', 'haproxy_check');FLUSH PRIVILEGES;"
+mysql -uroot -p$password_galera_root -h $virtual_ip -e "SHOW STATUS LIKE 'wsrep_cluster_size';"

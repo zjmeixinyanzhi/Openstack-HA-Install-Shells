@@ -11,7 +11,7 @@ target_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone.glance.nova
 
 ### [任一节点]创建数据库
 mysql -uroot -p$password_galera_root -h $virtual_ip -e "CREATE DATABASE nova;
-GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'localhost' IDENTIFIED BY '"$passowrd"';
+GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'localhost' IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'%' IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'controller01' IDENTIFIED BY '"$password"';
 CREATE DATABASE nova_api;
@@ -108,6 +108,9 @@ pcs constraint colocation add openstack-nova-scheduler-clone with openstack-nova
 
 pcs constraint order start openstack-nova-scheduler-clone then openstack-nova-conductor-clone
 pcs constraint colocation add openstack-nova-conductor-clone with openstack-nova-scheduler-clone
+
+echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate and it'll continue!"
+. restart-pcs-cluster.sh
 
 ### [任一节点]测试
 sleep 10

@@ -11,6 +11,7 @@ target_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone.glance.nova.neutron
 ### [任一节点]创建数据库
 mysql -uroot -p$password_galera_root -h $virtual_ip -e "CREATE DATABASE aodh;
 GRANT ALL PRIVILEGES ON aodh.* TO 'aodh'@'localhost' IDENTIFIED BY '$password';
+GRANT ALL PRIVILEGES ON aodh.* TO 'aodh'@'controller01' IDENTIFIED BY '$password';
 GRANT ALL PRIVILEGES ON aodh.* TO 'aodh'@'%' IDENTIFIED BY '$password';
 FLUSH PRIVILEGES;"
 
@@ -82,3 +83,7 @@ pcs constraint order start openstack-aodh-evaluator-clone then openstack-aodh-no
 pcs constraint order start openstack-aodh-notifier-clone then openstack-aodh-api-clone
 pcs constraint order start openstack-aodh-api-clone then openstack-aodh-listener-clone
 pcs constraint order start openstack-aodh-api-clone then openstack-ceilometer-notification-clone
+
+echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate and it'll continue!"
+. restart-pcs-cluster.sh
+

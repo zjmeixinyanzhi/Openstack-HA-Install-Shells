@@ -53,6 +53,6 @@ listen galera_cluster
     bind 192.168.2.211:3306
     balance source
     option mysql-check user haproxy_check
-    server controller01 192.168.2.101:3306 inter 2000 rise 2 fall 5
-    server controller02 192.168.2.102:3306 backup inter 2000 rise 2 fall 5
-    server controller03 192.168.2.103:3306 backup inter 2000 rise 2 fall 5
+    server controller01 192.168.2.11:3306 inter 2000 rise 2 fall 5
+    server controller02 192.168.2.12:3306 backup inter 2000 rise 2 fall 5
+    server controller03 192.168.2.13:3306 backup inter 2000 rise 2 fall 5

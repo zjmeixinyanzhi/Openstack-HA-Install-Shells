@@ -46,9 +46,13 @@ for ((i=0; i<${#controller_map[@]}; i+=1));
   do
         name=${controller_name[$i]};
         ip=${controller_map[$name]};
-        ssh root@$ip rabbitmqctl stop_app;
-        ssh root@$ip rabbitmqctl join_cluster --ram rabbit@$controller_0;
-        ssh root@$ip rabbitmqctl start_app;
+	if [ $name = "controller01"  ];then
+	  echo "controller01"
+	else
+          ssh root@$ip rabbitmqctl stop_app;
+          ssh root@$ip rabbitmqctl join_cluster --ram rabbit@$controller_0;
+          ssh root@$ip rabbitmqctl start_app;
+	fi
   done;
 
 ### [controlloer01] 设置ha-mode

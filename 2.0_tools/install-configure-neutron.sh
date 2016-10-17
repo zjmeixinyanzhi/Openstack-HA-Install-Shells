@@ -13,6 +13,7 @@ target_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone.glance.nova.neutron
 ### [任一节点]创建数据库
 mysql -uroot -p$password_galera_root -h $virtual_ip -e "CREATE DATABASE neutron;
 GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'localhost' IDENTIFIED BY '"$password"';
+GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'controller01' IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'%' IDENTIFIED BY '"$password"';
 FLUSH PRIVILEGES;"
 
@@ -83,6 +84,9 @@ pcs constraint order start neutron-dhcp-agent-clone then neutron-l3-agent-clone
 pcs constraint colocation add neutron-l3-agent-clone with neutron-dhcp-agent-clone
 pcs constraint order start neutron-l3-agent-clone then neutron-metadata-agent-clone
 pcs constraint colocation add neutron-metadata-agent-clone with neutron-l3-agent-clone
+
+echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate and it'll continue!"
+. restart-pcs-cluster.sh
 
 ### [任一节点]
 . /root/keystonerc_admin

@@ -15,8 +15,9 @@ target_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone
 source_cfg_1=$(echo `pwd`)/sh/conf/wsgi-keystone.conf
 
 ### [任一节点]创建数据库
-mysql -uroot -p$password_galera_root -h $virtual_ip -e "drop database keystone;CREATE DATABASE keystone;
+mysql -uroot -p$password_galera_root -h $virtual_ip -e "CREATE DATABASE keystone;
 GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost' IDENTIFIED BY '"$password"';
+GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'controller01' IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY '"$password"';
 FLUSH PRIVILEGES;"
 
@@ -92,6 +93,10 @@ for ((i=0; i<${#controller_map[@]}; i+=1));
 su -s /bin/sh -c "keystone-manage db_sync" keystone
 ### [任一节点]添加pacemaker资源，openstack资源和haproxy资源无关，可以开启A/A模式
 pcs resource create  openstack-keystone systemd:httpd --clone interleave=true
+
+echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate and it'll continue!"
+. restart-pcs-cluster.sh
+
 ### [任一节点]设置临时环境变量
 export OS_TOKEN=3e9cffc84608cc62cca5
 export OS_URL=http://$virtual_ip:35357/v3

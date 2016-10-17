@@ -12,6 +12,8 @@ target_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone.glance.nova.neutron
 mysql -uroot -p$password_galera_root -h $virtual_ip -e "CREATE DATABASE cinder;
 GRANT ALL PRIVILEGES ON cinder.* TO 'cinder'@'localhost' \
   IDENTIFIED BY '"$password"';
+GRANT ALL PRIVILEGES ON cinder.* TO 'cinder'@'controller01' \
+  IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON cinder.* TO 'cinder'@'%' \
   IDENTIFIED BY '"$password"';
 FLUSH PRIVILEGES;"
@@ -73,3 +75,5 @@ pcs constraint colocation add openstack-cinder-scheduler-clone with openstack-ci
 pcs constraint order start openstack-cinder-scheduler-clone then openstack-cinder-volume
 pcs constraint colocation add openstack-cinder-volume with openstack-cinder-scheduler-clone
 
+echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate and it'll continue!"
+. restart-pcs-cluster.sh
