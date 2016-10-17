@@ -1,4 +1,3 @@
-
 #!/bin/sh
 nodes_name=(${!hypervisor_map[@]});
 
@@ -25,7 +24,7 @@ ceph-deploy new $deploy_node
 echo "public network ="$local_network>>ceph.conf
 echo "cluster network ="$store_network>>ceph.conf
 
-ceph-deploy install --nogpgcheck --repo-url $base_location/download.ceph.com/rpm-jewel/el7/ ${nodes_name[@]} --gpg-url $base_location/download.ceph.com/release.asc
+ceph-deploy install --nogpgcheck --repo-url $base_location/download.ceph.com/rpm-$ceph_release/el7/ ${nodes_name[@]} --gpg-url $base_location/download.ceph.com/release.asc
 ceph-deploy mon create-initial
 
 osds="";

@@ -21,6 +21,8 @@ ftp_info="ftp://192.168.100.81/pub/"
 tmp_path=/root/tools/t_sh/
 ### 存储节点上OSD盘挂载目录 所有节点统一成一个
 osd_path=/osd
+### ceph安装版本
+ceph_release=hammer
 
 ### Openstack各组件的数据库密码，所有服务统一成一个
 password=Gugong123

@@ -3,6 +3,7 @@
 #base_location="ftp://192.168.100.81/pub/"
 base_location=$1
 target_dir=$2
+ceph_release=$3
 
 echo $base_location $target_dir
 ###### centos.repo
@@ -43,7 +44,7 @@ gpgcheck=0
 ##### ceph.repo
 echo "[ceph-noarch]
 name = Ceph noarch packages
-baseurl = "$base_location"download.ceph.com/rpm-jewel/el7/noarch
+baseurl = "$base_location"download.ceph.com/rpm-"$ceph_release"/el7/noarch
 gpgcheck=0
 ">$target_dir/ceph.repo
 

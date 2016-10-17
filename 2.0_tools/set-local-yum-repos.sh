@@ -10,7 +10,7 @@ target_sh=$tmp_path/bak/
 echo $yum_repos_dir
 
 #### generate yum repos in current node
-$source_sh $base_location $yum_repos_dir
+$source_sh $base_location $yum_repos_dir $ceph_release
 
 for ((i=0; i<${#nodes_map[@]}; i+=1));
   do
