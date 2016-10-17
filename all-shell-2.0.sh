@@ -2083,9 +2083,8 @@ sed -i -e 's#Defaults   *requiretty#Defaults:ceph !requiretty#g' /etc/sudoers
  #### scp到其他存储节点 
 
 #!/bin/sh
+nodes_name=(${!hypervisor_map[@]});
 
-declare -A nodes_map=(["compute01"]="192.168.2.14" ["compute02"]="192.168.2.15" ["compute03"]="192.168.2.16");
-nodes_name=(${!nodes_map[@]});
 base_location=./wheel_ceph/
 
 sh_name=set_selinux_firewall_sudoer.sh
@@ -2097,20 +2096,21 @@ sudo rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
 rm -rf /etc/yum.repos.d/epel*
 yum install -y python-pip
 yum install -y python-wheel
-pip install --use-wheel --no-index --trusted-host 192.168.100.81 --find-links=$base_location ceph-deploy
+pip install --use-wheel --no-index --trusted-host $(echo $ftp_info|awk -F "/" '{print $3}') --find-links=$base_location ceph-deploy
 ceph-deploy --version
 
 ### set
-for ((i=0; i<${#nodes_map[@]}; i+=1));
+for ((i=0; i<${#hypervisor_map[@]}; i+=1));
   do
       name=${nodes_name[$i]};
-      ip=${nodes_map[$name]};
+      ip=${hypervisor_map[$name]};
       echo "-------------$name------------"
         ssh root@$ip mkdir -p $target_sh
         scp $source_sh root@$ip:$target_sh
         ssh root@$ip chmod -R +x $target_sh
         ssh root@$ip $target_sh/$sh_name
   done;
+
   
  
  #####################################################
@@ -2142,7 +2142,7 @@ for ((i=0; i<${#hypervisor_map[@]}; i+=1));
       name=${nodes_name[$i]};
       ip=${hypervisor_map[$name]};
       echo "-------------$name------------"
-        ssh root@$name  rm -rf /osd/*
+        ssh root@$name  rm -rf $osd_path/*
   done;
 
 mkdir -p /root/my-cluster
@@ -2164,8 +2164,8 @@ for ((i=0; i<${#hypervisor_map[@]}; i+=1));
       name=${nodes_name[$i]};
       ip=${hypervisor_map[$name]};
       echo "-------------$name------------"
-        osds=$osds" "$name":/osd"
-        ssh root@$name  chown -R ceph:ceph /osd/
+	    osds=$osds" "$name":"$osd_path
+        ssh root@$name  chown -R ceph:ceph $osd_path
   done;
 echo $osds
 ###[部署节点]激活OSD

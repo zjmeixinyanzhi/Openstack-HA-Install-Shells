@@ -19,6 +19,8 @@ store_network=11.11.11.0/24
 ftp_info="ftp://192.168.100.81/pub/"
 ### 临时目录，用于scp存放配置脚本
 tmp_path=/root/tools/t_sh/
+### 存储节点上OSD盘挂载目录 所有节点统一成一个
+osd_path=/osd
 
 ### Openstack各组件的数据库密码，所有服务统一成一个
 password=Gugong123

@@ -15,7 +15,7 @@ for ((i=0; i<${#hypervisor_map[@]}; i+=1));
       name=${nodes_name[$i]};
       ip=${hypervisor_map[$name]};
       echo "-------------$name------------"
-        ssh root@$name  rm -rf /osd/*
+        ssh root@$name  rm -rf $osd_path/*
   done;
 
 mkdir -p /root/my-cluster
@@ -37,8 +37,8 @@ for ((i=0; i<${#hypervisor_map[@]}; i+=1));
       name=${nodes_name[$i]};
       ip=${hypervisor_map[$name]};
       echo "-------------$name------------"
-        osds=$osds" "$name":/osd"
-        ssh root@$name  chown -R ceph:ceph /osd/
+	osds=$osds" "$name":"$osd_path
+        ssh root@$name  chown -R ceph:ceph $osd_path
   done;
 echo $osds
 ###[部署节点]激活OSD
