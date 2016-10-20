@@ -78,7 +78,8 @@ pcs constraint order start openstack-ceilometer-central-clone then openstack-cei
 pcs constraint order start openstack-ceilometer-collector-clone then openstack-ceilometer-api-clone
 pcs constraint colocation add openstack-ceilometer-api-clone with openstack-ceilometer-collector-clone
 pcs constraint order start openstack-ceilometer-api-clone then delay-clone
-pcs constraint colocation add delay-clone with openstack-ceilometer-api-clonepcs constraint order start delay-clone then openstack-aodh-evaluator-clone
+pcs constraint colocation add delay-clone with openstack-ceilometer-api-clone
+pcs constraint order start delay-clone then openstack-aodh-evaluator-clone
 pcs constraint order start openstack-aodh-evaluator-clone then openstack-aodh-notifier-clone
 pcs constraint order start openstack-aodh-notifier-clone then openstack-aodh-api-clone
 pcs constraint order start openstack-aodh-api-clone then openstack-aodh-listener-clone

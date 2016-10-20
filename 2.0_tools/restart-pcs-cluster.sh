@@ -6,7 +6,7 @@ for i in 01 02 03; do ssh controller$i pcs cluster kill; done
 pcs cluster stop --all
 pcs cluster start --all
 sleep 5
-watch -n 3 pcs resource
+watch -n 0.5 pcs resource
 echo "pcs resource"
 pcs resource
 pcs resource|grep Stop

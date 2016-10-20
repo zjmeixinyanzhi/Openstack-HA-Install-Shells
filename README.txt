@@ -32,6 +32,7 @@ vim 0-set-config.sh
 
 7、设置时间同步：与controller01时间同步 
 . set-chrony.sh
+可查看result.log检查chronyc resource的结果
 
 8、制作本地软件源：需要将下载好的离线安装包放到指定FTP目录
 . set-local-yum-repos.sh
@@ -46,8 +47,7 @@ vim 0-set-config.sh
 11、安装Galera 
 . install-configure-galera.sh
 注意：初始数据库时设置数据库Root密码与配置文件中一致
-如果无法通过vip访问数据库，执行restart-pcs-cluster.sh重启pcs集群后再检查
-. restart-pcs-cluster.sh
+期间会执行restart-pcs-cluster.sh重启pcs集群后检查pcs resource，确保vip服务启动后按Ctrl+C结束查看
 
 12、安装rabbit
  . install-configure-rabbitmq.sh
@@ -61,35 +61,36 @@ vim 0-set-config.sh
  
  15、安装openstack Identity
 . install-configure-keystone.sh
-执行restart-pcs-cluster.sh重启pcs集群后检查pcs resource,确保keystone服务启动
-. restart-pcs-cluster.sh
+期间会执行restart-pcs-cluster.sh重启pcs集群后检查pcs resource，确保keystone服务启动后按Ctrl+C结束查看
  
  16、安装openstack Image
  . install-configure-glance.sh
- 执行restart-pcs-cluster.sh重启pcs集群后检查pcs resource，确保glance服务启动
-. restart-pcs-cluster.sh
+期间会执行restart-pcs-cluster.sh重启pcs集群后检查pcs resource，确保glance服务启动后按Ctrl+C结束查看
 
 17、安装openstack Compute
 . install-configure-nova.sh 
- 执行restart-pcs-cluster.sh重启pcs集群后检查pcs resource，确保nova服务启动
-. restart-pcs-cluster.sh
+期间会执行restart-pcs-cluster.sh重启pcs集群后检查pcs resource，确保nova服务启动后按Ctrl+C结束查看
 
 18、安装openstack neutron
 . install-configure-neutron.sh
- 执行restart-pcs-cluster.sh重启pcs集群后检查pcs resource，确保neutron服务启动
-. restart-pcs-cluster.sh
+期间会执行restart-pcs-cluster.sh重启pcs集群后检查pcs resource，确保neutron服务启动后按Ctrl+C结束查看
 
 19、安装openstack dashboard 
 . install-configure-dashboard.sh
 
 20、安装openstack cinder
 . install-configure-cinder.sh
+期间会执行restart-pcs-cluster.sh重启pcs集群后检查pcs resource，确保cinder服务启动后按Ctrl+C结束查看
 
 21、安装openstack Ceilometer
 . install-configure-ceilometer.sh
+期间会执行restart-pcs-cluster.sh重启pcs集群后检查pcs resource，确保ceilometer服务启动后按Ctrl+C结束查看
 
 22、安装openstack Aodh
 . install-configure-aodh.sh
+期间会执行restart-pcs-cluster.sh重启pcs集群后检查pcs resource，确保aodh服务启动后按Ctrl+C结束
+
+切换到计算节点/存储节点部署
 
 23、初始化安装环境的安装变量
 0-set-config.sh 
@@ -110,7 +111,7 @@ vim 0-set-config.sh
 28、配置计算节点
 . install-compute-nodes-services.sh
 
-29、删除安装脚本
+29、删除全部安装脚本
 
 
 

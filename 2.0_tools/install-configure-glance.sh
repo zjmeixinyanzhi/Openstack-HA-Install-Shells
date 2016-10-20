@@ -83,3 +83,4 @@ echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate an
 . /root/keystonerc_admin
 openstack image create "cirros" --file $test_img --disk-format qcow2 --container-format bare --public
 openstack image list
+openstack image delete cirros

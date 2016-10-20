@@ -105,3 +105,7 @@ for ((i=0; i<${#controller_map[@]}; i+=1));
         ssh root@$ip chmod -R +x $target_sh
         ssh root@$ip $target_sh/$sh_name_1 $local_nic
   done;
+### [任一节点]测试
+. /root/keystonerc_admin
+ovs-vsctl show
+neutron agent-list

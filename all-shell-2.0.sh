@@ -338,7 +338,7 @@ for ((i=0; i<${#nodes_map[@]}; i+=1));
       ssh root@$ip ls -l /etc/yum.repos.d/
       scp -r $yum_repos_dir/* root@$ip:/etc/yum.repos.d/
       ssh root@$ip yum repolist all
-#      ssh root@$ip yum upgrade -y
+      ssh root@$ip yum upgrade -y
   done;
 
 
@@ -702,7 +702,7 @@ vip=$1
 echo $vip
 password=$2
 ### [所有控制节点]编辑/etc/keystone/keystone-paste.ini
-#sed -i -e 's#admin_token_auth ##g' /etc/keystone/keystone-paste.ini
+sed -i -e 's#admin_token_auth ##g' /etc/keystone/keystone-paste.ini
 unset OS_TOKEN OS_URL
 ### 生成keystonerc_admin脚本
 echo "export OS_PROJECT_DOMAIN_NAME=default
@@ -857,8 +857,8 @@ for ((i=0; i<${#controller_map[@]}; i+=1));
         ssh root@$ip $target_sh/$sh_name_2 $virtual_ip $password
   done;
 /root/keystonerc_admin
-openstack endpoint list
-openstack service list
+openstack token issue
+
 
  #################################################
  ########   安装openstack Image      #############
@@ -1011,6 +1011,8 @@ echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate an
 . /root/keystonerc_admin
 openstack image create "cirros" --file $test_img --disk-format qcow2 --container-format bare --public
 openstack image list
+openstack image delete cirros
+
 
 
  ##################################################
@@ -1466,6 +1468,11 @@ for ((i=0; i<${#controller_map[@]}; i+=1));
         ssh root@$ip chmod -R +x $target_sh
         ssh root@$ip $target_sh/$sh_name_1 $local_nic
   done;
+### [任一节点]测试
+. /root/keystonerc_admin
+ovs-vsctl show
+neutron agent-list
+
 
   
  ##################################################
@@ -1740,13 +1747,14 @@ pcs constraint colocation add openstack-cinder-volume with openstack-cinder-sche
 
 echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate and it'll continue!"
 . restart-pcs-cluster.sh
+### [任一节点]测试
+. /root/keystonerc_admin
+cinder service-list
   
  #####################################################
  ########     安装openstack Ceilometer    ############
  #####################################################
  
- sed -i -e 's#123456#'"$password_mongo_root"'#g'  $tmp_path/mongodb_configure.sh
-
  
 ##******************************************************************##
 #### 各控制节点需要执行的操作 sh/ceilometer_install_configure.sh

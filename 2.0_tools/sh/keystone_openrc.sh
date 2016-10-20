@@ -4,7 +4,7 @@ vip=$1
 echo $vip
 password=$2
 ### [所有控制节点]编辑/etc/keystone/keystone-paste.ini
-#sed -i -e 's#admin_token_auth ##g' /etc/keystone/keystone-paste.ini 
+sed -i -e 's#admin_token_auth ##g' /etc/keystone/keystone-paste.ini 
 unset OS_TOKEN OS_URL
 ### 生成keystonerc_admin脚本
 echo "export OS_PROJECT_DOMAIN_NAME=default

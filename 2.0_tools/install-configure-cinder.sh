@@ -77,3 +77,4 @@ pcs constraint colocation add openstack-cinder-volume with openstack-cinder-sche
 
 echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate and it'll continue!"
 . restart-pcs-cluster.sh
+cinder service-list

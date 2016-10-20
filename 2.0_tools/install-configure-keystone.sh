@@ -136,5 +136,4 @@ for ((i=0; i<${#controller_map[@]}; i+=1));
         ssh root@$ip $target_sh/$sh_name_2 $virtual_ip $password
   done;
 /root/keystonerc_admin
-openstack endpoint list
-openstack service list
+openstack token issue

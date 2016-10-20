@@ -25,5 +25,5 @@ for ((i=0; i<${#nodes_map[@]}; i+=1));
       ssh root@$ip ls -l /etc/yum.repos.d/
       scp -r $yum_repos_dir/* root@$ip:/etc/yum.repos.d/
       ssh root@$ip yum repolist all
-#      ssh root@$ip yum upgrade -y
+      ssh root@$ip yum upgrade -y
   done;
