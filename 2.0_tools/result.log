@@ -14,17 +14,14 @@ MS Name/IP address         Stratum Poll Reach LastRx Last sample
 ===============================================================================
 ^? controller01                  0   6     0   10y     +0ns[   +0ns] +/-    0ns
 +0800
-210 Number of sources = 1
+210 Number of sources = 0
 MS Name/IP address         Stratum Poll Reach LastRx Last sample
 ===============================================================================
-^? news.neu.edu.cn               0   6     0   10y     +0ns[   +0ns] +/-    0ns
 +0800
-210 Number of sources = 1
+210 Number of sources = 0
 MS Name/IP address         Stratum Poll Reach LastRx Last sample
 ===============================================================================
-^? controller01                  0   6     0   10y     +0ns[   +0ns] +/-    0ns
 +0800
-210 Number of sources = 1
+210 Number of sources = 0
 MS Name/IP address         Stratum Poll Reach LastRx Last sample
 ===============================================================================
-^? controller01                  0   6     0   10y     +0ns[   +0ns] +/-    0ns

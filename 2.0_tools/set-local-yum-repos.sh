@@ -18,7 +18,12 @@ for ((i=0; i<${#nodes_map[@]}; i+=1));
       ip=${nodes_map[$name]};
       echo "-------------$name------------"
       ssh root@$ip mkdir -p $target_sh
-      ssh root@$ip mv /etc/yum.repos.d/*.repo $target_sh
+      ssh root@$ip rm -rf /etc/yum.repos.d/*
+      ssh root@$ip yum clean all
+      ssh root@$ip rm -rf /etc/yum.repos.d/CentOS-*
+      ssh root@$ip rpmdb --rebuilddb
+      ssh root@$ip ls -l /etc/yum.repos.d/
       scp -r $yum_repos_dir/* root@$ip:/etc/yum.repos.d/
-      ssh root@$ip yum upgrade -y
+      ssh root@$ip yum repolist all
+#      ssh root@$ip yum upgrade -y
   done;
