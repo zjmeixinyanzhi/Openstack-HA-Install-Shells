@@ -1,21 +1,15 @@
 Openstack HA平台部署shell 2.0脚本安装说明
 目录结构：
 install_shell_2.0
-   ├── 2.0_ceph-deploy-tools   ### 计算节点部署脚本
-   │   ├── sh                  ### 需要scp到各个计算节点执行的脚本
+   ├── 2.0_ceph-deploy-tools   ### 计算&节点
+   │   ├── sh
    │   └── wheel_ceph
    └── 2.0_tools               ### 控制节点部署脚本
-       ├── sh                  ### 需要scp到各个控制节点执行的脚本
-       └── t_sh                ### 各节点存放脚本的临时目录
+       ├── sh
+       └── t_sh
 
 
-步骤1~22在controller01节点上进行基本配置和Openstack控制节点的部署，23~29在compute01上进行ceph集群的部署及openstack计算节点配置
-
-默认要求：
-a) 控制节点命名 controller+数字（01、02、03）计算节点命名compute+数字（01、02、03……）；
-b) 默认管理、虚拟、存储网络的三个网段尾数相同；
-c) 所有Openstack用户、各服务数据库实例密码统一成一个；
-d) Root执行所有操作。
+1~22、在controller01节点上进行基本配置和Openstack控制节点的部署，23~29在compute01上进行ceph集群的部署
 
 1、根据实际部署环境，设置环境变量，并初始化
 vim 0-set-config.sh
@@ -27,10 +21,10 @@ vim 0-set-config.sh
 3、设置各节点之间免密码登录 
 . set-ssh-nodes.sh
 
-4、网卡配置（设置开机启动网卡，如果已设置可省略）
+4、网卡配置（如果已设置可省略） 
 . set-network-config.sh
 
-5、设置主机名
+5、设置主机名，控制节点命名 controller+数字（01、02、03）计算节点命名compute+数字（01、02、03……）
 . set-hostname.sh
 
 6、关闭防火墙禁用SELinux 需要重启节点，部署节点手动重启
@@ -57,6 +51,7 @@ vim 0-set-config.sh
 
 12、安装rabbit
  . install-configure-rabbitmq.sh
+ 注意：默认设置openstack认证用户密码与配置文件中一致
  
  13、安装memcached
  . install-configure-memcached.sh
@@ -89,38 +84,33 @@ vim 0-set-config.sh
 
 20、安装openstack cinder
 . install-configure-cinder.sh
- 执行restart-pcs-cluster.sh重启pcs集群后检查pcs resource，确保cinder服务启动
-. restart-pcs-cluster.sh
 
 21、安装openstack Ceilometer
 . install-configure-ceilometer.sh
 
 22、安装openstack Aodh
 . install-configure-aodh.sh
- 执行restart-pcs-cluster.sh重启pcs集群后检查pcs resource，确保aodh服务启动
-. restart-pcs-cluster.sh
 
-23、安装计算&存储节点的ssh 
+23、初始化安装环境的安装变量
+0-set-config.sh 
+
+24、存储节点与控制节点之间的ssh
 . set-ssh-openstack-storage-nodes.sh
 
-24、安装ceph-deploy
+25、安装ceph-deploy
 . install-prerequisites-ceph-deploy.sh
- 
-25、安装ceph block storage cluster
+
+26、安装ceph block storage cluster
 . install-configure-ceph-storage-cluster.sh
 检查ceph存储网络所在网段
 
-27、存储节点与控制节点之间的ssh
-. set-ssh-openstack-storage-nodes.sh
-
-28、安装ceph auth client.key
+27、安装ceph auth client.key
 . install-ceph-auth-client.key
 
-29、配置计算节点
+28、配置计算节点
 . install-compute-nodes-services.sh
 
-30、删除所有安装脚本
-. delete-tmp-shells.sh
+29、删除安装脚本
 
 
 

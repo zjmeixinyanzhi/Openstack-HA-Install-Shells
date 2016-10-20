@@ -86,13 +86,23 @@ sed -i -e 's#ONBOOT=no#ONBOOT=yes#g'  /etc/sysconfig/network-scripts/ifcfg-$stor
 ### scp到其他节点 执行操作 set-network-config.sh
 
 #!/bin/sh
-local_nic=$1
-data_nic=$2
-storage_nic=$3
+nodes_name=(${!nodes_map[@]});
 
-sed -i -e 's#ONBOOT=no#ONBOOT=yes#g'  /etc/sysconfig/network-scripts/ifcfg-$local_nic
-sed -i -e 's#ONBOOT=no#ONBOOT=yes#g'  /etc/sysconfig/network-scripts/ifcfg-$data_nic
-sed -i -e 's#ONBOOT=no#ONBOOT=yes#g'  /etc/sysconfig/network-scripts/ifcfg-$storage_nic
+sh_name=network-config-exec.sh
+source_sh=./sh/$sh_name
+target_sh=$tmp_path
+
+for ((i=0; i<${#nodes_map[@]}; i+=1));
+  do
+      name=${nodes_name[$i]};
+      ip=${nodes_map[$name]};
+      echo "-------------$name------------"
+      ssh root@$ip mkdir -p $target_sh
+      scp $source_sh root@$ip:$target_sh
+      ssh root@$ip chmod -R  +x $target_sh
+      ssh root@$ip $target_sh/$sh_name $local_nic $data_nic $storage_nic
+  done;
+
 
   
  #############################################
@@ -319,6 +329,7 @@ for ((i=0; i<${#nodes_map[@]}; i+=1));
       ssh root@$ip mv /etc/yum.repos.d/*.repo $target_sh
       scp -r $yum_repos_dir/* root@$ip:/etc/yum.repos.d/
       ssh root@$ip yum upgrade -y
+	  ssh root@$ip mv /etc/yum.repos.d/CentOS-*.repo $target_sh
   done;
 
  ############################################
