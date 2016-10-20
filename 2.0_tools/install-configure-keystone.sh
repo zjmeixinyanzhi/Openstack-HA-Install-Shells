@@ -15,7 +15,7 @@ target_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone
 source_cfg_1=$(echo `pwd`)/sh/conf/wsgi-keystone.conf
 
 ### [任一节点]创建数据库
-mysql -uroot -p$password_galera_root -h $virtual_ip -e "CREATE DATABASE keystone;
+mysql -uroot -p$password_galera_root -e "CREATE DATABASE keystone;
 GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost' IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'controller01' IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY '"$password"';

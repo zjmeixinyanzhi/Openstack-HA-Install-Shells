@@ -32,3 +32,6 @@ for ((i=0; i<${#nodes_map[@]}; i+=1));
       ping -c 2 $name
       ssh root@$ip hostname
   done
+### update hostname
+echo "Please log in again and renew the local hostname!"
+exit

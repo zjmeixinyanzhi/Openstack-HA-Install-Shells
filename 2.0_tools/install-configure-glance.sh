@@ -11,7 +11,7 @@ source_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone
 target_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone.glance
 
 ### [任一节点]创建数据库
-mysql -uroot -p$password_galera_root -h $virtual_ip -e "CREATE DATABASE glance;
+mysql -uroot -p$password_galera_root -e "CREATE DATABASE glance;
 GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'localhost' IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'%' IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'controller01' IDENTIFIED BY '"$password"';

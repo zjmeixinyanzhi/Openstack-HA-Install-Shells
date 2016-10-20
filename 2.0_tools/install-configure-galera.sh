@@ -61,4 +61,5 @@ for ((i=0; i<${#controller_map[@]}; i+=1));
 #### check
 . restart-pcs-cluster.sh
 mysql -uroot -p$password_galera_root -e "use mysql;INSERT INTO user(Host, User) VALUES('"$virtual_ip"', 'haproxy_check');FLUSH PRIVILEGES;"
+mysql -uroot -p$password_galera_root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'controller01' IDENTIFIED BY '"$password_galera_root"'";
 mysql -uroot -p$password_galera_root -h $virtual_ip -e "SHOW STATUS LIKE 'wsrep_cluster_size';"
