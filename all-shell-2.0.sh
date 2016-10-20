@@ -144,6 +144,10 @@ for ((i=0; i<${#nodes_map[@]}; i+=1));
       ping -c 2 $name
       ssh root@$ip hostname
   done
+### update hostname
+echo "Please log in again and renew the local hostname!"
+ssh root@localhost
+
 
  ############################################
  ########5 关闭防火墙禁用SELinux#############
@@ -544,8 +548,9 @@ echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate an
 . restart-pcs-cluster.sh
   
 #### check
-mysql -uroot -p$password -e "use mysql;INSERT INTO user(Host, User) VALUES('"$virtual_ip"', 'haproxy_check');FLUSH PRIVILEGES;"
-mysql -uroot -p -h $virtual_ip -e "SHOW STATUS LIKE 'wsrep_cluster_size';"
+mysql -uroot -p$password_galera_root -e "use mysql;INSERT INTO user(Host, User) VALUES('"$virtual_ip"', 'haproxy_check');FLUSH PRIVILEGES;"
+mysql -uroot -p$password_galera_root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'controller01' IDENTIFIED BY '"$password_galera_root"'";
+mysql -uroot -p$password_galera_root -h $virtual_ip -e "SHOW STATUS LIKE 'wsrep_cluster_size';"
 
  ############################################
  ########      安装rabbit       #############
@@ -725,7 +730,7 @@ target_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone
 source_cfg_1=$(echo `pwd`)/sh/conf/wsgi-keystone.conf
 
 ### [任一节点]创建数据库
-mysql -uroot -p$password_galera_root -h $virtual_ip -e "CREATE DATABASE keystone;
+mysql -uroot -p$password_galera_root -e "CREATE DATABASE keystone;
 GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost' IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'controller01' IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY '"$password"';
@@ -928,7 +933,7 @@ source_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone
 target_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone.glance
 
 ### [任一节点]创建数据库
-mysql -uroot -p$password_galera_root -h $virtual_ip -e "CREATE DATABASE glance;
+mysql -uroot -p$password_galera_root -e "CREATE DATABASE glance;
 GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'localhost' IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'controller01' IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'%' IDENTIFIED BY '"$password"';
@@ -1071,7 +1076,7 @@ source_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone.glance
 target_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone.glance.nova
 
 ### [任一节点]创建数据库
-mysql -uroot -p$password_galera_root -h $virtual_ip -e "CREATE DATABASE nova;
+mysql -uroot -p$password_galera_root -e "CREATE DATABASE nova;
 GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'localhost' IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'%' IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'controller01' IDENTIFIED BY '"$password"';
@@ -1361,7 +1366,7 @@ source_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone.glance.nova
 target_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone.glance.nova.neutron
 
 ### [任一节点]创建数据库
-mysql -uroot -p$password_galera_root -h $virtual_ip -e "CREATE DATABASE neutron;
+mysql -uroot -p$password_galera_root -e "CREATE DATABASE neutron;
 GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'localhost' IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'controller01' IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'%' IDENTIFIED BY '"$password"';
@@ -1663,7 +1668,7 @@ source_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone.glance.nova.neutron
 target_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone.glance.nova.neutron.dashboard.cinder
 
 ### [任一节点]创建数据库
-mysql -uroot -p$password_galera_root -h $virtual_ip -e "CREATE DATABASE cinder;
+mysql -uroot -p$password_galera_root -e "CREATE DATABASE cinder;
 GRANT ALL PRIVILEGES ON cinder.* TO 'cinder'@'localhost' \
   IDENTIFIED BY '"$password"';
 GRANT ALL PRIVILEGES ON cinder.* TO 'cinder'@'%' \
@@ -1988,7 +1993,7 @@ source_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone.glance.nova.neutron
 target_cfg=$(echo `pwd`)/sh/conf/haproxy.cfg.galera.keystone.glance.nova.neutron.dashboard.cinder.ceilometer.aodh
 
 ### [任一节点]创建数据库
-mysql -uroot -p$password_galera_root -h $virtual_ip -e "CREATE DATABASE aodh;
+mysql -uroot -p$password_galera_root -e "CREATE DATABASE aodh;
 GRANT ALL PRIVILEGES ON aodh.* TO 'aodh'@'localhost' IDENTIFIED BY '$password';
 GRANT ALL PRIVILEGES ON aodh.* TO 'aodh'@'%' IDENTIFIED BY '$password';
 FLUSH PRIVILEGES;"
