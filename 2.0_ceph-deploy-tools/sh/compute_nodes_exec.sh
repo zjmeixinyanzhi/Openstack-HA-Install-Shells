@@ -112,6 +112,8 @@ ln -s /etc/neutron/plugins/ml2/ml2_conf.ini /etc/neutron/plugin.ini
 systemctl restart openstack-nova-compute.service
 systemctl start openvswitch.service
 systemctl restart neutron-openvswitch-agent.service
+systemctl enable neutron-openvswitch-agent.service
+
 
 
 ### 3. OpenStack Block Storage service
