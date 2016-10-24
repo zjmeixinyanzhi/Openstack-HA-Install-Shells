@@ -56,6 +56,7 @@ sed -i -e "s#\#LIBVIRTD_ARGS *= *\"--listen\"#LIBVIRTD_ARGS=\"--listen\"#g" /etc
 ###启动服务
 systemctl enable libvirtd.service openstack-nova-compute.service
 systemctl start libvirtd.service openstack-nova-compute.service
+systemctl enable openstack-nova-compute.service
 
 #### 2. OpenStack Network service
 ### 安装组件
