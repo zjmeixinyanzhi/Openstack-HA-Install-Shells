@@ -13,6 +13,6 @@ for ((i=0; i<${#nodes_map[@]}; i+=1));
       ssh root@$ip mkdir -p $target_sh
       scp $source_sh root@$ip:$target_sh
       ssh root@$ip chmod -R  +x $target_sh
-      ssh root@$ip $target_sh/$sh_name $local_nic $data_nic $storage_nic
+      ssh root@$ip $target_sh/$sh_name $local_nic $data_nic $storage_nic $ip $data_network $store_network
   done;
 

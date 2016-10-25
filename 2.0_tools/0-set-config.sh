@@ -3,6 +3,10 @@
 declare -A nodes_map=(["controller01"]="192.168.2.101" ["controller02"]="192.168.2.102" ["controller03"]="192.168.2.103" ["compute01"]="192.168.2.104" ["compute02"]="192.168.2.105" ["compute03"]="192.168.2.106" );
 declare -A controller_map=(["controller01"]="192.168.2.101" ["controller02"]="192.168.2.102" ["controller03"]="192.168.2.103");
 declare -A hypervisor_map=(["compute01"]="192.168.2.104" ["compute02"]="192.168.2.105" ["compute03"]="192.168.2.106");
+declare -A monitor_map=(["compute01"]="192.168.2.104" ["compute02"]="192.168.2.105" ["compute03"]="192.168.2.106");
+### 后期需要增加的计算节点
+declare -A additionalNodes_map=(["compute04"]="192.168.2.107" ["compute05"]="192.168.2.108");
+
 ### 设置虚拟IP，virtual_ip为openstack服务的虚拟IP，virtual_ip_redis为Redis为虚拟IP
 virtual_ip=192.168.2.211
 virtual_ip_redis=192.168.2.212

@@ -74,14 +74,44 @@ for ((i=0; i<${#nodes_map[@]}; i+=1));
  ####修改网卡配置文件，设置开启启动, 网卡需要统一命名
 
 ### 修改操作 sh/network-config-exec.sh
+
 #!/bin/sh
 local_nic=$1
 data_nic=$2
 storage_nic=$3
+local_ip=$4
+data_network=$5
+storage_network=$6
+echo $storage_network
 
 sed -i -e 's#ONBOOT=no#ONBOOT=yes#g'  /etc/sysconfig/network-scripts/ifcfg-$local_nic
 sed -i -e 's#ONBOOT=no#ONBOOT=yes#g'  /etc/sysconfig/network-scripts/ifcfg-$data_nic
-sed -i -e 's#ONBOOT=no#ONBOOT=yes#g'  /etc/sysconfig/network-scripts/ifcfg-$storage_nic 
+sed -i -e 's#ONBOOT=no#ONBOOT=yes#g'  /etc/sysconfig/network-scripts/ifcfg-$storage_nic
+
+### set network suffix
+old_data_ip=$(cat /etc/sysconfig/network-scripts/ifcfg-$data_nic |grep IPADDR=|egrep -v "#IPADDR"|awk -F "=" '{print $2}')
+new_data_ip=$(echo $data_network|cut -d "." -f1-3).$(echo $local_ip|awk -F "." '{print $4}')
+if [ $old_data_ip = $new_data_ip  ];then
+  echo "The suffix of data network is same as the local network!"
+else
+  echo "The suffix of data network is not same as the local network, Renew it as following! "
+  sed -i -e 's#IPADDR=#\#IPADDR=#g'  /etc/sysconfig/network-scripts/ifcfg-$data_nic
+  echo "IPADDR="$new_data_ip>> /etc/sysconfig/network-scripts/ifcfg-$data_nic
+  ifdown $data_nic
+  ifup   $data_nic
+fi
+old_storage_ip=$(cat /etc/sysconfig/network-scripts/ifcfg-$storage_nic |grep IPADDR=|egrep -v "#IPADDR"|awk -F "=" '{print $2}')
+new_storage_ip=$(echo $storage_network|cut -d "." -f1-3).$(echo $local_ip|awk -F "." '{print $4}')
+if [ $old_storage_ip = $new_storage_ip  ];then
+  echo "The suffix of storage network is same as the local network!"
+else
+  echo "The suffix of storage network is not same as the local network, Renew it as following! "
+  sed -i -e 's#IPADDR=#\#IPADDR=#g'  /etc/sysconfig/network-scripts/ifcfg-$storage_nic
+  echo "IPADDR="$new_storage_ip>> /etc/sysconfig/network-scripts/ifcfg-$storage_nic
+  ifdown $storage_nic
+  ifup   $storage_nic
+fi
+
 
 ### scp到其他节点 执行操作 set-network-config.sh
 
@@ -100,9 +130,8 @@ for ((i=0; i<${#nodes_map[@]}; i+=1));
       ssh root@$ip mkdir -p $target_sh
       scp $source_sh root@$ip:$target_sh
       ssh root@$ip chmod -R  +x $target_sh
-      ssh root@$ip $target_sh/$sh_name $local_nic $data_nic $storage_nic
+      ssh root@$ip $target_sh/$sh_name $local_nic $data_nic $storage_nic $ip $data_network $store_network
   done;
-
 
   
  #############################################
@@ -2546,84 +2575,160 @@ for ((i=0; i<${#nodes_map[@]}; i+=1));
 echo "Please delete the install dir manually on controller01 and compute01!"
 
 
+ #####################################################
+ ########      添加计算节点             ############
+ #####################################################
+
+### 控制节点上基本配置 add-compute-nodes-configure.sh
+
+#!/bin/sh
+nodes_name=(${!additionalNodes_map[@]});
+allnodes_name=(${!nodes_map[@]});
+
+sh_name=network-config-exec.sh
+source_sh=./sh/$sh_name
+target_sh=$tmp_path
+sh_name_1=disable_selinux_firewall.sh
+source_sh_1=./sh/$sh_name_1
+sh_name_ntp=replace_ntp_hosts.sh
+source_sh=./sh/$sh_name_ntp
+
+base_location=$ftp_info
+deploy_node=compute01
+ref_host=controller01
+echo $deploy_node
+
+tmp_file=/etc/hosts.bak2
+target=/etc/hosts
+cp $target $tmp_file
+
+for ((i=0; i<${#additionalNodes_map[@]}; i+=1));
+  do
+      name=${nodes_name[$i]};
+      ip=${additionalNodes_map[$name]};
+      echo "-------------$name------------"
+      ### set ssh
+      ssh-copy-id root@$ip
+      ssh root@$ip mkdir -p $target_sh
+      scp $source_sh root@$ip:$target_sh
+      ssh root@$ip chmod -R  +x $target_sh
+      ### gather hostname
+      echo "$ip $name">>$tmp_file
+      ### network configure
+      ssh root@$ip $target_sh/$sh_name $local_nic $data_nic $storage_nic $ip $data_network $store_network
+      ## test network
+      echo ">>>>>>>"
+      ping -c 2 $ip
+      echo ">>>>>>>"
+      ping -c 2 $(echo $data_network|cut -d "." -f1-3).$(echo $ip|awk -F "." '{print $4}')
+      echo ">>>>>>>"
+      ping -c 2 $(echo $store_network|cut -d "." -f1-3).$(echo $ip|awk -F "." '{print $4}')
+      ### firewall selinux
+      echo "Set firewall and SELinux"
+      scp $source_sh_1 root@$ip:$target_sh
+      ssh root@$ip $target_sh/$sh_name_1
+      ssh root@$ip systemctl status firewalld.service|grep  Active:
+      ssh root@$ip sestatus -v
+      ### NTP
+      echo "Set NTP"
+      ssh root@$ip systemctl enable chronyd.service
+      ssh root@$ip systemctl restart chronyd.service
+      ssh root@$ip cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+      ssh root@$ip $target_sh/$sh_name_ntp $ref_host
+      ssh root@$ip chronyc sources
+  done;
+### update /etc/hosts to old nodes
+for ((i=0; i<${#nodes_map[@]}; i+=1));
+  do
+      name=${allnodes_name[$i]};
+      ip=${nodes_map[$name]};
+      echo "-------------$name------------"
+      ###set hostname
+      scp $tmp_file root@$ip:/etc/hosts
+  done;
+### update hosts & local yum repos to new nodes
+for ((i=0; i<${#additionalNodes_map[@]}; i+=1));
+  do
+      name=${nodes_name[$i]};
+      ip=${additionalNodes_map[$name]};
+      echo "-------------$name------------"
+      ### hostname
+      ssh root@$ip hostnamectl --static set-hostname $name
+      scp $tmp_file root@$ip:/etc/hosts
+      ### yum repos
+      ssh root@$ip rm -rf /etc/yum.repos.d/*
+      ssh root@$ip yum clean all
+      ssh root@$ip rm -rf /etc/yum.repos.d/CentOS-* ###必须要有，否则ssh root@$ip rm -rf /etc/yum.repos.d/*无法删除系统自带源
+      ssh root@$ip rpmdb --rebuilddb
+      ssh root@$ip ls -l /etc/yum.repos.d/
+      scp -r /etc/yum.repos.d/* root@$ip:/etc/yum.repos.d/
+      ssh root@$ip yum repolist all
+      ssh root@$ip yum upgrade -y
+	  ssh root@$ip  yum install -y centos-release-openstack-mitaka
+      ssh root@$ip  yum install -y python-openstackclient openstack-selinux openstack-utils
+  done;
   
-  
+### 部署计算节点上基本配置 add-compute-nodes.sh
 
+#!/bin/sh
+nodes_name=(${!additionalNodes_map[@]});
 
+base_location=$ftp_info
+deploy_node=compute01
+echo $deploy_node
 
+sh_name=compute_nodes_exec.sh
+source_sh=$(echo `pwd`)/sh/$sh_name
+target_sh=/root/tools/t_sh/
 
- 
- 
- 
+### ssh
+for ((i=0; i<${#additionalNodes_map[@]}; i+=1));
+  do
+      name=${nodes_name[$i]};
+      ip=${additionalNodes_map[$name]};
+      echo "-------------$name------------"
+      ssh-copy-id root@$ip
+      #ssh root@$name  rm -rf $osd_path/*
+  done;
 
- 
-  
+cd /root/my-cluster
 
-  
+osds="";
+echo $osds
 
+### set
+for ((i=0; i<${#additionalNodes_map[@]}; i+=1));
+  do
+      name=${nodes_name[$i]};
+      ip=${additionalNodes_map[$name]};
+      echo "-------------$name------------"
+        osds=$osds" "$name":"$osd_path
+       # ssh root@$name  chown -R ceph:ceph $osd_path
+  done;
+echo $osds
+### install ceph
+ceph-deploy install --nogpgcheck --repo-url $base_location/download.ceph.com/rpm-$ceph_release/el7/ ${nodes_name[@]} --gpg-url $base_location/download.ceph.com/release.asc
 
- 
- 
+###[部署节点]激活OSD
+ceph-deploy osd prepare $osds
+ceph-deploy osd activate $osds
+ceph-deploy admin ${nodes_name[@]}
 
- 
- 
- 
- 
- 
- 
-  
-  
-  
+###查看集群状态
+ceph -s
 
+### install openstack services
+for ((i=0; i<${#additionalNodes_map[@]}; i+=1));
+  do
+      name=${nodes_name[$i]};
+      ip=${additionalNodes_map[$name]};
+      echo "-------------$name------------"
+      ssh root@$ip mkdir -p $target_sh
+      scp $source_sh root@$ip:$target_sh
+      ssh root@$ip chmod -R +x $target_sh
+      ssh root@$ip $target_sh/$sh_name $virtual_ip $local_nic $data_nic $password
+  done;
 
-  
-  
-
-
-   
-   
-
-
-
-
-
-
-
-	
-	
-
-
-
-
-  
-  
-
-
-
- 
-
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-
-
-  
-  
-
-
-  
-
-  
 
   
  

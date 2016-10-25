@@ -1,3 +1,5 @@
 2.0_ceph-deploy-tools/ceph-deploy-ceph.log
 2.0_tools/result.log
 *.log
+2.0_tools/yes
+*.pub

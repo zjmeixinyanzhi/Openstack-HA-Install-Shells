@@ -20,7 +20,7 @@ for ((i=0; i<${#nodes_map[@]}; i+=1));
       echo "-------------$name------------"
       ###set hostname
       ssh root@$ip hostnamectl --static set-hostname $name
-      scp /etc/hosts.bak root@$ip:/etc/hosts
+      scp $tmp_file root@$ip:/etc/hosts
   done;
 ### check
 for ((i=0; i<${#nodes_map[@]}; i+=1));
