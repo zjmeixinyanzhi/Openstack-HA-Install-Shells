@@ -1,5 +1,7 @@
 #!/bin/sh
 nodes_name=(${!hypervisor_map[@]});
+monitor_name=(${!monitor_map[@]});
+
 
 base_location=$ftp_info
 deploy_node=compute01
@@ -46,11 +48,11 @@ ceph-deploy osd activate $osds
 ceph-deploy admin ${nodes_name[@]}
 
 
-### set
-for ((i=0; i<${#hypervisor_map[@]}; i+=1));
+### set  mon nodes
+for ((i=0; i<${#monitor_map[@]}; i+=1));
   do
-      name=${nodes_name[$i]};
-      ip=${hypervisor_map[$name]};
+      name=${monitor_name[$i]};
+      ip=${monitor_map[$name]};
       echo "-------------$name------------"
         if [ $name =  $deploy_node ]; then
           echo $name" already is mon!"

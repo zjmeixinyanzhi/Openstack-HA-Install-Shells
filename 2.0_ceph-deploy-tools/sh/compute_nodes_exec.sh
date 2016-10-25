@@ -56,6 +56,7 @@ sed -i -e "s#\#LIBVIRTD_ARGS *= *\"--listen\"#LIBVIRTD_ARGS=\"--listen\"#g" /etc
 ###启动服务
 systemctl enable libvirtd.service openstack-nova-compute.service
 systemctl start libvirtd.service openstack-nova-compute.service
+systemctl enable openstack-nova-compute.service
 
 #### 2. OpenStack Network service
 ### 安装组件
@@ -112,6 +113,8 @@ ln -s /etc/neutron/plugins/ml2/ml2_conf.ini /etc/neutron/plugin.ini
 systemctl restart openstack-nova-compute.service
 systemctl start openvswitch.service
 systemctl restart neutron-openvswitch-agent.service
+systemctl enable neutron-openvswitch-agent.service
+
 
 
 ### 3. OpenStack Block Storage service
