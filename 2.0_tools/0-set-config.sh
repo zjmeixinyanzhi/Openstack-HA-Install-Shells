@@ -19,7 +19,9 @@ local_bridge=br-ex
 local_network=192.168.2.0/24
 data_network=10.10.10.0/24
 store_network=11.11.11.0/24
-### 离线安装源的FTP目录信息
+### 离线安装源的FTP目录信息 或者 NFS安装源共享目录信息
+#nfs_host=192.168.2.1
+#nfs_location=/mnt/hgfs/tool
 ftp_info="ftp://192.168.100.81/pub/"
 ### 临时目录，用于scp存放配置脚本
 tmp_path=/root/tools/t_sh/
