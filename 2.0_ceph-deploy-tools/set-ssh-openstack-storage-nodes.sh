@@ -10,8 +10,6 @@ for ((i=0; i<${#hypervisor_map[@]}; i+=1));
       ip=${hypervisor_map[$name]};
       echo "-------------$name------------"
       ssh-copy-id root@$ip
-      ssh-copy-id root@$(echo $data_network|cut -d "." -f1-3).$(echo $ip|awk -F "." '{print $4}')
-      ssh-copy-id root@$(echo $store_network|cut -d "." -f1-3).$(echo $ip|awk -F "." '{print $4}')
   done;
 
 for ((i=0; i<${#controller_map[@]}; i+=1));
@@ -20,7 +18,5 @@ for ((i=0; i<${#controller_map[@]}; i+=1));
       ip=${controller_map[$name]};
       echo "-------------$name------------"
       ssh-copy-id root@$ip
-      ssh-copy-id root@$(echo $data_network|cut -d "." -f1-3).$(echo $ip|awk -F "." '{print $4}')
-      ssh-copy-id root@$(echo $store_network|cut -d "." -f1-3).$(echo $ip|awk -F "." '{print $4}')
   done;
 
