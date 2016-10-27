@@ -137,3 +137,5 @@ for ((i=0; i<${#controller_map[@]}; i+=1));
   done;
 /root/keystonerc_admin
 openstack token issue
+echo "Please re-login!"
+exit

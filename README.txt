@@ -115,6 +115,9 @@ vim 0-set-config.sh
 
 
 附录：增加新的计算节点的操作
+a） 修改部署变量0-set-config.sh，增加新的节点信息，并在控制节点和计算节点上（部署节点）执行该脚本初始化变量
+b） 在控制节点（部署节点）上执行add-compute-nodes-configure.sh进行基本配置
+c） 在计算节点（部署节点）上执行add-compute-nodes.sh进行ceph及Openstack的安装配置
 
 
 

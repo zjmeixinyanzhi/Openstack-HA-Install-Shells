@@ -85,13 +85,6 @@ pcs constraint colocation add neutron-l3-agent-clone with neutron-dhcp-agent-clo
 pcs constraint order start neutron-l3-agent-clone then neutron-metadata-agent-clone
 pcs constraint colocation add neutron-metadata-agent-clone with neutron-l3-agent-clone
 
-echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate and it'll continue!"
-. restart-pcs-cluster.sh
-
-### [任一节点]
-. /root/keystonerc_admin
-neutron ext-list
-neutron agent-list
 ### ovs 操作
 echo "ovs-vsctl add-br br-ex
 ovs-vsctl add-port br-ex "$local_nic
@@ -106,6 +99,9 @@ for ((i=0; i<${#controller_map[@]}; i+=1));
         ssh root@$ip $target_sh/$sh_name_1 $local_nic
   done;
 ### [任一节点]测试
+echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate and it'll continue!"
+. restart-pcs-cluster.sh
 . /root/keystonerc_admin
+neutron ext-list
 ovs-vsctl show
 neutron agent-list
