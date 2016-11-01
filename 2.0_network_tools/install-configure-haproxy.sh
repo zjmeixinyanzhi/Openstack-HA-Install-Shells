@@ -22,7 +22,7 @@ for ((i=0; i<${#networker_map[@]}; i+=1));
 
 ### [controller01]在pacemaker集群增加haproxy资源
 pcs resource create haproxy systemd:haproxy --clone
-pcs constraint order start vip then haproxy-clone kind=Optional
-pcs constraint colocation add haproxy-clone with vip
-ping -c 3 $virtual_network_ip
+#pcs constraint order start vip then haproxy-clone kind=Optional
+#pcs constraint colocation add haproxy-clone with vip
+#ping -c 3 $virtual_network_ip
 

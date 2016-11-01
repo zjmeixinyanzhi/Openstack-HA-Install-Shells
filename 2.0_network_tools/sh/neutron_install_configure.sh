@@ -1,12 +1,12 @@
 #!/bin/sh
 vip='192.168.2.201'
 vip=$1
-vip_net=$2
+#vip_net=$2
 local_nic="eno16777736"
-local_nic=$3
+local_nic=$2
 data_nic='eno50332184'
-data_nic=$4
-password=$5
+data_nic=$3
+password=$4
  
 echo $vip $local_nic $data_nic
 

@@ -32,4 +32,4 @@ pcs property set pe-warn-series-max=1000 pe-input-series-max=1000 pe-error-serie
 pcs property set stonith-enabled=false
 
 ### [controller01]配置VIP资源，VIP可以在集群节点间浮动
-pcs resource create vip ocf:heartbeat:IPaddr2 params ip=$virtual_network_ip cidr_netmask="24" op monitor interval="30s"
+#pcs resource create vip ocf:heartbeat:IPaddr2 params ip=$virtual_network_ip cidr_netmask="24" op monitor interval="30s"

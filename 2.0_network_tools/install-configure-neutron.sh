@@ -17,7 +17,7 @@ for ((i=0; i<${#networker_map[@]}; i+=1));
 	ssh root@$ip mkdir -p $target_sh
         scp $source_sh root@$ip:$target_sh
         ssh root@$ip chmod -R +x $target_sh
-        ssh root@$ip $target_sh/$sh_name $virtual_ip $virtual_network_ip $local_nic $data_nic $password
+        ssh root@$ip $target_sh/$sh_name $virtual_ip $local_nic $data_nic $password
   done;
 ##### set nova configure in controller nodes
 for ((i=0; i<${#controller_map[@]}; i+=1));
@@ -29,10 +29,7 @@ for ((i=0; i<${#controller_map[@]}; i+=1));
   done;
 
 ### [任一节点]添加pacemaker资源
-pcs resource create neutron-server systemd:neutron-server op start timeout=90 --clone interleave=true
-
 pcs resource create neutron-scale ocf:neutron:NeutronScale --clone globally-unique=true clone-max=3 interleave=true
-pcs constraint order start neutron-server-clone then neutron-scale-clone
 
 pcs resource create neutron-ovs-cleanup ocf:neutron:OVSCleanup --clone interleave=true
 pcs resource create neutron-netns-cleanup ocf:neutron:NetnsCleanup --clone interleave=true
