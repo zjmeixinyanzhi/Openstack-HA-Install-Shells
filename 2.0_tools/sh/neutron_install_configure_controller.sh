@@ -5,7 +5,7 @@ password=$2
  
 echo $vip $local_nic $data_nic
 
-yum install -y openstack-neutron openstack-neutron-ml2 openstack-neutron-openvswitch
+yum install -y openstack-neutron openstack-neutron-ml2 python-neutronclient
 ### [所有控制节点]配置neutron server，/etc/neutron/neutron.conf
 openstack-config --set /etc/neutron/neutron.conf database connection mysql+pymysql://neutron:$password@$vip/neutron
 
