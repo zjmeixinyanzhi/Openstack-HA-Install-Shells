@@ -34,5 +34,5 @@ for ((i=0; i<${#controller_map[@]}; i+=1));
         ssh root@$ip mkdir -p $target_sh
         scp $source_sh root@$ip:$target_sh
         ssh root@$ip chmod -R +x $target_sh
-        ssh root@$ip $target_sh/$sh_name $virtual_ip $local_bridge
+        ssh root@$ip $target_sh/$sh_name $virtual_ip $local_nic
   done;
