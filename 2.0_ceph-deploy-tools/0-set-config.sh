@@ -4,7 +4,6 @@ declare -A nodes_map=(["controller01"]="192.168.2.101" ["controller02"]="192.168
 declare -A controller_map=(["controller01"]="192.168.2.101" ["controller02"]="192.168.2.102" ["controller03"]="192.168.2.103");
 declare -A hypervisor_map=(["compute01"]="192.168.2.104" ["compute02"]="192.168.2.105" ["compute03"]="192.168.2.106");
 declare -A monitor_map=(["compute01"]="192.168.2.104" ["compute02"]="192.168.2.105" ["compute03"]="192.168.2.106");
-declare -A blks_map=(["osd01"]="sdb" ["osd02"]="sdc" ["osd03"]="sdd");
 ### 后期需要增加的计算节点
 declare -A additionalNodes_map=(["compute05"]="192.168.2.108");
 
@@ -28,7 +27,7 @@ ftp_info="ftp://192.168.100.81/pub/"
 ### 临时目录，用于scp存放配置脚本
 tmp_path=/root/tools/t_sh/
 ### 存储节点上OSD盘挂载目录 所有节点统一成一个
-osd_path="/dev/sdb:/dev/sdc:/dev/sdd"
+declare -A blks_map=(["osd01"]="sdb" ["osd02"]="sdc" ["osd03"]="sdd");
 ### ceph安装版本
 ceph_release=jewel-10.2.3
 

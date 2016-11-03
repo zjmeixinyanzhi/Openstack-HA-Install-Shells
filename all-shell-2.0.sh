@@ -499,7 +499,7 @@ socket=/var/lib/mysql/mysql.sock
 user=mysql
 binlog_format=ROW
 max_connections = 4096
-bind-address= $(ip addr show dev $local_nic scope global | grep "inet " | sed -e "s#.*inet ##g" -e "s#/.*##g"|head -n 1)
+bind-address= $(ip addr show dev ${local_nic} scope global | grep "inet " | sed -e "s#.*inet ##g" -e "s#/.*##g"|head -n 1)
 
 default_storage_engine=innodb
 innodb_autoinc_lock_mode=2
@@ -512,7 +512,7 @@ wsrep_provider_options=\"pc.recovery=TRUE;gcache.size=300M\"
 wsrep_cluster_name=\"galera_cluster\"
 wsrep_cluster_address=\"gcomm://controller01,controller02,controller03\"
 wsrep_node_name= $(hostname)
-wsrep_node_address= $(ip addr show dev $local_nic scope global | grep "inet " | sed -e "s#.*inet ##g" -e "s#/.*##g"|head -n 1)
+wsrep_node_address= $(ip addr show dev ${local_nic} scope global | grep "inet " | sed -e "s#.*inet ##g" -e "s#/.*##g"|head -n 1)
 wsrep_sst_method=rsync
 "> /etc/my.cnf.d/server.cnf
 
