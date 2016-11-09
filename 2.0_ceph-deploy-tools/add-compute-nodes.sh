@@ -16,7 +16,6 @@ for ((i=0; i<${#additionalNodes_map[@]}; i+=1));
       ip=${additionalNodes_map[$name]};
       echo "-------------$name------------"
       ssh-copy-id root@$ip
-      #ssh root@$name  rm -rf $osd_path/*
   done;
 
 cd /root/my-cluster

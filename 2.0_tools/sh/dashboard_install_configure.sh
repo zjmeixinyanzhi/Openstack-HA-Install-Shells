@@ -6,7 +6,7 @@ echo $vip $local_nic $data_nic
 yum install -y openstack-dashboard
 ### [所有控制节点] 修改配置文件/etc/openstack-dashboard/local_settings
 sed -i \
-    -e 's#OPENSTACK_HOST =.*#OPENSTACK_HOST = "'"$vip"'"#g' \
+    -e 's#OPENSTACK_HOST =.*#OPENSTACK_HOST = "'"${vip}"'"#g' \
     -e "s#ALLOWED_HOSTS.*#ALLOWED_HOSTS = ['*',]#g" \
     -e "s#^CACHES#SESSION_ENGINE = 'django.contrib.sessions.backends.cache'\nCACHES#g#" \
     -e "s#locmem.LocMemCache'#memcached.MemcachedCache',\n        'LOCATION' : [ 'controller01:11211', 'controller02:11211', 'controller03:11211', ]#g" \
@@ -25,7 +25,7 @@ echo "COMPRESS_OFFLINE = True" >> /etc/openstack-dashboard/local_settings
 python /usr/share/openstack-dashboard/manage.py compress
 
 ### [所有控制节点] 设置HTTPD在特定的IP上监听
-sed -i -e 's/^Listen.*/Listen  '"$(ip addr show dev $local_bridge scope global | grep "inet " | sed -e 's#.*inet ##g' -e 's#/.*##g'|head -n 1)"':80/g' /etc/httpd/conf/httpd.conf 
+sed -i -e 's/^Listen.*/Listen  '"$(ip addr show dev ${local_bridge} scope global | grep "inet " | sed -e 's#.*inet ##g' -e 's#/.*##g'|head -n 1)"':80/g' /etc/httpd/conf/httpd.conf 
 
 ### [所有控制节点] 添加pacemaker监测httpd的配置文件
 echo "<Location /server-status>

@@ -6,4 +6,4 @@ yum install -y pcs pacemaker corosync fence-agents-all resource-agents
 systemctl enable pcsd
 systemctl start pcsd
  ### [所有控制节点]设置hacluster用户的密码
-echo $password | passwd --stdin hacluster
+echo ${password} | passwd --stdin hacluster

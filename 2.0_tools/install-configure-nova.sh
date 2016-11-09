@@ -113,6 +113,6 @@ echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate an
 . restart-pcs-cluster.sh
 
 ### [任一节点]测试
-sleep 10
+sleep 5
 . /root/keystonerc_admin
 openstack compute service list

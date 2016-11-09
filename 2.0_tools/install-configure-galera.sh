@@ -27,7 +27,7 @@ for ((i=0; i<${#controller_map[@]}; i+=1));
            echo "    server $name $ip:3306 backup inter 2000 rise 2 fall 5" >>$target_cfg
        fi
   done;
-##### scp
+#### scp
 for ((i=0; i<${#controller_map[@]}; i+=1));
   do
         name=${controller_name[$i]};

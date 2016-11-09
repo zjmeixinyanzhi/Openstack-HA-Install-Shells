@@ -1,6 +1,6 @@
 [dl.fedoraproject.org_pub_epel_7_x86_64_]
 name=added from: dl.fedoraproject.org/pub/epel/7/x86_64//
-baseurl=ftp://192.168.100.81/pub/dl.fedoraproject.org/pub/epel/7/x86_64//
+baseurl=ftp://172.20.200.1/pub/share/dl.fedoraproject.org/pub/epel/7/x86_64//
 enabled=1
 gpgcheck=0
 

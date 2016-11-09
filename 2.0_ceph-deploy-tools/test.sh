@@ -1,8 +1,12 @@
 #!/bin/sh
-osd_numbers=$(echo $osd_path| awk -F ";" '{print NF}') 
-echo $osd_numbers
-for i in `seq 1 $osd_numbers`
-do
-  echo $i
-  echo $(echo $osd_path|cut -d ';' -f $i)
-done
+nodes_name=(${!nodes_map[@]});
+cp /etc/hosts /etc/hosts.bak2
+sed -i -e 's#'"$(echo $local_network|cut -d "." -f1-3)"'#'"$(echo $store_network|cut -d "." -f1-3)"'#g' /etc/hosts
+
+for ((i=0; i<${#nodes_map[@]}; i+=1));
+  do
+      name=${nodes_name[$i]};
+      ip=${nodes_map[$name]};
+      echo "-------------$name------------"
+      ssh root@$ip lsblk
+  done;

@@ -50,79 +50,79 @@ defaults
 
 
 listen galera_cluster
-    bind 192.168.2.211:3306
+    bind 172.20.200.241:3306
     balance source
     option mysql-check user haproxy_check
-    server controller01 192.168.2.101:3306 inter 2000 rise 2 fall 5
-    server controller02 192.168.2.102:3306 backup inter 2000 rise 2 fall 5
-    server controller03 192.168.2.103:3306 backup inter 2000 rise 2 fall 5
+    server controller01 172.20.200.1:3306 inter 2000 rise 2 fall 5
+    server controller02 172.20.200.2:3306 backup inter 2000 rise 2 fall 5
+    server controller03 172.20.200.3:3306 backup inter 2000 rise 2 fall 5
 listen keystone_admin_cluster
-    bind 192.168.2.211:35357
+    bind 172.20.200.241:35357
     balance  source
     option  tcpka
     option  httpchk
     option  tcplog
-    server controller01 192.168.2.101:35357 check inter 2000 rise 2 fall 5
-    server controller02 192.168.2.102:35357 check inter 2000 rise 2 fall 5
-    server controller03 192.168.2.103:35357 check inter 2000 rise 2 fall 5
+    server controller01 172.20.200.1:35357 check inter 2000 rise 2 fall 5
+    server controller02 172.20.200.2:35357 check inter 2000 rise 2 fall 5
+    server controller03 172.20.200.3:35357 check inter 2000 rise 2 fall 5
 listen keystone_public_internal_cluster
-    bind 192.168.2.211:5000
+    bind 172.20.200.241:5000
     balance  source
     option  tcpka
     option  httpchk
     option  tcplog
-    server controller01 192.168.2.101:5000 check inter 2000 rise 2 fall 5
-    server controller02 192.168.2.102:5000 check inter 2000 rise 2 fall 5
-    server controller03 192.168.2.103:5000 check inter 2000 rise 2 fall 5
+    server controller01 172.20.200.1:5000 check inter 2000 rise 2 fall 5
+    server controller02 172.20.200.2:5000 check inter 2000 rise 2 fall 5
+    server controller03 172.20.200.3:5000 check inter 2000 rise 2 fall 5
 listen glance_api_cluster
-    bind 192.168.2.211:9292
+    bind 172.20.200.241:9292
     balance  source
     option  tcpka
     option  httpchk
     option  tcplog
-    server controller01 192.168.2.101:9292 check inter 2000 rise 2 fall 5
-    server controller02 192.168.2.102:9292 check inter 2000 rise 2 fall 5
-    server controller03 192.168.2.103:9292 check inter 2000 rise 2 fall 5
+    server controller01 172.20.200.1:9292 check inter 2000 rise 2 fall 5
+    server controller02 172.20.200.2:9292 check inter 2000 rise 2 fall 5
+    server controller03 172.20.200.3:9292 check inter 2000 rise 2 fall 5
 listen glance_registry_cluster
-    bind 192.168.2.211:9191
+    bind 172.20.200.241:9191
     balance  source
     option  tcpka
     option  tcplog
-    server controller01 192.168.2.101:9191 check inter 2000 rise 2 fall 5
-    server controller02 192.168.2.102:9191 check inter 2000 rise 2 fall 5
-    server controller03 192.168.2.103:9191 check inter 2000 rise 2 fall 5
+    server controller01 172.20.200.1:9191 check inter 2000 rise 2 fall 5
+    server controller02 172.20.200.2:9191 check inter 2000 rise 2 fall 5
+    server controller03 172.20.200.3:9191 check inter 2000 rise 2 fall 5
 listen nova_compute_api_cluster
-    bind 192.168.2.211:8774
+    bind 172.20.200.241:8774
     balance  source
     option  tcpka
     option  httpchk
     option  tcplog
 
-    server controller01 192.168.2.101:8774 check inter 2000 rise 2 fall 5
-    server controller02 192.168.2.102:8774 check inter 2000 rise 2 fall 5
-    server controller03 192.168.2.103:8774 check inter 2000 rise 2 fall 5
+    server controller01 172.20.200.1:8774 check inter 2000 rise 2 fall 5
+    server controller02 172.20.200.2:8774 check inter 2000 rise 2 fall 5
+    server controller03 172.20.200.3:8774 check inter 2000 rise 2 fall 5
 listen nova_metadata_api_cluster
-    bind 192.168.2.211:8775
+    bind 172.20.200.241:8775
     balance  source
     option  tcpka
     option  tcplog
-    server controller01 192.168.2.101:8775 check inter 2000 rise 2 fall 5
-    server controller02 192.168.2.102:8775 check inter 2000 rise 2 fall 5
-    server controller03 192.168.2.103:8775 check inter 2000 rise 2 fall 5
+    server controller01 172.20.200.1:8775 check inter 2000 rise 2 fall 5
+    server controller02 172.20.200.2:8775 check inter 2000 rise 2 fall 5
+    server controller03 172.20.200.3:8775 check inter 2000 rise 2 fall 5
 listen nova_vncproxy_cluster
-    bind 192.168.2.211:6080
+    bind 172.20.200.241:6080
     balance  source
     option  tcpka
     option  tcplog
-    server controller01 192.168.2.101:6080 check inter 2000 rise 2 fall 5
-    server controller02 192.168.2.102:6080 check inter 2000 rise 2 fall 5
-    server controller03 192.168.2.103:6080 check inter 2000 rise 2 fall 5
+    server controller01 172.20.200.1:6080 check inter 2000 rise 2 fall 5
+    server controller02 172.20.200.2:6080 check inter 2000 rise 2 fall 5
+    server controller03 172.20.200.3:6080 check inter 2000 rise 2 fall 5
 listen neutron_api_cluster
-    bind 192.168.2.211:9696
+    bind 172.20.200.241:9696
     balance  source
     option  tcpka
     option  httpchk
     option  tcplog
-    server controller01 192.168.2.101:9696 check inter 2000 rise 2 fall 5
-    server controller02 192.168.2.102:9696 check inter 2000 rise 2 fall 5
-    server controller03 192.168.2.103:9696 check inter 2000 rise 2 fall 5
+    server controller01 172.20.200.1:9696 check inter 2000 rise 2 fall 5
+    server controller02 172.20.200.2:9696 check inter 2000 rise 2 fall 5
+    server controller03 172.20.200.3:9696 check inter 2000 rise 2 fall 5

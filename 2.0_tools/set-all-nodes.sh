@@ -14,6 +14,10 @@ for ((i=0; i<${#nodes_map[@]}; i+=1));
       #ssh root@$ip  yum install -y python-openstackclient openstack-selinux openstack-utils
       #ssh root@$ip  yum install -y mongodb-server mongodb
       #ssh root@$ip  yum remove -y   MariaDB-server xinetd
-      ssh root@$ip  yum remove -y  rabbitmq-server
+      if [ $name= "controller01"];then
+	echo "$ip"
+      else 
+        ssh root@$ip  service network restart
+      fi
   done;
 

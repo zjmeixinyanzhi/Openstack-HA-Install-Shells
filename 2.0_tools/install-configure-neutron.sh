@@ -57,7 +57,7 @@ openstack endpoint create --region RegionOne network admin http://$virtual_ip:96
 su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron
 
 ### [任一节点]添加pacemaker资源
-pcs resource create neutron-server systemd:neutron-server op start timeout=90 --clone interleave=true
+pcs resource create neutron-server systemd:neutron-server op start timeout=300 --clone interleave=true
 pcs constraint order start openstack-keystone-clone then neutron-server-clone
 
 ### [任一节点]测试

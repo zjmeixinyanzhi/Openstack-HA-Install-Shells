@@ -50,27 +50,27 @@ defaults
 
 
 listen galera_cluster
-    bind 192.168.2.211:3306
+    bind 172.20.200.241:3306
     balance source
     option mysql-check user haproxy_check
-    server controller01 192.168.2.101:3306 inter 2000 rise 2 fall 5
-    server controller02 192.168.2.102:3306 backup inter 2000 rise 2 fall 5
-    server controller03 192.168.2.103:3306 backup inter 2000 rise 2 fall 5
+    server controller01 172.20.200.1:3306 inter 2000 rise 2 fall 5
+    server controller02 172.20.200.2:3306 backup inter 2000 rise 2 fall 5
+    server controller03 172.20.200.3:3306 backup inter 2000 rise 2 fall 5
 listen keystone_admin_cluster
-    bind 192.168.2.211:35357
+    bind 172.20.200.241:35357
     balance  source
     option  tcpka
     option  httpchk
     option  tcplog
-    server controller01 192.168.2.101:35357 check inter 2000 rise 2 fall 5
-    server controller02 192.168.2.102:35357 check inter 2000 rise 2 fall 5
-    server controller03 192.168.2.103:35357 check inter 2000 rise 2 fall 5
+    server controller01 172.20.200.1:35357 check inter 2000 rise 2 fall 5
+    server controller02 172.20.200.2:35357 check inter 2000 rise 2 fall 5
+    server controller03 172.20.200.3:35357 check inter 2000 rise 2 fall 5
 listen keystone_public_internal_cluster
-    bind 192.168.2.211:5000
+    bind 172.20.200.241:5000
     balance  source
     option  tcpka
     option  httpchk
     option  tcplog
-    server controller01 192.168.2.101:5000 check inter 2000 rise 2 fall 5
-    server controller02 192.168.2.102:5000 check inter 2000 rise 2 fall 5
-    server controller03 192.168.2.103:5000 check inter 2000 rise 2 fall 5
+    server controller01 172.20.200.1:5000 check inter 2000 rise 2 fall 5
+    server controller02 172.20.200.2:5000 check inter 2000 rise 2 fall 5
+    server controller03 172.20.200.3:5000 check inter 2000 rise 2 fall 5

@@ -10,7 +10,8 @@ echo $storage_network
 sed -i -e 's#ONBOOT=no#ONBOOT=yes#g'  /etc/sysconfig/network-scripts/ifcfg-$local_nic
 sed -i -e 's#ONBOOT=no#ONBOOT=yes#g'  /etc/sysconfig/network-scripts/ifcfg-$data_nic
 sed -i -e 's#ONBOOT=no#ONBOOT=yes#g'  /etc/sysconfig/network-scripts/ifcfg-$storage_nic
-
+sed -i -e 's#GATEWAY=172.20.201.254##g'  /etc/sysconfig/network-scripts/ifcfg-$data_nic
+sed -i -e 's#GATEWAY=172.20.202.254##g'  /etc/sysconfig/network-scripts/ifcfg-$storage_nic
 ### set network suffix
 old_data_ip=$(cat /etc/sysconfig/network-scripts/ifcfg-$data_nic |grep IPADDR=|egrep -v "#IPADDR"|awk -F "=" '{print $2}')
 new_data_ip=$(echo $data_network|cut -d "." -f1-3).$(echo $local_ip|awk -F "." '{print $4}') 
