@@ -75,6 +75,13 @@ pcs constraint colocation add openstack-cinder-scheduler-clone with openstack-ci
 pcs constraint order start openstack-cinder-scheduler-clone then openstack-cinder-volume
 pcs constraint colocation add openstack-cinder-volume with openstack-cinder-scheduler-clone
 
+pcs resource op add openstack-cinder-api start timeout=300
+pcs resource op add openstack-cinder-api stop timeout=300
+pcs resource op add openstack-cinder-scheduler start timeout=300
+pcs resource op add openstack-cinder-scheduler stop timeout=300
+pcs resource op add openstack-cinder-volume start timeout=300
+pcs resource op add openstack-cinder-volume stop timeout=300
+
 echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate and it'll continue!"
 . restart-pcs-cluster.sh
 cinder service-list

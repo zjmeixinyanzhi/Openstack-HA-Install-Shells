@@ -109,6 +109,17 @@ pcs constraint colocation add openstack-nova-scheduler-clone with openstack-nova
 pcs constraint order start openstack-nova-scheduler-clone then openstack-nova-conductor-clone
 pcs constraint colocation add openstack-nova-conductor-clone with openstack-nova-scheduler-clone
 
+pcs resource op add openstack-nova-consoleauth start timeout=300
+pcs resource op add openstack-nova-consoleauth stop timeout=300
+pcs resource op add openstack-nova-novncproxy start timeout=300
+pcs resource op add openstack-nova-novncproxy stop timeout=300
+pcs resource op add openstack-nova-api start timeout=300
+pcs resource op add openstack-nova-api stop timeout=300
+pcs resource op add openstack-nova-scheduler start timeout=300
+pcs resource op add openstack-nova-scheduler stop timeout=300
+pcs resource op add openstack-nova-conductor start timeout=300
+pcs resource op add openstack-nova-conductor stop timeout=300
+
 echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate and it'll continue!"
 . restart-pcs-cluster.sh
 

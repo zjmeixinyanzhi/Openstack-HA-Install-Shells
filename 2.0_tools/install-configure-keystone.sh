@@ -94,6 +94,9 @@ su -s /bin/sh -c "keystone-manage db_sync" keystone
 ### [任一节点]添加pacemaker资源，openstack资源和haproxy资源无关，可以开启A/A模式
 pcs resource create  openstack-keystone systemd:httpd --clone interleave=true
 
+pcs resource op add openstack-keystone start timeout=300
+pcs resource op add openstack-keystone stop timeout=300
+
 echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate and it'll continue!"
 . restart-pcs-cluster.sh
 

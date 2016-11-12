@@ -76,6 +76,11 @@ pcs constraint order start openstack-keystone-clone then openstack-glance-regist
 pcs constraint order start openstack-glance-registry-clone then openstack-glance-api-clone
 pcs constraint colocation add openstack-glance-api-clone with openstack-glance-registry-clone
 
+pcs resource op add openstack-glance-registry start timeout=300
+pcs resource op add openstack-glance-registry stop timeout=300
+pcs resource op add openstack-glance-api start timeout=300
+pcs resource op add openstack-glance-api stop timeout=300
+
 echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate and it'll continue!"
 . restart-pcs-cluster.sh
 

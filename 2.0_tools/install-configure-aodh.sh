@@ -85,6 +85,27 @@ pcs constraint order start openstack-aodh-notifier-clone then openstack-aodh-api
 pcs constraint order start openstack-aodh-api-clone then openstack-aodh-listener-clone
 pcs constraint order start openstack-aodh-api-clone then openstack-ceilometer-notification-clone
 
+pcs resource op add openstack-ceilometer-central start timeout=300
+pcs resource op add openstack-ceilometer-central stop timeout=300
+pcs resource op add openstack-ceilometer-collector start timeout=300
+pcs resource op add openstack-ceilometer-collector stop timeout=300
+pcs resource op add openstack-ceilometer-api start timeout=300
+pcs resource op add openstack-ceilometer-api stop timeout=300
+pcs resource op add delay start timeout=300
+pcs resource op add delay stop timeout=300
+pcs resource op add openstack-aodh-evaluator start timeout=300
+pcs resource op add openstack-aodh-evaluator stop timeout=300
+pcs resource op add openstack-aodh-notifier start timeout=300
+pcs resource op add openstack-aodh-notifier stop timeout=300
+pcs resource op add openstack-aodh-api start timeout=300
+pcs resource op add openstack-aodh-api stop timeout=300
+pcs resource op add openstack-aodh-listener start timeout=300
+pcs resource op add openstack-aodh-listener stop timeout=300
+pcs resource op add openstack-ceilometer-notification start timeout=300
+pcs resource op add openstack-ceilometer-notification stop timeout=300
+pcs resource op add mongod start timeout=300
+pcs resource op add mongod stop timeout=300
+
 echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate and it'll continue!"
 . restart-pcs-cluster.sh
 

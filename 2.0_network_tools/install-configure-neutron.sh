@@ -51,6 +51,21 @@ pcs constraint colocation add neutron-l3-agent-clone with neutron-dhcp-agent-clo
 pcs constraint order start neutron-l3-agent-clone then neutron-metadata-agent-clone
 pcs constraint colocation add neutron-metadata-agent-clone with neutron-l3-agent-clone
 
+pcs resource op add neutron-scale start timeout=300
+pcs resource op add neutron-scale stop timeout=300
+pcs resource op add neutron-ovs-cleanup start timeout=300
+pcs resource op add neutron-ovs-cleanup stop timeout=300
+pcs resource op add neutron-netns-cleanup start timeout=300
+pcs resource op add neutron-netns-cleanup stop timeout=300
+pcs resource op add neutron-openvswitch-agent start timeout=300
+pcs resource op add neutron-openvswitch-agent stop timeout=300
+pcs resource op add neutron-dhcp-agent start timeout=300
+pcs resource op add neutron-dhcp-agent stop timeout=300
+pcs resource op add neutron-l3-agent start timeout=300
+pcs resource op add neutron-l3-agent stop timeout=300
+pcs resource op add neutron-metadata-agent start timeout=300
+pcs resource op add neutron-metadata-agent stop timeout=300
+
 ### ovs 操作
 echo "ovs-vsctl add-br br-ex
 ovs-vsctl add-port br-ex "$local_nic
