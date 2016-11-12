@@ -114,6 +114,7 @@ openstack domain create --description "Default Domain" default
 openstack project create --domain default --description "Admin Project" admin
 openstack user create --domain default --password $password_openstack_admin admin
 openstack role create admin
+openstack role create user
 openstack role add --project admin --user admin admin
 
 ### [任一节点]创建service项目

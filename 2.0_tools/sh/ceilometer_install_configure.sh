@@ -6,13 +6,14 @@ vip2=$2
 local_bridge='br-ex'
 local_bridge=$3
 password=$4
+password_mongo_root=$5
 
 ### [所有控制节点] 安装软件
 yum install -y openstack-ceilometer-api openstack-ceilometer-collector openstack-ceilometer-notification openstack-ceilometer-central python-ceilometerclient redis python-redis
 ### [所有控制节点] 配置redis
 sed -i "s/\s*bind \(.*\)$/#bind \1/" /etc/redis.conf
 ### [所有控制节点] 修改配置文件
-openstack-config --set /etc/ceilometer/ceilometer.conf database connection mongodb://ceilometer:$password@controller01:27017,controller02:27017,controller03:27017/ceilometer?replicaSet=ceilometer
+openstack-config --set /etc/ceilometer/ceilometer.conf database connection mongodb://ceilometer:$password_mongo_root@controller01:27017,controller02:27017,controller03:27017/ceilometer?replicaSet=ceilometer
 openstack-config --set /etc/ceilometer/ceilometer.conf database max_retries -1
 openstack-config --set /etc/ceilometer/ceilometer.conf DEFAULT rpc_backend rabbit
 openstack-config --set /etc/ceilometer/ceilometer.conf oslo_messaging_rabbit rabbit_hosts controller01:5672,controller02:5672,controller03:5672
