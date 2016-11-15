@@ -7,6 +7,8 @@ echo $vip $local_nic $data_nic
 
 yum install -y openstack-neutron openstack-neutron-ml2 python-neutronclient
 ### [所有控制节点]配置neutron server，/etc/neutron/neutron.conf
+openstack-config --set /etc/neutron/neutron.conf DEFAULT bind_host $(ip addr show dev $local_nic scope global | grep "inet " | sed -e 's#.*inet ##g' -e 's#/.*##g')
+
 openstack-config --set /etc/neutron/neutron.conf database connection mysql+pymysql://neutron:$password@$vip/neutron
 
 openstack-config --set /etc/neutron/neutron.conf DEFAULT core_plugin ml2

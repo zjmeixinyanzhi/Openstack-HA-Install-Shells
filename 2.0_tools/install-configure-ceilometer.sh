@@ -76,20 +76,20 @@ mongo $mongo_replica_cfg
 cp sh/mongodb_configure.sh $tmp_path/mongodb_configure.sh
 sed -i -e 's#123456#'"$password_mongo_root"'#g'  $tmp_path/mongodb_configure.sh
 chmod +x $tmp_path/mongodb_configure.sh 
-
+#$tmp_path/mongodb_configure.sh
 for ((i=0; i<${#controller_map[@]}; i+=1));
   do
         name=${controller_name[$i]};
         ip=${controller_map[$name]};
         echo "-------------$name------------"
 	if [ $name = $(hostname) ];then
-	  . $tmp_path/mongodb_configure.sh
+	  $tmp_path/mongodb_configure.sh
 	else   
           scp $tmp_path/mongodb_configure.sh root@$ip:$tmp_path/mongodb_configure.sh
           ssh root@$ip mkdir -p $target_sh
           scp $source_sh_1 root@$ip:$target_sh
           ssh root@$ip chmod -R +x $target_sh
-          ssh root@$ip . $tmp_path/mongodb_configure.sh
+          ssh root@$ip $tmp_path/mongodb_configure.sh
         fi
   done;
 
