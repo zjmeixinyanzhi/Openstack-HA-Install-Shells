@@ -39,6 +39,7 @@ for ((i=0; i<${#additionalNodes_map[@]}; i+=1));
               osds=$osds" "$name":"$blk;
 	      ssh root@$ip ceph-disk zap /dev/$blk
           done
+		  scp /etc/ceph/ceph.client.cinder.keyring  root@$name:/etc/ceph/
        # ssh root@$name  chown -R ceph:ceph $osd_path
   done;
 echo $osds
