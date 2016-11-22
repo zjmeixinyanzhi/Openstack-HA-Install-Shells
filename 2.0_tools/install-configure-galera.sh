@@ -22,9 +22,9 @@ for ((i=0; i<${#controller_map[@]}; i+=1));
         echo "-------------$name------------"
         if [ $i -eq 0 ]; then
                    echo $i
-           echo "    server $name $ip:3306 inter 2000 rise 2 fall 5" >>$target_cfg
+           echo "    server $name $ip:3306 check inter 2000 rise 2 fall 5" >>$target_cfg
        else
-           echo "    server $name $ip:3306 backup inter 2000 rise 2 fall 5" >>$target_cfg
+           echo "    server $name $ip:3306 backup check inter 2000 rise 2 fall 5" >>$target_cfg
        fi
   done;
 #### scp
