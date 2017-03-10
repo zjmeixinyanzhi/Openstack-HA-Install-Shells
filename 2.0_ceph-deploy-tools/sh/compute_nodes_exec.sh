@@ -131,16 +131,16 @@ echo "<secret ephemeral='no' private='no'>
 virsh secret-define --file secret.xml
 virsh secret-set-value --secret 032198f4-b815-4254-9de2-185f935bd7de --base64 $(cat /etc/ceph/ceph.client.cinder.keyring |grep 'key ='|awk '{print $3}') && rm client.cinder.key secret.xml
 
-echo "[client]
-rbd cache = true
-rbd cache writethrough until flush = true
-admin socket = /var/run/ceph/guests/\$cluster-\$type.\$id.\$pid.\$cctid.asok
-log file = /var/log/qemu/qemu-guest-\$pid.log
-rbd concurrent management ops = 20">> /etc/ceph/ceph.conf
+#echo "[client]
+#rbd cache = true
+#rbd cache writethrough until flush = true
+#admin socket = /var/run/ceph/guests/\$cluster-\$type.\$id.\$pid.\$cctid.asok
+#log file = /var/log/qemu/qemu-guest-\$pid.log
+#rbd concurrent management ops = 20">> /etc/ceph/ceph.conf
 
 ###设置路径权限
-mkdir -p /var/run/ceph/guests/ /var/log/qemu/
-chown ceph:ceph /var/run/ceph/guests /var/log/qemu/
+#mkdir -p /var/run/ceph/guests/ /var/log/qemu/
+#chown ceph:ceph /var/run/ceph/guests /var/log/qemu/
 ###设置/etc/nova/nova.conf
 
 openstack-config --set /etc/nova/nova.conf libvirt images_type rbd
