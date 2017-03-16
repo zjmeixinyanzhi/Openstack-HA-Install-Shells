@@ -4,7 +4,7 @@ monitor_name=(${!monitor_map[@]});
 blk_name=(${!blks_map[@]});
 
 base_location=$ftp_info
-deploy_node=compute02
+deploy_node=compute01
 
 echo $deploy_node
 
@@ -19,7 +19,7 @@ for ((i=0; i<${#nodes_map[@]}; i+=1));
               name2=${blk_name[$j]};
               blk=${blks_map[$name2]};
               echo "-------------$name2:$blk------------";
-              ssh root@$ip ceph-disk zap /dev/$blk
+#              ssh root@$ip ceph-disk zap /dev/$blk
           done
   done
 echo $osds
@@ -77,18 +77,18 @@ echo $osds
 ceph-deploy osd create $osds
 ceph-deploy admin ${nodes_name[@]}
 
-## set  mon nodes
-for ((i=0; i<${#monitor_map[@]}; i+=1));
-  do
-      name=${monitor_name[$i]};
-      ip=${monitor_map[$name]};
-      echo "-------------$name------------"
-        if [ $name =  $deploy_node ]; then
-          echo $name" already is mon!"
-        else
-          ceph-deploy mon add $name
-        fi
-  done;
+### set  mon nodes
+#for ((i=0; i<${#monitor_map[@]}; i+=1));
+#  do
+#      name=${monitor_name[$i]};
+#      ip=${monitor_map[$name]};
+#      echo "-------------$name------------"
+#        if [ $name =  $deploy_node ]; then
+#          echo $name" already is mon!"
+#        else
+#          ceph-deploy mon add $name
+#        fi
+#  done;
 
 ###查看集群状态
 ceph -s

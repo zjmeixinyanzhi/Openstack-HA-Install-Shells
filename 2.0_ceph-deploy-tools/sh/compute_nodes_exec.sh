@@ -116,7 +116,6 @@ systemctl restart neutron-openvswitch-agent.service
 systemctl enable neutron-openvswitch-agent.service
 
 
-
 ### 3. OpenStack Block Storage service
 ###计算节点安装客户端命令行工具
 yum install -y ceph-common
