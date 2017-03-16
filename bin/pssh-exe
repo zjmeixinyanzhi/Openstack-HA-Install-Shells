@@ -1,0 +1,10 @@
+#!/bin/sh
+installed=$(rpm -qa |grep pssh)
+if [ X"$installed" = "X" ];then
+  ./style/print-info.sh "Install Pssh" 
+  yum install -y pssh
+fi
+0-gen-hosts.sh
+
+
+#pssh -i -h nodes.txt ls
