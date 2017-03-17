@@ -13,6 +13,8 @@ declare hypervisor_name=(${!hypervisor_map[@]});
 
 ### 后期需要增加的计算节点
 #declare -A additionalNodes_map=(["compute04"]="192.168.2.107" ["compute05"]="192.168.2.108");
+### NTP主机
+ref_host=controller01
 
 ### 设置虚拟IP，virtual_ip为openstack服务的虚拟IP，virtual_ip_redis为Redis为虚拟IP
 virtual_ip=192.168.2.241
@@ -27,11 +29,11 @@ local_network=192.168.2.0/24
 data_network=10.10.10.0/24
 store_network=11.11.11.0/24
 ### 离线安装源的FTP目录信息
-ftp_info="ftp://192.168.2.1/pub/share/"
+ftp_info="ftp://192.168.100.81/pub/"
 ### 临时目录，用于scp存放配置脚本
 tmp_path=/root/tools/t_sh/
 ### 存储节点上OSD盘挂载目录 所有节点统一成一个
-declare -A blks_map=(["osd01"]="sdb" ["osd02"]="sdc" ["osd03"]="sdd" ["osd04"]="sde" ["osd05"]="sdf");
+declare -A blks_map=(["osd01"]="sdb" ["osd02"]="sdc" ["osd03"]="sdd");
 #osd_path=/osd
 ### ceph安装版本
 ceph_release=jewel

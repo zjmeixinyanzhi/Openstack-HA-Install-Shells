@@ -1,0 +1,9 @@
+192.168.2.19 compute03
+192.168.2.18 compute02
+192.168.2.17 compute01
+192.168.2.15 network02
+192.168.2.16 network03
+192.168.2.14 network01
+192.168.2.11 controller01
+192.168.2.12 controller02
+192.168.2.13 controller03

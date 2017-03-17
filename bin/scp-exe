@@ -1,12 +1,12 @@
 #!/bin/sh
 ### update hosts files
 ./0-gen-hosts.sh
-
 ###
 scpToNodes(){
   for host in $(cat $1)
   do 
-      scp $2 ${host}:$3
+      scp -r $2 root@${host}:$3
+      echo "scp -r $2 root@${host}:$3"
   done 
 }
 

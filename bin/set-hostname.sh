@@ -1,4 +1,7 @@
 #!/bin/sh
+. ../0-set-config.sh
+./style/print-split.sh "Set HOSTNAME & HOSTS"
+
 tmp_file=../conf/hosts.bak
 target=/etc/hosts
 rm -rf $tmp_file
@@ -19,8 +22,8 @@ for ((i=0; i<${#nodes_map[@]}; i+=1));
      scp $tmp_file $name:$target
   done;
 ## check
-./pssh/0-gen-hosts.sh
-pssh -i -h pssh/nodes.txt hostname
+. 0-gen-hosts.sh
+pssh -i -h hosts/nodes.txt hostname
 ### update hostname
 echo "Please log in again and renew the local hostname!"
 ssh `hostname`
