@@ -1,5 +1,5 @@
 #!/bin/sh
-../0-set-config.sh
+. ../0-set-config.sh
 ./style/print-split.sh "Configure Network"
 
 for ((i=0; i<${#nodes_map[@]}; i+=1));

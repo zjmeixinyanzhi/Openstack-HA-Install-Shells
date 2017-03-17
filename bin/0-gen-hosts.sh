@@ -1,5 +1,5 @@
 #!/bin/sh
-../0-set-config.sh
+. ../0-set-config.sh
 
 >hosts/nodes.txt
 >hosts/controllers.txt
@@ -10,7 +10,7 @@ for ((i=0; i<${#controller_map[@]}; i+=1));
   do
       name=${controller_name[$i]};
       ip=${controller_map[$name]};
-      echo "$ip" >>hosts/nodes.txt
+      echo "$ip" >> hosts/nodes.txt
       echo "$ip" >> hosts/controllers.txt
   done;
 
