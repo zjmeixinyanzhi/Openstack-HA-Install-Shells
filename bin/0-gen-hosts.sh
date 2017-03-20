@@ -1,10 +1,10 @@
 #!/bin/sh
 . ../0-set-config.sh
 
->hosts/nodes.txt
->hosts/controllers.txt
->hosts/networkers.txt
->hosts/hypervisors.txt
+> hosts/nodes.txt
+> hosts/controllers.txt
+> hosts/networkers.txt
+> hosts/hypervisors.txt
 
 for ((i=0; i<${#controller_map[@]}; i+=1));
   do

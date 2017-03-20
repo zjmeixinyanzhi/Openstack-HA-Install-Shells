@@ -1,6 +1,7 @@
 #!/bin/sh
 . ../0-set-config.sh
 ./style/print-split.sh "Set HOSTNAME & HOSTS"
+curr_dir=$(echo `pwd`)
 
 tmp_file=../conf/hosts.bak
 target=/etc/hosts
@@ -16,14 +17,10 @@ for ((i=0; i<${#nodes_map[@]}; i+=1));
   done;
 cat $tmp_file
 ### scp to other nodes
-for ((i=0; i<${#nodes_map[@]}; i+=1));
-  do
-     name=${nodes_name[$i]};
-     scp $tmp_file $name:$target
-  done;
+./scp-exe A $tmp_file $target
 ## check
 . 0-gen-hosts.sh
 pssh -i -h hosts/nodes.txt hostname
 ### update hostname
-echo "Please log in again and renew the local hostname!"
-ssh `hostname`
+echo "Re-login to update the local hostname!"
+ssh `hostname` cd $curr_dir
