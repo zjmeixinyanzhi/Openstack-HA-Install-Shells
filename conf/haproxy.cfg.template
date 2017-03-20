@@ -48,14 +48,23 @@ defaults
     timeout  server 1m
     timeout  check 10s
 
+#listen haproxy1‐monitoring XX.XX.XX.XX:80
+#    mode http
+#    stats enable
+#    stats show‐legends
+#    stats refresh 5s
+#    stats uri /haproxy
+#    stats realm Haproxy\ Statistics
+#    stats auth admin:123456
+#    stats admin if TRUE
 
 listen galera_cluster
     bind XX.XX.XX.XX:3306
     balance source
     option mysql-check user haproxy_check
-    server controller01 XX.XX.XX.XX:3306 inter 2000 rise 2 fall 5
-    server controller02 XX.XX.XX.XX:3306 backup inter 2000 rise 2 fall 5
-    server controller03 XX.XX.XX.XX:3306 backup inter 2000 rise 2 fall 5
+    server controller01 XX.XX.XX.XX:3306 check port 9200 inter 2000 rise 2 fall 5
+    server controller02 XX.XX.XX.XX:3306 check port 9200 inter 2000 rise 2 fall 5 backup
+    server controller03 XX.XX.XX.XX:3306 check port 9200 inter 2000 rise 2 fall 5 backup
 listen keystone_admin_cluster
     bind XX.XX.XX.XX:35357
     balance  source

@@ -24,7 +24,6 @@ for ((i=0; i<${#controller_map[@]}; i+=1));
 do
   name=${controller_name[$i]};
   ip=${controller_map[$name]};
-  echo "-------------$name------------"
   if [ $name = "controller01" ]; then
     ./style/print-warnning.sh "Please set the database password is $password_galera_root"
     mysql_secure_installation
@@ -32,8 +31,26 @@ do
     ssh root@$ip systemctl start mariadb
   fi
 done;
-#### check
 . restart-pcs-cluster.sh
-mysql -uroot -p$password_galera_root -e "use mysql;INSERT INTO user(Host, User) VALUES('"$virtual_ip"', 'haproxy_check');FLUSH PRIVILEGES;"
-mysql -uroot -p$password_galera_root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'controller01' IDENTIFIED BY '"$password_galera_root"'";
 mysql -uroot -p$password_galera_root -h $virtual_ip -e "SHOW STATUS LIKE 'wsrep_cluster_size';"
+
+#### Galera cluster check
+rm -rf ../conf/clustercheck
+cp ../conf/clustercheck.template ../conf/clustercheck
+sed -i -e 's#MYSQL_PASSWORD=#MYSQL_PASSWORD='"$password_galera_root"'#g' ../conf/clustercheck
+sed -i -e 's#MYSQL_HOST=#MYSQL_HOST='"$virtual_ip"'#g' ../conf/clustercheck
+./scp-exe C "../conf/clustercheck" "/etc/sysconfig/clustercheck"
+mysql -uroot -p$password_galera_root -e "GRANT ALL PRIVILEGES ON *.* TO 'clustercheck_user'@'localhost' IDENTIFIED BY '"$password_galera_root"';GRANT ALL PRIVILEGES ON *.* TO 'clustercheck_user'@'"$virtual_ip"' IDENTIFIED BY '"$password_galera_root"';FLUSH PRIVILEGES;"
+rm -rf ../conf/clustercheck.sh
+cp ../conf/clustercheck.sh.template ../conf/clustercheck.sh
+sed -i -e 's#MYSQL_PASSWORD=#MYSQL_PASSWORD='"\"\${2-$password_galera_root}\""'#g' ../conf/clustercheck.sh
+./scp-exe C ../conf/clustercheck.sh /usr/bin/clustercheck
+./pssh-exe C "chmod a+x /usr/bin/clustercheck && chmod 755 /usr/bin/clustercheck && chown nobody /usr/bin/clustercheck"
+###setup check service
+./pssh-exe C "sed -i -e '/9200\/[udp,tcp]/d' /etc/services"
+./pssh-exe C "echo 'mysqlchk	9200/tcp # mysqlchk' >> /etc/services"
+./scp-exe C "../conf/mysqlchk" "/etc/xinetd.d/mysqlchk"
+./pssh-exe C "systemctl stop xinetd && systemctl enable xinetd && systemctl start xinetd"
+### test checking service
+./pssh-exe C /usr/bin/clustercheck
+telnet $virtual_ip 9200 

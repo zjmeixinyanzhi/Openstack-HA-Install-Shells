@@ -2,7 +2,7 @@
 . ../0-set-config.sh
 ./style/print-split.sh "Haproxy Installation"
 ### [所有控制节点] 修改/etc/haproxy/haproxy.cfg文件,这里一次性修改配置
-./1-gen-haproxy-cfg.sh
+. ./1-gen-haproxy-cfg.sh
 ### 拷贝文件到其他节点
 ./scp-exe C ../conf/haproxy.cfg /etc/haproxy/haproxy.cfg
 ### [所有控制节点] 安装软件

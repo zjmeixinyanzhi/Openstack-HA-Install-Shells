@@ -1,6 +1,7 @@
-#!/bin/shi
- ../0-set-config.sh
+#!/bin/sh
+. ../0-set-config.sh
 target_cfg=../conf/haproxy.cfg
+rm -rf $target_cfg
 cp ../conf/haproxy.cfg.template $target_cfg
 
 sed -i -e 's#bind XX.XX.XX.XX#bind '"$virtual_ip"'#g' $target_cfg
