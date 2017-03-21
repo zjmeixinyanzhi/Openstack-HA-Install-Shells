@@ -10,7 +10,6 @@ declare nodes_name=(${!nodes_map[@]});
 declare controller_name=(${!controller_map[@]});
 declare networker_name=(${!networker_map[@]});
 declare hypervisor_name=(${!hypervisor_map[@]});
-
 ### 后期需要增加的计算节点
 #declare -A additionalNodes_map=(["compute04"]="192.168.2.107" ["compute05"]="192.168.2.108");
 ### NTP主机

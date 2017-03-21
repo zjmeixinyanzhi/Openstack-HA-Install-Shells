@@ -8,10 +8,11 @@
  ### [所有控制节点]设置hacluster用户的密码
 ./pssh-exe C "echo $password_ha_user | passwd --stdin hacluster"
 ## [controller01]设置到集群节点的认证
-pcs cluster auth $controller_name -u hacluster -p $password_ha_user --force
+pcs cluster auth ${controller_name[@]} -u hacluster -p $password_ha_user --force
 ### [controller01]创建并启动集群
-pcs cluster setup --force --name openstack-cluster $controller_name
+pcs cluster setup --force --name openstack-cluster ${controller_name[@]}
 pcs cluster start --all
+pcs cluster enable --all
 sleep 5
 ### [controller01]设置集群属性
 pcs property set pe-warn-series-max=1000 pe-input-series-max=1000 pe-error-series-max=1000 cluster-recheck-interval=5min

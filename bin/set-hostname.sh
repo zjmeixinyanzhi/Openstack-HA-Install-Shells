@@ -22,5 +22,5 @@ cat $tmp_file
 . 0-gen-hosts.sh
 pssh -i -h hosts/nodes.txt hostname
 ### update hostname
-echo "Re-login to update the local hostname!"
+./style/print-info.sh "Re-login to update the local hostname!"
 ssh `hostname` cd $curr_dir
