@@ -1,6 +1,6 @@
 #!/bin/sh
-../0-set-config.sh
-./print-split.sh "Configure SSH"
+. ../0-set-config.sh
+./style/print-split.sh "Configure SSH"
 ssh-keygen
 for ((i=0; i<${#nodes_map[@]}; i+=1));
   do

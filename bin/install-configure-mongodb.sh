@@ -2,7 +2,6 @@
 . ../0-set-config.sh
 ./style/print-split.sh "MongoDB Installation"
 
-sh_name=mongodb_exec.sh
 mongo_replica_cfg=../conf/mongo_replica_setup.js
 ### 所有控制节点安装mongodb
 ./pssh-exe C "yum install -y mongodb-server mongodb"
