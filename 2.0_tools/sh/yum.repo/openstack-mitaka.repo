@@ -1,6 +1,0 @@
-[openstack-mitaka]
-name=openstack-mitaka
-baseurl=ftp://172.20.200.1/pub/share/Openstack-Mitaka/openstack-mitaka/
-gpgcheck=0
-enabled= 1
-

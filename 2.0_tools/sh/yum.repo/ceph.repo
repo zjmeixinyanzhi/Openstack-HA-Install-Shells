@@ -1,5 +1,0 @@
-[ceph-noarch]
-name = Ceph noarch packages
-baseurl = ftp://172.20.200.1/pub/share/download.ceph.com/rpm-jewel/el7/noarch
-gpgcheck=0
-
