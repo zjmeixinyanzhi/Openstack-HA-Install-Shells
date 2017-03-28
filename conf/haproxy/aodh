@@ -1,5 +1,5 @@
 listen aodh_api_cluster
-    bind XX.XX.XX.XX41:8042
+    bind XX.XX.XX.XX:8042
     balance source
     option tcpka
     option tcplog

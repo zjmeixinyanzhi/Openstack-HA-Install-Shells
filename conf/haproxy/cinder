@@ -1,5 +1,5 @@
 listen cinder_api_cluster
-    bind XX.XX.XX.XX41:8776
+    bind XX.XX.XX.XX:8776
     balance  source
     option  tcpka
     option  httpchk

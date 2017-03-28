@@ -1,5 +1,5 @@
 listen ceilometer_api_cluster
-    bind XX.XX.XX.XX41:8777
+    bind XX.XX.XX.XX:8777
     balance source
     option tcpka
     option tcplog

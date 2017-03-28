@@ -1,5 +1,5 @@
 listen neutron_api_cluster
-    bind XX.XX.XX.XX41:9696
+    bind XX.XX.XX.XX:9696
     balance  source
     option  tcpka
     option  httpchk

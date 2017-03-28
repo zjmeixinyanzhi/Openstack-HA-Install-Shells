@@ -1,5 +1,5 @@
 listen dashboard_cluster
-    bind XX.XX.XX.XX41:80
+    bind XX.XX.XX.XX:80
     balance  source
     option  tcpka
     option  httpchk
