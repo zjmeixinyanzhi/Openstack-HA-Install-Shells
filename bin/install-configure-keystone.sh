@@ -2,6 +2,8 @@
 . ../0-set-config.sh
 ./style/print-split.sh "Keystone Installation"
 
+### [所有控制节点] 修改/etc/haproxy/haproxy.cfg文件
+. ./1-gen-haproxy-cfg.sh keystone
 ### [任一节点]创建数据库
 mysql -uroot -p$password_galera_root -e "CREATE DATABASE keystone;
 GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost' IDENTIFIED BY '"$password"';

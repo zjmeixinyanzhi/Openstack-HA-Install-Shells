@@ -3,6 +3,8 @@
 ./style/print-split.sh "Glance Installation"
 test_img=../conf/cirros.raw
 
+### [所有控制节点] 修改/etc/haproxy/haproxy.cfg文件
+. ./1-gen-haproxy-cfg.sh glance
 ### 安装配置
 ./pssh-exe C "yum install -y openstack-glance"
 for ((i=0; i<${#controller_map[@]}; i+=1));

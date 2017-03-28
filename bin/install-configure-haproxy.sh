@@ -3,10 +3,8 @@
 ./style/print-split.sh "Haproxy Installation"
 ### [所有控制节点] 安装软件
 ./pssh-exe C "yum install -y haproxy"
-### [所有控制节点] 修改/etc/haproxy/haproxy.cfg文件,这里一次性修改配置
-. ./1-gen-haproxy-cfg.sh
-### 拷贝文件到其他节点
-./scp-exe C ../conf/haproxy.cfg /etc/haproxy/haproxy.cfg
+### [所有控制节点] 修改/etc/haproxy/haproxy.cfg文件
+. ./1-gen-haproxy-cfg.sh base
 ### [所有控制节点] 修改/etc/rsyslog.d/haproxy.conf文件
 ./scp-exe C ../conf/rsyslog_haproxy.conf /etc/rsyslog.d/haproxy.conf
 ### [所有控制节点] 修改/etc/sysconfig/rsyslog文件
