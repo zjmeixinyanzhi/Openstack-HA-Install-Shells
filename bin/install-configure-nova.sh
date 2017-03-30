@@ -95,7 +95,6 @@ pcs resource op add openstack-nova-scheduler stop timeout=300
 pcs resource op add openstack-nova-conductor start timeout=300
 pcs resource op add openstack-nova-conductor stop timeout=300
 ### 重启Pcs集群
-. ./style/print-warnning.sh "Pcs cluster is restarting! If have started, please press Ctrl+C to terminate and it'll continue!"
 . restart-pcs-cluster.sh
 ### [任一节点]测试
 sleep 5

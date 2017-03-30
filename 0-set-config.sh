@@ -14,7 +14,10 @@ declare hypervisor_name=(${!hypervisor_map[@]});
 #declare -A additionalNodes_map=(["compute04"]="192.168.2.107" ["compute05"]="192.168.2.108");
 ### NTP主机
 ref_host=controller01
-
+### 网络HA集群默认部署节点（必须存在该主机名的节点）
+network_host=network01
+### 计算节点默认部署节点（必须存在该主机名的节点）
+compute_host=compute01
 ### 设置虚拟IP，virtual_ip为openstack服务的虚拟IP，virtual_ip_redis为Redis为虚拟IP
 virtual_ip=192.168.2.241
 virtual_ip_redis=192.168.2.242

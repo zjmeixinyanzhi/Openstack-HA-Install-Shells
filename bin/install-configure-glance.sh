@@ -78,7 +78,6 @@ pcs resource op add openstack-glance-registry stop timeout=300
 pcs resource op add openstack-glance-api start timeout=300
 pcs resource op add openstack-glance-api stop timeout=300
 ### 重启Pcs集群
-. ./style/print-warnning.sh "Pcs cluster is restarting! If have started, please press Ctrl+C to terminate and it'll continue!"
 . restart-pcs-cluster.sh
 ### [任一节点]添加测试镜像
 . /root/keystonerc_admin

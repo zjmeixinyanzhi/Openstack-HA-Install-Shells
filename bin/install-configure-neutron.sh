@@ -94,7 +94,6 @@ pcs constraint order start openstack-keystone-clone then neutron-server-clone
 pcs resource op add neutron-server start timeout=300
 pcs resource op add neutron-server stop timeout=300
 ### [任一节点]测试
-echo "Pcs cluster is restarting! If is stuck, please type Ctrl+C to terminate and it'll continue!"
 . restart-pcs-cluster.sh
 . /root/keystonerc_admin
 neutron ext-list

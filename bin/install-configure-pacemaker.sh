@@ -1,6 +1,6 @@
 #!/bin/sh
 . ../0-set-config.sh
-./style/print-split.sh "Pacemaker Installation"
+./style/print-split.sh "Controllers Pacemaker Cluster Installation"
  ### [所有控制节点] 安装软件
 ./pssh-exe C "yum install -y pcs pacemaker corosync fence-agents-all resource-agents"
 ### [所有控制节点] 配置服务

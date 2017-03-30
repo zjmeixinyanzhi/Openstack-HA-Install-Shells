@@ -46,7 +46,6 @@ su -s /bin/sh -c "keystone-manage db_sync" keystone
 pcs resource create  openstack-keystone systemd:httpd --clone interleave=true
 pcs resource op add openstack-keystone start timeout=300
 pcs resource op add openstack-keystone stop timeout=300
-./style/print-warnning.sh "Pcs cluster is restarting! If have started, please press Ctrl+C to terminate and it'll continue!"
 . restart-pcs-cluster.sh
 ### [任一节点]设置临时环境变量
 export OS_TOKEN=3e9cffc84608cc62cca5
