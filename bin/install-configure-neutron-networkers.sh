@@ -1,9 +1,4 @@
 #!/bin/sh
-controller_name=(${!controller_map[@]});
-networker_name=(${!networker_map[@]});
-sh_name_1=neutron_ovs_configure.sh
-source_sh_1=$(echo `pwd`)/sh/$sh_name_1
-target_sh=/root/tools/t_sh/
 #####[所有网络节点] 安装neutron 
 ./pssh-exe N "yum install -y openstack-neutron openstack-neutron-ml2 openstack-neutron-openvswitch"
 ### [所有网络节点]配置neutron server
@@ -128,7 +123,7 @@ do
   ip=${networker_map[$name]};
   echo "-------------$name------------"
   \cp ../conf/ifcfg-br-ex.template ../conf/ifcfg-br-ex
-  \cp ../conf/ifcfg-br-local_nic.template ../conf/ifcfg-local_nic
+  \cp ../conf/ifcfg-local_nic.template ../conf/ifcfg-local_nic
   ssh $ip cp /etc/sysconfig/network-scripts/ifcfg-$local_nic /etc/sysconfig/network-scripts/bak-ifcfg-$local_nic-$tag
   ssh $ip cat /etc/sysconfig/network-scripts/ifcfg-$local_nic |grep NETMASK >> ../conf/ifcfg-br-ex
   ssh $ip cat /etc/sysconfig/network-scripts/ifcfg-$local_nic |grep PREFIX >> ../conf/ifcfg-br-ex
@@ -139,11 +134,11 @@ do
   sed -i -e 's#DEVICE=#DEVICE='"$local_nic"'#g' ../conf/ifcfg-local_nic
   scp ../conf/ifcfg-local_nic root@$ip:/etc/sysconfig/network-scripts/ifcfg-$local_nic
   scp ../conf/ifcfg-br-ex root@$ip:/etc/sysconfig/network-scripts/ifcfg-br-ex
-  #ssh root@$ip /bin/bash << EOF
-  #ovs-vsctl add-br br-ex
-  #ovs-vsctl add-port br-ex $local_nic
-  #systemctl restart network.service
-#EOF
+  ssh root@$ip /bin/bash << EOF
+  ovs-vsctl add-br br-ex
+  ovs-vsctl add-port br-ex $local_nic
+  systemctl restart network.service
+EOF
 done;
 ### [任一网络节点]测试
 .  restart-pcs-cluster-networkers.sh
