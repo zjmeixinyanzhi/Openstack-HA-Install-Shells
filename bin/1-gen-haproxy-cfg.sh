@@ -2,8 +2,8 @@
 . ../0-set-config.sh
 target_cfg=../conf/haproxy.cfg
 rm -rf $target_cfg
-cp /etc/haproxy/haproxy.cfg $target_cfg
-cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.bak
+\cp /etc/haproxy/haproxy.cfg $target_cfg
+\cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.bak
 if [ $1 = "base" ];then
   cat ../conf/haproxy/base > $target_cfg 
 else
