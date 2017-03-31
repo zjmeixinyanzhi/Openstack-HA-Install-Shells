@@ -46,6 +46,7 @@ done;
 ### [任一节点]创建数据库
 mysql -uroot -p$password_galera_root -h $virtual_ip -e "CREATE DATABASE aodh;
 GRANT ALL PRIVILEGES ON aodh.* TO 'aodh'@'localhost' IDENTIFIED BY '$password';
+GRANT ALL PRIVILEGES ON aodh.* TO 'aodh'@'controller01' IDENTIFIED BY '$password';
 GRANT ALL PRIVILEGES ON aodh.* TO 'aodh'@'%' IDENTIFIED BY '$password';
 FLUSH PRIVILEGES;"
 ##### generate haproxy.cfg
