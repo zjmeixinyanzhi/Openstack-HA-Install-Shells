@@ -43,7 +43,7 @@ done
 echo $osds
 
 echo $deploy_node
-##重置为裸盘
+###安装前所有OSD盘重置为裸盘
 for ((i=0; i<${#nodes_map[@]}; i+=1));
 do
   name=${nodes_name[$i]};
@@ -65,31 +65,34 @@ ssh root@$compute_host /bin/bash << EOF
   cd /root/my-cluster
   rm -rf /root/my-cluster/*
   ceph-deploy new $deploy_node
-  sed -i -e 's#'"$(cat ceph.conf |grep mon_initial_members)"'#'"$(cat ceph.conf |grep mon_initial_members)$mon_hostname"'#g' ceph.conf
-  sed -i -e 's#'"$(cat ceph.conf |grep mon_host )"'#'"$(cat ceph.conf |grep mon_host )$mon_ip"'#g' ceph.conf
+  sed -i -e 's#'"$(ssh root@$compute_host cat /root/my-cluster/ceph.conf |grep mon_initial_members)"'#'"$(ssh root@$compute_host cat /root/my-cluster/ceph.conf |grep mon_initial_members)$mon_hostname"'#g' /root/my-cluster/ceph.conf
+  sed -i -e 's#'"$(ssh root@$compute_host cat /root/my-cluster/ceph.conf |grep mon_host )"'#'"$(ssh root@$compute_host  cat /root/my-cluster/ceph.conf |grep mon_host )$mon_ip"'#g' /root/my-cluster/ceph.conf
   echo "public network ="$store_network>>ceph.conf
   ceph-deploy install --nogpgcheck --repo-url $base_location/download.ceph.com/rpm-$ceph_release/el7/ ${nodes_name[@]} --gpg-url $base_location/download.ceph.com/release.asc
-  #ceph-deploy mon create-initial
-  #ceph-deploy osd create $osds
-  #ceph-deploy admin ${nodes_name[@]}
+  ceph-deploy mon create-initial
+  ceph-deploy osd create $osds
+  ceph-deploy admin ${nodes_name[@]}
 EOF
-### set  mon nodes
-#for ((i=0; i<${#monitor_map[@]}; i+=1));
-#do
-#  name=${monitor_name[$i]};
-#  ip=${monitor_map[$name]};
-#  echo "-------------$name------------"
-#  if [ $name =  $deploy_node ]; then
-#    echo $name" already is mon!"
-#  else
-#    ssh root@$deploy_node cd /root/my-cluster && ceph-deploy mon add $name
-#  fi
-#done;
-####查看集群状态 ceph管理节点创建Pool
-#ssh root@$deploy_node /bin/bash << EOF
-#  ceph -s
-#  ceph osd pool create volumes $pool_size
-#  ceph osd pool create images $pool_size
-#  ceph osd pool create backups $pool_size
-#  ceph osd pool create vms $pool_size
-#EOF
+## set  mon nodes
+for ((i=0; i<${#monitor_map[@]}; i+=1));
+do
+  name=${monitor_name[$i]};
+  ip=${monitor_map[$name]};
+  echo "-------------$name------------"
+  if [ $name =  $deploy_node ]; then
+    echo $name" already is mon!"
+  else
+    ssh root@$deploy_node  /bin/bash << EOF
+      cd /root/my-cluster
+      ceph-deploy mon add $name
+EOF
+  fi
+done;
+###查看集群状态 ceph管理节点创建Pool
+ssh root@$deploy_node /bin/bash << EOF
+  ceph -s
+  ceph osd pool create volumes $pool_size
+  ceph osd pool create images $pool_size
+  ceph osd pool create backups $pool_size
+  ceph osd pool create vms $pool_size
+EOF
