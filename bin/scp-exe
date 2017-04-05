@@ -1,0 +1,33 @@
+#!/bin/sh
+### update hosts files
+./0-gen-hosts.sh
+###
+scpToNodes(){
+  for host in $(cat $1)
+  do 
+      scp -r $2 root@${host}:$3
+      echo "scp -r $2 root@${host}:$3"
+  done 
+}
+
+### pssh to execute commmand
+if [ $# -ne 3 ];then
+  ./style/print-warnning.sh "Please input three paras: Nodes/SourceFile/TargetDir"
+else
+  case $1 in
+    A|all)
+      echo "All"
+      scpToNodes ./hosts/nodes.txt $2 $3;;
+    C|controllers )
+      echo "Controllers"
+      scpToNodes ./hosts/controllers.txt $2 $3;;
+    N|networks)
+      echo "Networks"
+      scpToNodes ./hosts/networkers.txt $2 $3;;
+    H|hypervisors )
+      echo "Hypervisors"
+      scpToNodes ./hosts/hypervisors.txt $2 $3;;
+    *)
+      ./style/print-warnning.sh "No nodes were listed!";;
+  esac 
+fi

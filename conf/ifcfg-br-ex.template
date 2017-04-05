@@ -1,0 +1,7 @@
+DEVICE=br-ex
+DEVICETYPE=ovs
+TYPE=OVSBridge
+BOOTPROTO=static
+IPADDR=
+DNS2=8.8.8.8
+ONBOOT=yes

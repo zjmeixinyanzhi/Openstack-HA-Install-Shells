@@ -1,0 +1,9 @@
+listen cinder_api_cluster
+    bind XX.XX.XX.XX:8776
+    balance  source
+    option  tcpka
+    option  httpchk
+    option  tcplog
+    server controller01 XX.XX.XX.XX:8776 check inter 2000 rise 2 fall 5
+    server controller02 XX.XX.XX.XX:8776 check inter 2000 rise 2 fall 5
+    server controller03 XX.XX.XX.XX:8776 check inter 2000 rise 2 fall 5

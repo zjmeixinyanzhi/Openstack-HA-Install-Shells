@@ -1,6 +1,0 @@
-[openstack-mitaka]
-name=openstack-mitaka
-baseurl=ftp://192.168.100.81/pub/Openstack-Mitaka/openstack-mitaka/
-gpgcheck=0
-enabled=1
-

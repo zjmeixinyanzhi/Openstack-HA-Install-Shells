@@ -1,0 +1,160 @@
+#---------------------------------------------------------------------
+# Example configuration for a possible web application.  See the
+# full configuration options online.
+#
+#   http://haproxy.1wt.eu/download/1.4/doc/configuration.txt
+#
+#---------------------------------------------------------------------
+
+#---------------------------------------------------------------------
+# Global settings
+#---------------------------------------------------------------------
+global
+    # to have these messages end up in /var/log/haproxy.log you will
+    # need to:
+    #
+    # 1) configure syslog to accept network log events.  This is done
+    #    by adding the '-r' option to the SYSLOGD_OPTIONS in
+    #    /etc/sysconfig/syslog
+    #
+    # 2) configure local2 events to go to the /var/log/haproxy.log
+    #   file. A line like the following can be added to
+    #   /etc/sysconfig/syslog
+    #
+    #    local2.*                       /var/log/haproxy.log
+    #
+    log 127.0.0.1 local3
+    chroot  /var/lib/haproxy
+    daemon
+    group  haproxy
+    maxconn  4000
+    pidfile  /var/run/haproxy.pid
+    user  haproxy
+
+
+#---------------------------------------------------------------------
+# common defaults that all the 'listen' and 'backend' sections will
+# use if not designated in their block
+#---------------------------------------------------------------------
+defaults
+    log  global
+    maxconn  4000
+    option  redispatch
+    retries  3
+    timeout  http-request 10s
+    timeout  queue 1m
+    timeout  connect 10s
+    timeout  client 1m
+    timeout  server 1m
+    timeout  check 10s
+
+listen galera_cluster
+    bind XX.XX.XX.XX:3306
+    balance  source
+    option httpchk
+    server controller01 XX.XX.XX.XX:3306 check port 9200 inter 2000 rise 2 fall 5
+    server controller02 XX.XX.XX.XX:3306 check port 9200 inter 2000 rise 2 fall 5 backup
+    server controller03 XX.XX.XX.XX:3306 check port 9200 inter 2000 rise 2 fall 5 backup
+listen keystone_admin_cluster
+    bind XX.XX.XX.XX:35357
+    balance  source
+    option  tcpka
+    option  httpchk
+    option  tcplog
+    server controller01 XX.XX.XX.XX:35357 check inter 2000 rise 2 fall 5
+    server controller02 XX.XX.XX.XX:35357 check inter 2000 rise 2 fall 5
+    server controller03 XX.XX.XX.XX:35357 check inter 2000 rise 2 fall 5
+listen keystone_public_internal_cluster
+    bind XX.XX.XX.XX:5000
+    balance  source
+    option  tcpka
+    option  httpchk
+    option  tcplog
+    server controller01 XX.XX.XX.XX:5000 check inter 2000 rise 2 fall 5
+    server controller02 XX.XX.XX.XX:5000 check inter 2000 rise 2 fall 5
+    server controller03 XX.XX.XX.XX:5000 check inter 2000 rise 2 fall 5
+listen glance_api_cluster
+    bind XX.XX.XX.XX:9292
+    balance  source
+    option  tcpka
+    option  httpchk
+    option  tcplog
+    server controller01 XX.XX.XX.XX:9292 check inter 2000 rise 2 fall 5
+    server controller02 XX.XX.XX.XX:9292 check inter 2000 rise 2 fall 5
+    server controller03 XX.XX.XX.XX:9292 check inter 2000 rise 2 fall 5
+listen glance_registry_cluster
+    bind XX.XX.XX.XX:9191
+    balance  source
+    option  tcpka
+    option  tcplog
+    server controller01 XX.XX.XX.XX:9191 check inter 2000 rise 2 fall 5
+    server controller02 XX.XX.XX.XX:9191 check inter 2000 rise 2 fall 5
+    server controller03 XX.XX.XX.XX:9191 check inter 2000 rise 2 fall 5
+listen nova_compute_api_cluster
+    bind XX.XX.XX.XX:8774
+    balance  source
+    option  tcpka
+    option  httpchk
+    option  tcplog
+    server controller01 XX.XX.XX.XX:8774 check inter 2000 rise 2 fall 5
+    server controller02 XX.XX.XX.XX:8774 check inter 2000 rise 2 fall 5
+    server controller03 XX.XX.XX.XX:8774 check inter 2000 rise 2 fall 5
+listen nova_metadata_api_cluster
+    bind XX.XX.XX.XX:8775
+    balance  source
+    option  tcpka
+    option  tcplog
+    server controller01 XX.XX.XX.XX:8775 check inter 2000 rise 2 fall 5
+    server controller02 XX.XX.XX.XX:8775 check inter 2000 rise 2 fall 5
+    server controller03 XX.XX.XX.XX:8775 check inter 2000 rise 2 fall 5
+listen nova_vncproxy_cluster
+    bind XX.XX.XX.XX:6080
+    balance  source
+    option  tcpka
+    option  tcplog
+    server controller01 XX.XX.XX.XX:6080 check inter 2000 rise 2 fall 5
+    server controller02 XX.XX.XX.XX:6080 check inter 2000 rise 2 fall 5
+    server controller03 XX.XX.XX.XX:6080 check inter 2000 rise 2 fall 5
+listen neutron_api_cluster
+    bind XX.XX.XX.XX:9696
+    balance  source
+    option  tcpka
+    option  httpchk
+    option  tcplog
+    server controller01 XX.XX.XX.XX:9696 check inter 2000 rise 2 fall 5
+    server controller02 XX.XX.XX.XX:9696 check inter 2000 rise 2 fall 5
+    server controller03 XX.XX.XX.XX:9696 check inter 2000 rise 2 fall 5
+listen dashboard_cluster
+    bind XX.XX.XX.XX:80
+    balance  source
+    option  tcpka
+    option  httpchk
+    option  tcplog
+    server controller01 XX.XX.XX.XX:80 check inter 2000 rise 2 fall 5
+    server controller02 XX.XX.XX.XX:80 check inter 2000 rise 2 fall 5
+    server controller03 XX.XX.XX.XX:80 check inter 2000 rise 2 fall 5
+listen cinder_api_cluster
+    bind XX.XX.XX.XX:8776
+    balance  source
+    option  tcpka
+    option  httpchk
+    option  tcplog
+    server controller01 XX.XX.XX.XX:8776 check inter 2000 rise 2 fall 5
+    server controller02 XX.XX.XX.XX:8776 check inter 2000 rise 2 fall 5
+    server controller03 XX.XX.XX.XX:8776 check inter 2000 rise 2 fall 5
+listen ceilometer_api_cluster
+    bind XX.XX.XX.XX:8777
+    balance source
+    option tcpka
+    option tcplog
+    server controller01 XX.XX.XX.XX:8777 check inter 2000 rise 2 fall 5
+    server controller02 XX.XX.XX.XX:8777 check inter 2000 rise 2 fall 5
+    server controller03 XX.XX.XX.XX:8777 check inter 2000 rise 2 fall 5
+listen aodh_api_cluster
+    bind XX.XX.XX.XX:8042
+    balance source
+    option tcpka
+    option tcplog
+    server controller01 XX.XX.XX.XX:8042 check inter 2000 rise 2 fall 5
+    server controller02 XX.XX.XX.XX:8042 check inter 2000 rise 2 fall 5
+    server controller03 XX.XX.XX.XX:8042 check inter 2000 rise 2 fall 5

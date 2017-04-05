@@ -1,0 +1,31 @@
+#!/bin/sh
+installed=$(rpm -qa|grep "pssh")
+### Check pssh is installed
+if [ -z "$installed" ];then
+  ./style/print-info.sh "Install Pssh" 
+  yum install -y pssh
+fi
+### update hosts files
+./0-gen-hosts.sh
+
+### pssh to execute commmand
+if [ $# -ne 2 ];then
+  ./style/print-warnning.sh "Please input two paras, Nodes & Command"
+else
+  case $1 in
+    A|all)
+      echo "All"
+      pssh -i -h ./hosts/nodes.txt $2;;
+    C|controllers )
+      echo "Controllers"
+      pssh -i -h ./hosts/controllers.txt $2;;
+    N|networks)
+      echo "Networks"
+      pssh -i -h ./hosts/networkers.txt $2;;
+    H|hypervisors )
+      echo "Hypervisors"
+      pssh -i -h ./hosts/hypervisors.txt $2;;
+    *)
+      ./style/print-warnning.sh "No nodes were listed!";;
+  esac 
+fi

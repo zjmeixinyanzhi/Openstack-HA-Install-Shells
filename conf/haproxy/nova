@@ -1,0 +1,25 @@
+listen nova_compute_api_cluster
+    bind XX.XX.XX.XX:8774
+    balance  source
+    option  tcpka
+    option  httpchk
+    option  tcplog
+    server controller01 XX.XX.XX.XX:8774 check inter 2000 rise 2 fall 5
+    server controller02 XX.XX.XX.XX:8774 check inter 2000 rise 2 fall 5
+    server controller03 XX.XX.XX.XX:8774 check inter 2000 rise 2 fall 5
+listen nova_metadata_api_cluster
+    bind XX.XX.XX.XX:8775
+    balance  source
+    option  tcpka
+    option  tcplog
+    server controller01 XX.XX.XX.XX:8775 check inter 2000 rise 2 fall 5
+    server controller02 XX.XX.XX.XX:8775 check inter 2000 rise 2 fall 5
+    server controller03 XX.XX.XX.XX:8775 check inter 2000 rise 2 fall 5
+listen nova_vncproxy_cluster
+    bind XX.XX.XX.XX:6080
+    balance  source
+    option  tcpka
+    option  tcplog
+    server controller01 XX.XX.XX.XX:6080 check inter 2000 rise 2 fall 5
+    server controller02 XX.XX.XX.XX:6080 check inter 2000 rise 2 fall 5
+    server controller03 XX.XX.XX.XX:6080 check inter 2000 rise 2 fall 5
