@@ -8,7 +8,6 @@ deploy_node=$compute_host
 echo $deploy_node
 blk_name=(${!blks_map[@]});
 osds="";
-echo $osds
 ### 获取OSD信息，用于生成并激活OSD
 for ((i=0; i<${#additionalNodes_map[@]}; i+=1));
 do
@@ -18,7 +17,7 @@ do
   do
     name2=${blk_name[$j]};
     blk=${blks_map[$name2]};
-    echo "-------------$name:$name2:$blk------------";
+    echo "-------------$name:$name2------------";
     osds=$osds" "$name":"$blk;
     ssh root@$ip ceph-disk zap /dev/$blk
   done
