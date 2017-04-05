@@ -14,7 +14,6 @@ for ((i=0; i<${#monitor_map[@]}; i+=1));
 do
   name=${monitor_name[$i]};
   ip=${monitor_map[$name]};
-  echo "-------------$name------------"
   if [ $name =  $deploy_node ]; then
     echo $name" already is mon!"
   else
@@ -22,7 +21,7 @@ do
    mon_ip=$mon_ip","$(echo $store_network|cut -d "." -f1-3).$(echo $ip|awk -F "." '{print $4}')
   fi
 done;
-echo $mon_hostname" >>${#monitor_map[@]}  "$mon_ip
+#echo $mon_hostname" >>${#monitor_map[@]}  "$mon_ip
 ### 获取OSD信息，用于生成并激活OSD
 blk_name=(${!blks_map[@]});
 osds="";
@@ -31,12 +30,10 @@ for ((i=0; i<${#nodes_map[@]}; i+=1));
 do
   name=${nodes_name[$i]};
   ip=${nodes_map[$name]};
-  echo "-------------$name------------";
   for ((j=0; j<${#blks_map[@]}; j+=1));
   do
     name2=${blk_name[$j]};
     blk=${blks_map[$name2]};
-    echo "-------------$name2:$blk------------";
     osds=$osds" "$name":"$blk;
   done
 done
@@ -48,13 +45,13 @@ for ((i=0; i<${#nodes_map[@]}; i+=1));
 do
   name=${nodes_name[$i]};
   ip=${nodes_map[$name]};
-  echo "-------------$name------------";
   for ((j=0; j<${#blks_map[@]}; j+=1));
   do
     name2=${blk_name[$j]};
     blk=${blks_map[$name2]};
-    echo "-------------$name2:$blk------------";
+    . style/print-info.sh "-------------$name2:$blk------------";
     ssh root@$ip ceph-disk zap /dev/$blk
+    ssh root@$ip partprobe
   done
 done
 ssh root@$compute_host /bin/bash << EOF
@@ -65,8 +62,6 @@ ssh root@$compute_host /bin/bash << EOF
   cd /root/my-cluster
   rm -rf /root/my-cluster/*
   ceph-deploy new $deploy_node
-  sed -i -e 's#'"$(ssh root@$compute_host cat /root/my-cluster/ceph.conf |grep mon_initial_members)"'#'"$(ssh root@$compute_host cat /root/my-cluster/ceph.conf |grep mon_initial_members)$mon_hostname"'#g' /root/my-cluster/ceph.conf
-  sed -i -e 's#'"$(ssh root@$compute_host cat /root/my-cluster/ceph.conf |grep mon_host )"'#'"$(ssh root@$compute_host  cat /root/my-cluster/ceph.conf |grep mon_host )$mon_ip"'#g' /root/my-cluster/ceph.conf
   echo "public network ="$store_network>>ceph.conf
   ceph-deploy install --nogpgcheck --repo-url $base_location/download.ceph.com/rpm-$ceph_release/el7/ ${nodes_name[@]} --gpg-url $base_location/download.ceph.com/release.asc
   ceph-deploy mon create-initial
@@ -78,21 +73,28 @@ for ((i=0; i<${#monitor_map[@]}; i+=1));
 do
   name=${monitor_name[$i]};
   ip=${monitor_map[$name]};
-  echo "-------------$name------------"
+  . style/print-info.sh "Set $name as a ceph monitor" 
   if [ $name =  $deploy_node ]; then
     echo $name" already is mon!"
   else
     ssh root@$deploy_node  /bin/bash << EOF
-      cd /root/my-cluster
-      ceph-deploy mon add $name
+    cd /root/my-cluster
+    ceph-deploy mon add $name
 EOF
   fi
 done;
 ###查看集群状态 ceph管理节点创建Pool
 ssh root@$deploy_node /bin/bash << EOF
+  cd /root/my-cluster
+  ceph-deploy  --overwrite-conf  config  push ${nodes_name[@]} 
+  sed -i -e 's#'"$(ssh root@$compute_host cat /root/my-cluster/ceph.conf |grep mon_initial_members)"'#'"$(ssh root@$compute_host cat /root/my-cluster/ceph.conf |grep mon_initial_members)$mon_hostname"'#g' /root/my-cluster/ceph.conf
+  sed -i -e 's#'"$(ssh root@$compute_host cat /root/my-cluster/ceph.conf |grep mon_host )"'#'"$(ssh root@$compute_host  cat /root/my-cluster/ceph.conf |grep mon_host )$mon_ip"'#g' /root/my-cluster/ceph.conf
   ceph -s
   ceph osd pool create volumes $pool_size
   ceph osd pool create images $pool_size
   ceph osd pool create backups $pool_size
   ceph osd pool create vms $pool_size
+  ### [恢复部署节点hosts文件]
+  sed -i -e 's#'"$(echo $store_network|cut -d "." -f1-3)"'#'"$(echo $local_network|cut -d "." -f1-3)"'#g' /etc/hosts
 EOF
+

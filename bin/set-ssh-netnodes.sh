@@ -2,7 +2,6 @@
 networker_name=(${!networker_map[@]});
 controller_name=(${!controller_map[@]});
 
-ssh ssh-keygen
 for ((i=0; i<${#networker_map[@]}; i+=1));
   do
       name=${networker_name[$i]};

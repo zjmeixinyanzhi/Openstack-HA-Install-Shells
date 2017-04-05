@@ -22,8 +22,8 @@ echo $mon_hostname" >>${#monitor_map[@]}  "$mon_ip
 
 ssh root@$compute_host /bin/bash << EOF
 cd /root/my-cluster
-cat /root/my-cluster/ceph.conf |grep mon_initial_members
-sed -i -e 's#'"$(ssh root@$compute_host cat /root/my-cluster/ceph.conf |grep mon_initial_members)"'#'"$(ssh root@$compute_host cat /root/my-cluster/ceph.conf |grep mon_initial_members)$mon_hostname"'#g' /root/my-cluster/ceph.conf
-sed -i -e 's#'"$(ssh root@$compute_host cat /root/my-cluster/ceph.conf |grep mon_host )"'#'"$(ssh root@$compute_host  cat /root/my-cluster/ceph.conf |grep mon_host )$mon_ip"'#g' /root/my-cluster/ceph.conf
+#sed -i -e 's#'"$(ssh root@$compute_host cat /root/my-cluster/ceph.conf |grep mon_initial_members)"'#'"$(ssh root@$compute_host cat /root/my-cluster/ceph.conf |grep mon_initial_members)$mon_hostname"'#g' /root/my-cluster/ceph.conf
+#sed -i -e 's#'"$(ssh root@$compute_host cat /root/my-cluster/ceph.conf |grep mon_host )"'#'"$(ssh root@$compute_host  cat /root/my-cluster/ceph.conf |grep mon_host )$mon_ip"'#g' /root/my-cluster/ceph.conf
+ceph-deploy  --overwrite-conf  config  push ${nodes_name[@]} 
 pwd
 EOF
