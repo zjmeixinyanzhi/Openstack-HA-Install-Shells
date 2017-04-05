@@ -1,6 +1,6 @@
 #!/bin/sh
 ### 设置部署节点主机名和IP，nodes_map为全部节点、controller_map为三个控制节点、hypervisor_map为计算节点（与存储节点融合）
-declare -A nodes_map=(["controller01"]="192.168.2.11" ["controller02"]="192.168.2.12" ["controller03"]="192.168.2.13" ["network01"]="192.168.2.14" ["network02"]="192.168.2.15" ["network03"]="192.168.2.16" ["compute01"]="192.168.2.17" ["compute02"]="192.168.2.18" ["compute03"]="192.168.2.19")
+declare -A nodes_map=(["controller01"]="192.168.2.11" ["controller02"]="192.168.2.12" ["controller03"]="192.168.2.13" ["network01"]="192.168.2.14" ["network02"]="192.168.2.15" ["network03"]="192.168.2.16" ["compute01"]="192.168.2.17" ["compute02"]="192.168.2.18" ["compute03"]="192.168.2.19" ["compute04"]="192.168.2.20")
 declare -A controller_map=(["controller01"]="192.168.2.11" ["controller02"]="192.168.2.12" ["controller03"]="192.168.2.13");
 declare -A networker_map=(["network01"]="192.168.2.14" ["network02"]="192.168.2.15" ["network03"]="192.168.2.16");
 declare -A hypervisor_map=(["compute01"]="192.168.2.17" ["compute02"]="192.168.2.18" ["compute03"]="192.168.2.19");
@@ -11,7 +11,7 @@ declare controller_name=(${!controller_map[@]});
 declare networker_name=(${!networker_map[@]});
 declare hypervisor_name=(${!hypervisor_map[@]});
 ### 后期需要增加的计算节点
-#declare -A additionalNodes_map=(["compute04"]="192.168.2.107" ["compute05"]="192.168.2.108");
+declare -A additionalNodes_map=(["compute04"]="192.168.2.20");
 ### NTP主机
 ref_host=controller01
 ### 网络HA集群默认部署节点（必须存在该主机名的节点）
