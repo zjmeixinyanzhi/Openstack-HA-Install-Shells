@@ -33,7 +33,7 @@ CentOS7.2+MariaDB+Openstack-Mitaka+Ceph-Jewel
 ```shell
   # . all-in-one.sh
 ```
-* 详细说明请阅读个人博客中“Openstack云平台脚本部署”系列文章
+* 详细说明请阅读个人博客中“[Openstack云平台脚本部署](http://zjzone.cc/?s=Openstack%E4%BA%91%E5%B9%B3%E5%8F%B0%E8%84%9A%E6%9C%AC%E9%83%A8%E7%BD%B2)”系列文章
 
 ## 5 更新说明
 
@@ -46,4 +46,4 @@ CentOS7.2+MariaDB+Openstack-Mitaka+Ceph-Jewel
 ## 6 问题反馈
 如有问题，欢迎留言反馈。
 
-* 个人博客: zjzone.cc
+* 个人博客: <http://zjzone.cc>
