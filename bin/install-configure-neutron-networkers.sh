@@ -134,11 +134,11 @@ do
   sed -i -e 's#DEVICE=#DEVICE='"$local_nic"'#g' ../conf/ifcfg-local_nic
   scp ../conf/ifcfg-local_nic root@$ip:/etc/sysconfig/network-scripts/ifcfg-$local_nic
   scp ../conf/ifcfg-br-ex root@$ip:/etc/sysconfig/network-scripts/ifcfg-br-ex
-  ssh root@$ip /bin/bash << EOF
-  ovs-vsctl add-br br-ex
-  ovs-vsctl add-port br-ex $local_nic
-  systemctl restart network.service
-EOF
+ # ssh root@$ip /bin/bash << EOF
+ # ovs-vsctl add-br br-ex
+ # ovs-vsctl add-port br-ex $local_nic
+ # systemctl restart network.service
+#EOF
 done;
 ### [任一网络节点]测试
 .  restart-pcs-cluster-networkers.sh

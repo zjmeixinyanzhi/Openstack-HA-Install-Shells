@@ -4,6 +4,7 @@
 ### install mariadb
 ./pssh-exe C "yum install -y MariaDB-server xinetd"
 ### [所有控制节点] 修改/etc/haproxy/haproxy.cfg文件
+. ./1-gen-haproxy-cfg.sh base
 . ./1-gen-haproxy-cfg.sh galera
 ### 备份配置文件
 ./pssh-exe C "cp /etc/my.cnf.d/server.cnf /etc/my.cnf.d/bak.server.cnf"

@@ -1,4 +1,5 @@
- bind XX.XX.XX.XX:3306
+listen galera_cluster
+    bind XX.XX.XX.XX:3306
     balance  source
     option httpchk
     server controller01 XX.XX.XX.XX:3306 check port 9200 inter 2000 rise 2 fall 5

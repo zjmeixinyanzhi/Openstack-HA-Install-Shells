@@ -25,7 +25,7 @@ FLUSH PRIVILEGES;"
 ./pssh-exe C "openstack-config --set /etc/keystone/keystone.conf oslo_messaging_rabbit rabbit_durable_queues true"
 ### [任一节点/controller01]初始化Fernet key，并共享给其他节点
 keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
-#./pssh-exe C "mkdir -p /etc/keystone/fernet-keys/"
+./pssh-exe C "mkdir -p /etc/keystone/fernet-keys/"
 ./scp-exe C /etc/keystone/fernet-keys/ /etc/keystone/
 ./pssh-exe C "chown keystone:keystone /etc/keystone/fernet-keys/*"
 ##### scp httpd.conf wsgi-keystone.conf
@@ -71,16 +71,15 @@ openstack endpoint list
 openstack project list
 ### [所有控制节点]编辑/etc/keystone/keystone-paste.ini
 ./pssh-exe C "sed -i -e 's#admin_token_auth ##g' /etc/keystone/keystone-paste.ini"
-./pssh-exe C "unset OS_TOKEN OS_URL"
+unset OS_TOKEN OS_URL
 ###[所有控制节点] create openrc.sh
-cp ../conf/keystonerc_admin.template ../conf/keystonerc_admin
+\cp ../conf/keystonerc_admin.template ../conf/keystonerc_admin
 sed -i -e 's#OS_PASSWORD=#OS_PASSWORD='"$password_openstack_admin"'#g' ../conf/keystonerc_admin
 sed -i -e 's#OS_AUTH_URL=#OS_AUTH_URL=http://'"$virtual_ip"':35357/v3#g' ../conf/keystonerc_admin
 ./scp-exe C "../conf/keystonerc_admin" "/root/keystonerc_admin"
 ./pssh-exe C "chmod +x /root/keystonerc_admin" 
-rm -rf ../conf/keystonerc_admin
-/root/keystonerc_admin
-openstack token issue
 ./style/print-info.sh "Please re-login!"
 curr_dir=$(echo `pwd`)
 ssh `hostname` cd $curr_dir
+. /root/keystonerc_admin
+openstack token issue

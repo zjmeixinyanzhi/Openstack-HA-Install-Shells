@@ -100,5 +100,3 @@ neutron ext-list
 ### [网络节点] 安装网络高可用集群
 . install-configure-pacemaker-networkers.sh
 . install-configure-neutron-networkers.sh
-
-
