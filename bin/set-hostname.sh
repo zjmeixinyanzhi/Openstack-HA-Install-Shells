@@ -19,7 +19,7 @@ cat $tmp_file
 ### scp to other nodes
 ./scp-exe A $tmp_file $target
 ## check
-. 0-gen-hosts.sh
+. ./0-gen-hosts.sh
 pssh -i -h hosts/nodes.txt hostname
 ### update hostname
 ./style/print-info.sh "Re-login to update the local hostname!"

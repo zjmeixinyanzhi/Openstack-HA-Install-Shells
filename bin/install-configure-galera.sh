@@ -33,7 +33,7 @@ do
     ssh root@$ip systemctl start mariadb
   fi
 done;
-. restart-pcs-cluster.sh
+. ./restart-pcs-cluster.sh
 mysql -uroot -p$password_galera_root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '"$password_galera_root"';FLUSH PRIVILEGES;"
 mysql -uroot -p$password_galera_root -e "SHOW STATUS LIKE 'wsrep_cluster_size';"
 

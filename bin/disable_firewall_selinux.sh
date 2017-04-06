@@ -6,7 +6,7 @@ for ((i=0; i<${#nodes_map[@]}; i+=1));
   do
     name=${nodes_name[$i]};
     ip=${nodes_map[$name]};
-    echo "-------------$name------------"
+    ./style/print-info.sh $name 
     sestatus=$(ssh root@$ip sestatus -v |grep "SELinux status:"|awk '{print $3}')
     flag=unknown
     if [ $sestatus = "enabled" ];then

@@ -7,7 +7,7 @@ for ((i=0; i<${#nodes_map[@]}; i+=1));
 do
   name=${nodes_name[$i]};
   ip=${nodes_map[$name]};
-  echo "-------------$name------------"
+  ./style/print-info.sh $name 
   if [ $name = $ref_host  ]; then
     echo ""$ip
       sed -i -e '/server [0 1 2 3].centos.pool.ntp.org/d'  /etc/chrony.conf

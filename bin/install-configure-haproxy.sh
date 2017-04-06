@@ -15,5 +15,5 @@
 pcs resource create haproxy systemd:haproxy --clone
 pcs constraint order start vip then haproxy-clone kind=Optional
 pcs constraint colocation add haproxy-clone with vip
-. restart-pcs-cluster.sh
+. ./restart-pcs-cluster.sh
 ping -c 3 $virtual_ip
