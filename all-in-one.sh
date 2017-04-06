@@ -1,4 +1,3 @@
-
 #!/bin/sh
 cd bin
 ./set-ssh-nodes.sh
