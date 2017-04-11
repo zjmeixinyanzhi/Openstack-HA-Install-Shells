@@ -49,7 +49,7 @@ do
   do
     name2=${blk_name[$j]};
     blk=${blks_map[$name2]};
-    . style/print-info.sh "-------------$name2:$blk------------";
+    . style/print-info.sh "-------------$name:$blk------------";
     ssh root@$ip ceph-disk zap /dev/$blk
     ssh root@$ip partprobe
   done
