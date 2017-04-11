@@ -2,6 +2,12 @@
 . ../0-set-config.sh
 ./style/print-split.sh "Ceph-deploy Installation"
 
+echo $compute_host
+scp ../0-set-config.sh $compute_host:/tmp 
+scp ./set-ssh-ceph-storage-nodes.sh $compute_host:/tmp
+. ./style/print-warnning.sh "Have you execute \". /tmp/set-ssh-ceph-storage-nodes.sh\" to SSH in $compute_host! \nIf haven't, please press Ctrl+C to terminate this script and execute it in $compute_host!"
+read continue_tag
+
 base_location=../conf/wheel_ceph/
 scp -r ../conf/wheel_ceph/ root@$compute_host:/tmp
 ssh root@$compute_host /bin/bash << EOF
