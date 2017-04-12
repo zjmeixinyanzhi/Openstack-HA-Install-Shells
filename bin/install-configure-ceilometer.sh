@@ -49,7 +49,10 @@ do
 EOF
 done;
 ### [controller01] 新建数据库、用户名和权限
-mongo --eval 'db = db.getSiblingDB("ceilometer");db.createUser({user: "ceilometer",pwd: "'"$password_mongo_root"'",roles: [ "readWrite", "dbAdmin" ]})'
+\cp ../conf/mongo_create_ceilometer_user-template.sh /tmp/mongodb_configure_ceilometer.sh
+sed -i -e 's#123456#'"$password_mongo_root"'#g' /tmp/mongodb_configure_ceilometer.sh
+./scp-exe C /tmp/mongodb_configure_ceilometer.sh /tmp/mongodb_configure_ceilometer.sh
+./pssh-exe C ". /tmp/mongodb_configure_ceilometer.sh" 
 ##### generate haproxy.cfg
 . ./1-gen-haproxy-cfg.sh ceilometer
 ### [controller01] 创建用户等
