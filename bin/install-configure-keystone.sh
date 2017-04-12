@@ -71,7 +71,7 @@ openstack endpoint list
 openstack project list
 ### [所有控制节点]编辑/etc/keystone/keystone-paste.ini
 ./pssh-exe C "sed -i -e 's#admin_token_auth ##g' /etc/keystone/keystone-paste.ini"
-unset OS_TOKEN OS_URL
+./pssh-exe C "unset OS_TOKEN OS_URL"
 ###[所有控制节点] create openrc.sh
 \cp ../conf/keystonerc_admin.template ../conf/keystonerc_admin
 sed -i -e 's#OS_PASSWORD=#OS_PASSWORD='"$password_openstack_admin"'#g' ../conf/keystonerc_admin
