@@ -48,10 +48,8 @@ do
     openstack-config --set /etc/ceilometer/ceilometer.conf publisher telemetry_secret $password
 EOF
 done;
-### [controller01] 添加资源
-pcs resource create mongod systemd:mongod op start timeout=300s --clone
 ### [controller01] 新建数据库、用户名和权限
-./pssh-exe C "mongo --eval 'db = db.getSiblingDB("ceilometer");db.createUser({user: "ceilometer",pwd: "'"$password_mongo_root"'",roles: [ "readWrite", "dbAdmin" ]})'"
+mongo --eval 'db = db.getSiblingDB("ceilometer");db.createUser({user: "ceilometer",pwd: "'"$password_mongo_root"'",roles: [ "readWrite", "dbAdmin" ]})'
 ##### generate haproxy.cfg
 . ./1-gen-haproxy-cfg.sh ceilometer
 ### [controller01] 创建用户等
@@ -62,4 +60,3 @@ openstack service create --name ceilometer --description "Telemetry" metering
 openstack endpoint create --region RegionOne metering public http://$virtual_ip:8777
 openstack endpoint create --region RegionOne metering internal http://$virtual_ip:8777
 openstack endpoint create --region RegionOne metering admin http://$virtual_ip:8777
-

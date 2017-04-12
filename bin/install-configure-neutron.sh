@@ -1,6 +1,6 @@
 #!/bin/sh
 . ../0-set-config.sh
-./style/print-split.sh "Nova Installation"
+./style/print-split.sh "Neutron Installation"
 
 ### [所有控制节点] 修改/etc/haproxy/haproxy.cfg文件
 . ./1-gen-haproxy-cfg.sh neutron
@@ -100,3 +100,6 @@ neutron ext-list
 ### [网络节点] 安装网络高可用集群
 . install-configure-pacemaker-networkers.sh
 . install-configure-neutron-networkers.sh
+### [任一节点]测试
+. /root/keystonerc_admin
+neutron agent-list

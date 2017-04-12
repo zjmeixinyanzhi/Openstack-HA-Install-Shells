@@ -109,3 +109,5 @@ pcs resource op add openstack-ceilometer-notification stop timeout=300
 pcs resource op add mongod start timeout=300
 pcs resource op add mongod stop timeout=300
 . restart-pcs-cluster.sh
+### [任意节点] 测试数据收集 
+ceilometer meter-list

@@ -1,5 +1,5 @@
 #!/bin/sh
-. ./style/print-warnning.sh "Pcs cluster is restarting! \nIf have started, please press Ctrl+C to terminate and it'll continue!"
+. ./style/print-warnning.sh "Pcs cluster is restarting! \nIf have started, please press Ctrl+C once to terminate and it'll continue!"
 pcs cluster stop --all
 sleep 10
 #ps aux|grep "pcs cluster stop --all"|grep -v grep|awk '{print $2 }'|xargs kill
