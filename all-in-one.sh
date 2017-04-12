@@ -49,3 +49,4 @@ cd bin
 . install-configure-ceph-auth-client-key.sh
 . style/print-prompt.sh
 . install-configure-compute-nodes-services.sh
+. restart-pcs-cluster.sh 
