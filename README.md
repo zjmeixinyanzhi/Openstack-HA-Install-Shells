@@ -23,7 +23,7 @@ CentOS7.2+MariaDB+Openstack-Mitaka+Ceph-Jewel
     * 管理网最初需要相互联通
     * 需要配置计算节点（作为Ceph集群的部署节点）到其他各节点之间的SSH（需在该节点手动执行配置脚本）
     
-## 4 使用说明
+## 3 使用说明
 * 根据实际环境，配置部署变量初始化0-set-config.sh，设置节点主机名、IP、VIP、网卡信息、网段信息、安装源、OSD磁盘信息、密码信息
 ```shell
   # vim  0-set-config.sh
@@ -34,7 +34,7 @@ CentOS7.2+MariaDB+Openstack-Mitaka+Ceph-Jewel
 ```
 * 详细说明请阅读个人博客中“[Openstack云平台脚本部署](http://zjzone.cc/?s=Openstack%E4%BA%91%E5%B9%B3%E5%8F%B0%E8%84%9A%E6%9C%AC%E9%83%A8%E7%BD%B2)”系列文章
 
-## 5 更新说明
+## 4 更新说明
 
 对之前脚本进行了重构，改进之处主要包括： 
 
@@ -42,7 +42,7 @@ CentOS7.2+MariaDB+Openstack-Mitaka+Ceph-Jewel
 * 并行执行命令：对于比较耗时的操作，尝试改用pssh进行个节点并行执行
 * 友好的安装提示：带颜色的提示信息
 
-## 6 问题反馈
+## 5 问题反馈
 如有问题，欢迎留言反馈。
 
 * 个人博客: <http://zjzone.cc>
