@@ -7,7 +7,7 @@ sleep 5
 ./pssh-exe N "pcs cluster kill"
 ssh root@$network_host /bin/bash << EOF
   pcs cluster stop --all
-  pcs cluster stop --all
+  pcs cluster kill --all
   pcs cluster start --all
   sleep 10
   pcs resource
