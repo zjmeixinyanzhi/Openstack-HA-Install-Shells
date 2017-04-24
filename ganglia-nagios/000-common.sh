@@ -41,7 +41,7 @@ done
 # ceph public network, for client access (r/w), 
 # the mon listens on this network, the ceph.conf set mon_host on the mgmt network, so here we must use mgmt network???
 ceph_public_network="192.168.2.0"
-ceph_public_network_prefix="23"
+ceph_public_network_prefix="24"
 
 # ceph cluster network, for heartbeat, object replication and recovery
 ceph_cluster_network="172.16.2.0"
@@ -56,7 +56,7 @@ ceph_cluster_network_prefix="24"
 declare -a controllers=(controller01 controller02 controller03)
 
 # associate array of controllers and management network interface ip address
-declare -A controller_mgmt_nic_map=(["controller01"]="192.168.2.101" ["controller02"]="192.168.2.102" ["controller03"]="192.168.2.103");
+declare -A controller_mgmt_nic_map=(["controller01"]="192.168.2.11" ["controller02"]="192.168.2.12" ["controller03"]="192.168.2.13");
 
 # associate array of controllers and tuennel network interface ip address
 declare -A controller_tunnel_nic_map=(["controller01"]="10.10.10.101" ["controller02"]="10.10.10.102" ["controller03"]="10.10.10.103");
@@ -65,7 +65,7 @@ declare -A controller_tunnel_nic_map=(["controller01"]="10.10.10.101" ["controll
 declare -a networkers=(network01 network02 network03)
 
 # associate array of networkers and management network interface ip address
-declare -A networkers_mgmt_nic_map=(["network01"]="192.168.2.111" ["network02"]="192.168.2.112" ["network03"]="192.168.2.113");
+declare -A networkers_mgmt_nic_map=(["network01"]="192.168.2.14" ["network02"]="192.168.2.15" ["network03"]="192.168.2.16");
 
 # associate array of hypervisors and tuennel network interface ip address
 declare -A networkders_tunnel_nic_map=(["network01"]="10.10.10.111" ["network02"]="10.10.10.112" ["network03"]="10.10.10.113");
@@ -74,15 +74,15 @@ declare -A networkders_tunnel_nic_map=(["network01"]="10.10.10.111" ["network02"
 declare -a hypervisors=(compute01 compute02 compute03)
 
 # associate array of hypervisors and management network interface ip address
-declare -A hypervisor_mgmt_nic_map=(["compute01"]="192.168.2.104" ["compute02"]="192.168.2.105" ["compute03"]="192.168.2.106");
+declare -A hypervisor_mgmt_nic_map=(["compute01"]="192.168.2.17" ["compute02"]="192.168.2.18" ["compute03"]="192.168.2.19");
 
 # associate array of hypervisors and tuennel network interface ip address
 declare -A hypervisor_tunnel_nic_map=(["compute01"]="10.10.10.104" ["compute02"]="10.10.10.105" ["compute03"]="10.10.10.106");
 
-domain_suffix=".stack.local"
+domain_suffix=""
 
 # haproxy virtual ip address
-virtual_ip="192.168.2.121"
+virtual_ip="192.168.2.241"
 
 # redis server ip address, for ceilometer
 redis_vip="192.168.2.122"

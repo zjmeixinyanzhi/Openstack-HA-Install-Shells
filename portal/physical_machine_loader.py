@@ -12,10 +12,10 @@ import uuid
 import os_client_config
 import datetime
 
-database_host = '192.168.2.211'
+database_host = "192.168.2.241"
 database_name = 'cloud'
 database_username = 'root'
-database_password = 'Gugong123'
+database_password = "a263f6a89fa2"
 
 def get_hypervisor_id(hostname): 
 	# construct legancy client, using OS_ environment variables
