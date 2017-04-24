@@ -1,0 +1,42 @@
+###  connectivity(ping) libvirtd nova-compute neutron-openvswitch-agent ceilometer-compute(ceilometer-polling)
+
+# connectivity
+define service{
+    use generic-service
+    host_name FQDN
+    service_description CONNECTIVITY
+    check_command check_ping!100.0,20%!500.0,60%
+}
+
+# libvirtd
+define service{
+    use generic-service
+    host_name FQDN
+    service_description LIBVIRTD
+    check_command check_nrpe!check_libvirtd
+}
+
+# nova-compute
+define service{
+    use generic-service
+    host_name FQDN
+    service_description NOVA_COMPUTE
+    check_command check_nrpe!check_nova-compute
+}
+
+# neutron-openvswitch-agent
+define service{
+    use generic-service
+    host_name FQDN
+    service_description NEUTRON_OPENVSWITCH_AGENT
+    check_command check_nrpe!check_neutron-openvswitch-agent
+}
+
+# ceilometer-compute
+define service{
+    use generic-service
+    host_name FQDN
+    service_description CEILOMETER_COMPUTE
+    check_command check_nrpe!check_ceilometer-polling
+}
+

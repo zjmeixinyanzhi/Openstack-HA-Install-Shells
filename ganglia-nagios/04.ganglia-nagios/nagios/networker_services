@@ -1,0 +1,40 @@
+###  connectivity(ping)  neutron-openvswitch-agent neutron-dhcp-agent neutron-l3-agent neutron-metadata-agent
+# connectivity
+define service{
+    use generic-service
+    host_name FQDN
+    service_description CONNECTIVITY
+    check_command check_ping!100.0,20%!500.0,60%
+}
+
+# neutron-openvswitch-agent
+define service{
+    use generic-service
+    host_name FQDN
+    service_description NEUTRON_OPENVSWITCH_AGENT
+    check_command check_nrpe!check_neutron-openvswitch-agent
+}
+
+# neutron-dhcp-agent
+define service{
+    use generic-service
+    host_name FQDN
+    service_description NEUTRON_DHCP_AGENT
+    check_command check_nrpe!check_neutron-dhcp-agent
+}
+
+# neutron-l3-agent
+define service{
+    use generic-service
+    host_name FQDN
+    service_description NEUTRON_L3_AGENT
+    check_command check_nrpe!check_neutron-l3-agent
+}
+
+# neutron-metadata-agent
+define service{
+    use generic-service
+    host_name FQDN
+    service_description NEUTRON_METADATA_AGENT
+    check_command check_nrpe!check_neutron-metadata-agent
+}

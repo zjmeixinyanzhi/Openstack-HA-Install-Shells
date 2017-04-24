@@ -1,0 +1,5 @@
+
+command[check_neutron-openvswitch-agent]=/usr/lib64/nagios/plugins/check_procs -c 1: -a neutron-openvswitch-agent
+command[check_neutron-dhcp-agent]=/usr/lib64/nagios/plugins/check_procs -c 1: -a neutron-dhcp-agent
+command[check_neutron-l3-agent]=/usr/lib64/nagios/plugins/check_procs -c 1: -a neutron-l3-agent
+command[check_neutron-metadata-agent]=/usr/lib64/nagios/plugins/check_procs -c 1: -a neutron-metadata-agent
