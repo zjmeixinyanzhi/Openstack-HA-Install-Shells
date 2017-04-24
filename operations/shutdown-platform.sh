@@ -4,15 +4,19 @@ nodes_name=(${!nodes_map[@]});
 
 stop_all_services(){
   ### stop portal
-  . /opt/apache-tomcat-7.0.68/bin/shutdown.sh
+  /opt/apache-tomcat-7.0.68/bin/shutdown.sh
   ### Stop controller cluster
+  echo -e "\033[34m正在关闭控制节点集群上的云平台服务，请耐心等待！\033[0m"
   pcs cluster stop --all
   for i in 01 02 03; do ssh controller$i pcs cluster kill; done
   pcs cluster stop --all
   ### Stop network cluster
+  echo -e "\033[34m正在关闭网络节点集群上的云平台服务，请耐心等待！\033[0m"
   ssh root@$network_host pcs cluster stop --all
   for i in 01 02 03; do ssh network$i pcs cluster kill; done
   ssh root@$network_host pcs cluster stop --all
+  ### Stop Galera DB Cluster
+  for i in 01 02 03; do ssh controller$i systemctl stop mariadb; done
 }
 shutdown_all_nodes(){
   for host in ${nodes_name[@]}
