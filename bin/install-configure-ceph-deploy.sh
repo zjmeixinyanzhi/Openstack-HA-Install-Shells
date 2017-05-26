@@ -12,7 +12,7 @@ base_location=../conf/wheel_ceph/
 scp -r ../conf/wheel_ceph/ root@$compute_host:/tmp
 ssh root@$compute_host /bin/bash << EOF
   yum install --nogpgcheck -y epel-release
-  sudo rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+  rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
   rm -rf /etc/yum.repos.d/epel*
   yum install -y python-pip
   yum install -y python-wheel
