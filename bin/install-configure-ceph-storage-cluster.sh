@@ -55,6 +55,7 @@ do
   done
 done
 ssh root@$compute_host /bin/bash << EOF
+  sed -i -e 's#'"$(echo $local_network|cut -d "." -f1-3)"'#'"$(echo $store_network|cut -d "." -f1-3)"'#g' /etc/hosts
   ceph-deploy forgetkeys
   ceph-deploy purge ${nodes_name[@]}
   ceph-deploy purgedata ${nodes_name[@]}
