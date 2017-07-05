@@ -10,4 +10,6 @@ mkdir -p $yum_repos_dir
 ### scp to all nodes
 ./scp-exe A "$yum_repos_dir/" "/etc/"
 ###
-./pssh-exe A "rpmdb --rebuilddb && yum repolist all && yum upgrade -y "
+./pssh-exe A "rpmdb --rebuilddb"
+./pssh-exe A "yum repolist all"
+./pssh-exe A "yum upgrade -y"
