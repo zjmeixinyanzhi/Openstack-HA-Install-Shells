@@ -87,9 +87,9 @@ done;
 ###查看集群状态 ceph管理节点创建Pool
 ssh root@$deploy_node /bin/bash << EOF
   cd /root/my-cluster
-  ceph-deploy  --overwrite-conf  config  push ${nodes_name[@]} 
   sed -i -e 's#'"$(ssh root@$compute_host cat /root/my-cluster/ceph.conf |grep mon_initial_members)"'#'"$(ssh root@$compute_host cat /root/my-cluster/ceph.conf |grep mon_initial_members)$mon_hostname"'#g' /root/my-cluster/ceph.conf
   sed -i -e 's#'"$(ssh root@$compute_host cat /root/my-cluster/ceph.conf |grep mon_host )"'#'"$(ssh root@$compute_host  cat /root/my-cluster/ceph.conf |grep mon_host )$mon_ip"'#g' /root/my-cluster/ceph.conf
+  ceph-deploy  --overwrite-conf  config  push ${nodes_name[@]} 
   ceph -s
   ceph osd pool create volumes $pool_size
   ceph osd pool create images $pool_size
