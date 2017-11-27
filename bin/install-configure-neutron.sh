@@ -98,7 +98,10 @@ pcs resource op add neutron-server stop timeout=300
 . /root/keystonerc_admin
 neutron ext-list
 ### [网络节点] 安装网络高可用集群
-. install-configure-pacemaker-networkers.sh
+if [[ "$networker_split" = "yes" ]];then
+  echo "Need to configure pcs cluster in networkers!"
+  . install-configure-pacemaker-networkers.sh
+fi
 . install-configure-neutron-networkers.sh
 ### [任一节点]测试
 . /root/keystonerc_admin
