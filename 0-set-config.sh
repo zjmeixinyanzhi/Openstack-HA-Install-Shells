@@ -16,6 +16,8 @@ declare -A additionalNodes_map=(["compute04"]="192.168.2.20");
 ref_host=controller01
 ### 网络HA集群默认部署节点（必须存在该主机名的节点）
 network_host=network01
+### 网络节点是否单独部署，若是设置为yes，否设置为no
+networker_split=no
 ### 计算节点默认部署节点（必须存在该主机名的节点）
 compute_host=compute01
 ### 设置虚拟IP，virtual_ip为openstack服务的虚拟IP，virtual_ip_redis为Redis为虚拟IP
