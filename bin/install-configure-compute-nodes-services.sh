@@ -13,7 +13,7 @@ cat /var/lib/nova/.ssh/id_rsa.pub > /var/lib/nova/.ssh/authorized_keys
 chmod 600 /var/lib/nova/.ssh/authorized_keys
 ./scp-exe H /var/lib/nova/.ssh/ /var/lib/nova/
 ./pssh-exe H "chown nova:nova -R /var/lib/nova/.ssh/"
-./pssh-exe H "su - nova -c "ssh nova@compute02 cd ~ && pwd""
+./pssh-exe H "su - nova -c 'ssh nova@compute02 cd ~ && pwd'"
 ### 安装Openstack服务
 ./style/print-split.sh "Openstack Services Installation on Compute Nodes"
 ./scp-exe H compute_nodes_exec.sh /tmp
