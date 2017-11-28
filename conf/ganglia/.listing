@@ -1,0 +1,4 @@
+drwxr-xr-x    2 0        0              65 Nov 28 03:28 .
+drwxr-xr-x    4 0        0              94 Nov 28 03:28 ..
+-rw-r--r--    1 0        0            8789 Nov 28 03:28 gmond-master.conf
+-rw-r--r--    1 0        0            8778 Nov 28 03:28 gmond-slave.conf
