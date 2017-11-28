@@ -1,0 +1,10 @@
+drwxr-xr-x    2 0        0            4096 Nov 28 03:28 .
+drwxr-xr-x    4 0        0              94 Nov 28 03:28 ..
+-rw-r--r--    1 0        0             132 Nov 28 03:28 check_nrpe
+-rw-r--r--    1 0        0             384 Nov 28 03:28 compute_nrpe_commands
+-rw-r--r--    1 0        0             968 Nov 28 03:28 compute_services
+-rw-r--r--    1 0        0            2003 Nov 28 03:28 controller_nrpe_commands
+-rw-r--r--    1 0        0            4219 Nov 28 03:28 controller_services
+-rw-r--r--    1 0        0              91 Nov 28 03:28 host
+-rw-r--r--    1 0        0             419 Nov 28 03:28 networker_nrpe_commands
+-rw-r--r--    1 0        0            1019 Nov 28 03:28 networker_services

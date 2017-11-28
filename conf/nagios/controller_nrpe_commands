@@ -1,0 +1,23 @@
+
+command[check_httpd]=/usr/lib64/nagios/plugins/check_procs -c 1: -a httpd
+command[check_glance-registry]=/usr/lib64/nagios/plugins/check_procs -c 1: -a glance-registry
+command[check_glance-api]=/usr/lib64/nagios/plugins/check_procs -c 1: -a glance-api
+command[check_nova-consoleauth]=/usr/lib64/nagios/plugins/check_procs -c 1: -a nova-consoleauth
+command[check_nova-novncproxy]=/usr/lib64/nagios/plugins/check_procs -c 1: -a nova-novncproxy
+command[check_nova-api]=/usr/lib64/nagios/plugins/check_procs -c 1: -a nova-api
+command[check_nova-scheduler]=/usr/lib64/nagios/plugins/check_procs -c 1: -a nova-scheduler
+command[check_nova-conductor]=/usr/lib64/nagios/plugins/check_procs -c 1: -a nova-conductor
+command[check_neutron-server]=/usr/lib64/nagios/plugins/check_procs -c 1: -a neutron-server
+command[check_cinder-api]=/usr/lib64/nagios/plugins/check_procs -c 1: -a cinder-api
+command[check_cinder-scheduler]=/usr/lib64/nagios/plugins/check_procs -c 1: -a cinder-scheduler
+command[check_cinder-volume]=/usr/lib64/nagios/plugins/check_procs -c 1: -a cinder-volume
+command[check_mongod]=/usr/lib64/nagios/plugins/check_procs -c 1: -a mongod
+command[check_redis-server]=/usr/lib64/nagios/plugins/check_procs -c 1: -a redis-server
+command[check_ceilometer-polling]=/usr/lib64/nagios/plugins/check_procs -c 1: -a ceilometer-polling
+command[check_ceilometer-collector]=/usr/lib64/nagios/plugins/check_procs -c 1: -a ceilometer-collector
+command[check_ceilometer-api]=/usr/lib64/nagios/plugins/check_procs -c 1: -a ceilometer-api
+command[check_aodh-evaluator]=/usr/lib64/nagios/plugins/check_procs -c 1: -a aodh-evaluator
+command[check_aodh-notifier]=/usr/lib64/nagios/plugins/check_procs -c 1: -a aodh-notifier
+command[check_aodh-api]=/usr/lib64/nagios/plugins/check_procs -c 1: -a aodh-api
+command[check_aodh-listener]=/usr/lib64/nagios/plugins/check_procs -c 1: -a aodh-listener
+command[check_ceilometer-agent-notification]=/usr/lib64/nagios/plugins/check_procs -c 1: -a ceilometer-agent-notification

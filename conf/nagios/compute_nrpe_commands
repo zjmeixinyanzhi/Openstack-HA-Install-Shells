@@ -1,0 +1,6 @@
+
+command[check_libvirtd]=/usr/lib64/nagios/plugins/check_procs -c 1: -a libvirtd
+command[check_nova-compute]=/usr/lib64/nagios/plugins/check_procs -c 1: -a nova-compute
+command[check_neutron-openvswitch-agent]=/usr/lib64/nagios/plugins/check_procs -c 1: -a neutron-openvswitch-agent
+command[check_ceilometer-polling]=/usr/lib64/nagios/plugins/check_procs -c 1: -a ceilometer-polling
+

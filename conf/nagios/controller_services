@@ -1,0 +1,186 @@
+###  connectivity(ping) keystone(httpd) glance-registry glance-api nova-consoleauth nova-novncproxy nova-api nova-scheduler nova-conductor neutron-server cinder-api cinder-scheduler cinder-volume mongod redis-server ceilometer-central(ceilometer-polling) ceilometer-collector ceilometer-api aodh-evaluator aodh-notifier aodh-api aodh-listener ceilometer-notification(ceilometer-agent-notification)
+
+# connectivity
+define service{
+    use generic-service
+    host_name FQDN
+    service_description CONNECTIVITY
+    check_command check_ping!100.0,20%!500.0,60%
+}
+
+# keystone
+define service{
+    use generic-service
+    host_name FQDN
+    service_description KEYSTONE
+    check_command check_nrpe!check_httpd
+}
+
+# glance-registry
+define service{
+    use generic-service
+    host_name FQDN
+    service_description GLANCE_REGISTRY
+    check_command check_nrpe!check_glance-registry
+}
+
+# glance-api
+define service{
+    use generic-service
+    host_name FQDN
+    service_description GLANCE_API
+    check_command check_nrpe!check_glance-api
+}
+
+# nova-consoleauth
+define service{
+    use generic-service
+    host_name FQDN
+    service_description NOVA_CONSOLEAUTH
+    check_command check_nrpe!check_nova-consoleauth
+}
+
+# nova-novncproxy
+define service{
+    use generic-service
+    host_name FQDN
+    service_description NOVA_NOVNCPROXY
+    check_command check_nrpe!check_nova-novncproxy
+}
+
+# nova-api
+define service{
+    use generic-service
+    host_name FQDN
+    service_description NOVA_API
+    check_command check_nrpe!check_nova-api
+}
+
+# nova-scheduler
+define service{
+    use generic-service
+    host_name FQDN
+    service_description NOVA_SCHEDULER
+    check_command check_nrpe!check_nova-scheduler
+}
+
+# nova-conductor
+define service{
+    use generic-service
+    host_name FQDN
+    service_description NOVA_CONDUCTOR
+    check_command check_nrpe!check_nova-conductor
+}
+
+# neutron-server
+define service{
+    use generic-service
+    host_name FQDN
+    service_description NEUTRON_SERVER
+    check_command check_nrpe!check_neutron-server
+}
+
+# cinder-api
+define service{
+    use generic-service
+    host_name FQDN
+    service_description CINDER_API
+    check_command check_nrpe!check_cinder-api
+}
+
+# cinder-scheduler
+define service{
+    use generic-service
+    host_name FQDN
+    service_description CINDER_SCHEDULER
+    check_command check_nrpe!check_cinder-scheduler
+}
+
+# cinder-volume
+define service{
+    use generic-service
+    host_name FQDN
+    service_description CINDER_VOLUME
+    check_command check_nrpe!check_cinder-volume
+}
+
+# mongod
+define service{
+    use generic-service
+    host_name FQDN
+    service_description MONGOD
+    check_command check_nrpe!check_mongod
+}
+
+# redis-server
+define service{
+    use generic-service
+    host_name FQDN
+    service_description REDIS_SERVER
+    check_command check_nrpe!check_redis-server
+}
+
+# ceilometer-central
+define service{
+    use generic-service
+    host_name FQDN
+    service_description CEILOMETER_CENTRAL
+    check_command check_nrpe!check_ceilometer-polling
+}
+
+# ceilometer-collector
+define service{
+    use generic-service
+    host_name FQDN
+    service_description CEILOMETER_COLLECTOR
+    check_command check_nrpe!check_ceilometer-collector
+}
+
+# ceilometer-api
+define service{
+    use generic-service
+    host_name FQDN
+    service_description CEILOMETER_API
+    check_command check_nrpe!check_ceilometer-api
+}
+
+# aodh-evaluator
+define service{
+    use generic-service
+    host_name FQDN
+    service_description AODH_EVALUATOR
+    check_command check_nrpe!check_aodh-evaluator
+}
+
+# aodh-notifier
+define service{
+    use generic-service
+    host_name FQDN
+    service_description AODH_NOTIFIER
+    check_command check_nrpe!check_aodh-notifier
+}
+
+# aodh-api
+define service{
+    use generic-service
+    host_name FQDN
+    service_description AODH_API
+    check_command check_nrpe!check_aodh-api
+}
+
+# aodh-listener
+define service{
+    use generic-service
+    host_name FQDN
+    service_description AODH_LISTENER
+    check_command check_nrpe!check_aodh-listener
+}
+
+# ceilometer-notification
+define service{
+    use generic-service
+    host_name FQDN
+    service_description CEILOMETER_NOTIFICATION
+    check_command check_nrpe!check_ceilometer-agent-notification
+}
+

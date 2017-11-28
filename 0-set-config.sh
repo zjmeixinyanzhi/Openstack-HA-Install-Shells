@@ -54,3 +54,5 @@ password_mongo_root=a263f6a89fa2
 passsword_rabbitmq=9b15318364bb66e1
 ### Openstack admin用户密码
 password_openstack_admin=9b15318364bb66e1
+### nagiosadmin用户密码
+password_nagiosadmin=123456
