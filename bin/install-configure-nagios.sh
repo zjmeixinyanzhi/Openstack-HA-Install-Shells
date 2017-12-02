@@ -24,7 +24,7 @@ echo > /tmp/services.cfg.new
 for h in ${!controller_map[@]}
 do
   sed -e "s/FQDN/$h/g" ../conf/nagios/controller_services >> /tmp/services.cfg.new
-  if [[ "$networker_split" = "yes" ]];then
+  if [[ "$networker_split" = "no" ]];then
     sed -e "s/FQDN/$h/g" ../conf/nagios/networker_services >> /tmp/services.cfg.new
   fi
 done
