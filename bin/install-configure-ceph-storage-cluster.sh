@@ -99,3 +99,6 @@ ssh root@$deploy_node /bin/bash << EOF
   sed -i -e 's#'"$(echo $store_network|cut -d "." -f1-3)"'#'"$(echo $local_network|cut -d "." -f1-3)"'#g' /etc/hosts
 EOF
 
+###[controller01]配置Ceph Rest API服务
+cat ../conf/ceph_rest_api.cfg >> /etc/ceph/ceph.conf
+ceph-rest-api -n client.admin > /dev/null 2>&1 &
