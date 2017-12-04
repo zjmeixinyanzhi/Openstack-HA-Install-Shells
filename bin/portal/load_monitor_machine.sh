@@ -1,4 +1,5 @@
 #!/bin/sh
+. /root/keystonerc_admin
 ### 生成物理机列表文件
 echo "=== 生成配置文件 ===";
 cat /dev/null > physical_machine_list.txt
